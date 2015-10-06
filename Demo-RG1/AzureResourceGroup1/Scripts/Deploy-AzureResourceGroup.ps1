@@ -2,7 +2,7 @@
 
 Param(
   [string] [Parameter(Mandatory=$true)] $ResourceGroupLocation,
-  [string] $ResourceGroupName = 'AzureResourceGroup1',  
+  [string] $ResourceGroupName = 'mjsDemoARM',  
   [switch] $UploadArtifacts,
   [string] $StorageAccountName,
   [string] $StorageAccountResourceGroupName, 
@@ -103,14 +103,14 @@ if ($UploadArtifacts)
 
 # Create or update the resource group using the specified template file and template parameters file
 Switch-AzureMode AzureResourceManager
-New-AzureResourceGroup -Name $ResourceGroupName `
-                       -Location $ResourceGroupLocation `
-                        @OptionalParameters `
-                        -Force -Verbose
+#New-AzureResourceGroup -Name $ResourceGroupName `
+#                       -Location $ResourceGroupLocation `
+#                        @OptionalParameters `
+#                        -Force -Verbose
 
 $guid = [guid]::NewGuid()
 New-AzureResourceGroupDeployment -Name $guid.ToString() `
-								 -AzureResourceGroupName $ResourceGroupName `
+								 -ResourceGroupName $ResourceGroupName `
 								 -TemplateFile $TemplateFile `
 								 -TemplateParameterFile $TemplateParametersFile `
 								 @OptionalParameters `

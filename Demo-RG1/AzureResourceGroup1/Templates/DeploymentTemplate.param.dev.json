@@ -2,5 +2,17 @@
     "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
     "contentVersion": "1.0.0.0",
     "parameters": {
+        "mjsdemoARM1Name": {
+            "value": "mjsdemoarm1"
+        },
+        "mjsDemoARM1Name2": {
+            "value": "mjsdemoarm2"
+        },
+        "mjsDemoARM1AdminUserName": {
+            "value": "mjsdemo"
+        },
+        "mjsDemoPubDnsName": {
+            "value": "mjsdemoarm1"
+        }
     }
 }

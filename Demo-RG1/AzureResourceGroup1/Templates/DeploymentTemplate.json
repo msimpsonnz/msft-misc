@@ -22,7 +22,8 @@
                 "West US",
                 "West Europe",
                 "East Asia",
-                "South East Asia"
+              "South East Asia",
+              "Australia East"
             ]
         },
         "vnMjsDemoARM1Location": {
@@ -33,7 +34,8 @@
                 "West US",
                 "West Europe",
                 "East Asia",
-                "South East Asia"
+              "South East Asia",
+              "Australia East"
             ]
         },
         "mjsDemoARM1Name2": {
@@ -53,6 +55,9 @@
                 "14.04.2-LTS",
                 "15.04"
             ]
+        },
+        "mjsDemoPubDnsName": {
+            "type": "string"
         }
     },
     "variables": {
@@ -68,7 +73,8 @@
         "mjsDemoARM1VnetID": "[resourceId('Microsoft.Network/virtualNetworks', 'vnMjsDemoARM1')]",
         "mjsDemoARM1SubnetRef": "[concat(variables('mjsDemoARM1VnetID'), '/subnets/', variables('vnMjsDemoARM1Subnet1Name'))]",
         "mjsDemoARM1StorageAccountContainerName": "vhds",
-        "mjsDemoARM1NicName": "[concat(parameters('mjsDemoARM1Name2'), 'NetworkInterface')]"
+        "mjsDemoARM1NicName": "[concat(parameters('mjsDemoARM1Name2'), 'NetworkInterface')]",
+        "mjsDemoPubName": "mjsDemoPub"
     },
     "resources": [
         {
@@ -121,7 +127,8 @@
             "location": "[parameters('vnMjsDemoARM1Location')]",
             "apiVersion": "2015-06-15",
             "dependsOn": [
-                "[concat('Microsoft.Network/virtualNetworks/', 'vnMjsDemoARM1')]"
+                "[concat('Microsoft.Network/virtualNetworks/', 'vnMjsDemoARM1')]",
+                "[concat('Microsoft.Network/publicIPAddresses/', variables('mjsDemoPubName'))]"
             ],
             "tags": {
                 "displayName": "mjsDemoARM1Nic"
@@ -134,6 +141,9 @@
                             "privateIPAllocationMethod": "Dynamic",
                             "subnet": {
                                 "id": "[variables('mjsDemoARM1SubnetRef')]"
+                            },
+                            "publicIPAddress": {
+                                "id": "[resourceId('Microsoft.Network/publicIPAddresses', variables('mjsDemoPubName'))]"
                             }
                         }
                     }
@@ -183,6 +193,22 @@
                             "id": "[resourceId('Microsoft.Network/networkInterfaces', variables('mjsDemoARM1NicName'))]"
                         }
                     ]
+                }
+            }
+        },
+        {
+            "name": "[variables('mjsDemoPubName')]",
+            "type": "Microsoft.Network/publicIPAddresses",
+            "location": "[parameters('vnMjsDemoARM1Location')]",
+            "apiVersion": "2015-05-01-preview",
+            "dependsOn": [ ],
+            "tags": {
+                "displayName": "mjsDemoPub"
+            },
+            "properties": {
+                "publicIPAllocationMethod": "Dynamic",
+                "dnsSettings": {
+                    "domainNameLabel": "[parameters('mjsDemoPubDnsName')]"
                 }
             }
         }
