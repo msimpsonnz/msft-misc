@@ -1,0 +1,27 @@
+{
+  "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "networkInterfaceName": {
+      "value": "mjsDemo-Nic-BE"
+    },
+    "loadBalancerName": {
+      "value": "mjsDemoILB"
+    },
+    "vmName": {
+      "value": "BackendVM"
+    },
+    "virtualNetworkName": {
+      "value": "mjsDemoVnet"
+    },
+    "storageAccountName": {
+      "value": "mjsDemo"
+    },
+    "adminUsername": {
+      "value" : "amjsdemo"
+    },
+    "adminPassword": {
+      "value" : "Admin123_!"
+    },
+  }
+}
