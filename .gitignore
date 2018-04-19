@@ -7,3 +7,5 @@ terraform.tfvars
 
 # Module directory
 .terraform/
+_output
+translations
