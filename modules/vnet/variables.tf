@@ -1,19 +1,16 @@
 variable "azure_location" {
   description = "Azure Location, e.g. North Europe"
-  default = "Australia Southeast"
 }
 
 variable "env" {
   description = "Environment Name"
-  default = "test"
 }
 
 variable "prefix" {
   description = "Prefix"
-  default = "terra"
 }
 
-variable "net_resource_group_name" {
+variable "resource_group_name" {
   description = "Azure Resource Group Name"
 }
 
