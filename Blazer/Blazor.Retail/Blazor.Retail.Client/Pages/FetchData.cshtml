@@ -2,7 +2,7 @@
 @page "/fetchdata"
 @inject HttpClient Http
 
-<h1>Product List</h1>
+<h1>Bob's Awesome Appliances!</h1>
 
 @if (products == null)
 {
@@ -10,36 +10,36 @@
 }
 else
 {
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Category</th>
-                <th>Segment</th>
-                <th>Description</th>
-                <th>ProductId</th>
-                <th>ProductPrice</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var product in products)
-            {
-                <tr>
-                    <td>@product.Category</td>
-                    <td>@product.Segment</td>
-                    <td>@product.Description</td>
-                    <td>@product.ProductId</td>
-                    <td>@product.ProductPrice</td>
-                </tr>
-            }
-        </tbody>
-    </table>
-}
-
-@functions {
-    Product[] products;
-
-    protected override async Task OnInitAsync()
+    <div>
+    @foreach (var product in products)
     {
-        products = await Http.GetJsonAsync<Product[]>("/api/Shop/GetAllProducts");
+        <div class="mb-4 d-flex align-items-center">
+            <ul class="list-group">
+                <li>Catageory: @product.Category</li>
+                <li>Segment: @product.Segment</li>
+                <li>Description: @product.Description</li>
+                <li>Price: @product.ProductPrice</li>
+                <button class="btn" onclick=@(Buy(product))>Buy Now!!</button>
+            </ul>
+        </div>
     }
+        </div>
 }
+
+    @functions {
+        Product[] products;
+
+        protected override async Task OnInitAsync()
+        {
+            products = await Http.GetJsonAsync<Product[]>("/api/Shop/GetAllProducts");
+        }
+
+        private string Buy(Product product)
+        {
+
+            Console.WriteLine(product.ProductId.ToString());
+            return product.ProductId.ToString();
+        }
+
+    }
+   
