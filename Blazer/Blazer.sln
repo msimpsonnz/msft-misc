@@ -3,11 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.27617.1
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Blazor.Retail.Server", "Blazor.Retail\Blazor.Retail.Server\Blazor.Retail.Server.csproj", "{14E9BE82-5E03-46C7-A170-5EB1CFE66D24}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Blazer.Retail.Server", "Blazer.Retail\Blazer.Retail.Server\Blazer.Retail.Server.csproj", "{84E198C9-0046-4E5A-8E1F-1F7D124E9D44}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Blazor.Retail.Client", "Blazor.Retail\Blazor.Retail.Client\Blazor.Retail.Client.csproj", "{5DD4D303-DB39-472B-BDAF-8FBD9473056C}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Blazer.Retail.Client", "Blazer.Retail\Blazer.Retail.Client\Blazer.Retail.Client.csproj", "{1CEFE4BD-AEA6-4259-859F-639996AA068F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Blazor.Retail.Shared", "Blazor.Retail\Blazor.Retail.Shared\Blazor.Retail.Shared.csproj", "{32D606D8-87F5-4737-95F4-000CA3D5948F}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Blazer.Retail.Shared", "Blazer.Retail\Blazer.Retail.Shared\Blazer.Retail.Shared.csproj", "{08327037-BCC6-4693-AAB1-CBA7D12D164C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,23 +15,23 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{14E9BE82-5E03-46C7-A170-5EB1CFE66D24}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{14E9BE82-5E03-46C7-A170-5EB1CFE66D24}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{14E9BE82-5E03-46C7-A170-5EB1CFE66D24}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{14E9BE82-5E03-46C7-A170-5EB1CFE66D24}.Release|Any CPU.Build.0 = Release|Any CPU
-		{5DD4D303-DB39-472B-BDAF-8FBD9473056C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{5DD4D303-DB39-472B-BDAF-8FBD9473056C}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{5DD4D303-DB39-472B-BDAF-8FBD9473056C}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{5DD4D303-DB39-472B-BDAF-8FBD9473056C}.Release|Any CPU.Build.0 = Release|Any CPU
-		{32D606D8-87F5-4737-95F4-000CA3D5948F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{32D606D8-87F5-4737-95F4-000CA3D5948F}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{32D606D8-87F5-4737-95F4-000CA3D5948F}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{32D606D8-87F5-4737-95F4-000CA3D5948F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{84E198C9-0046-4E5A-8E1F-1F7D124E9D44}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{84E198C9-0046-4E5A-8E1F-1F7D124E9D44}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{84E198C9-0046-4E5A-8E1F-1F7D124E9D44}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{84E198C9-0046-4E5A-8E1F-1F7D124E9D44}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1CEFE4BD-AEA6-4259-859F-639996AA068F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1CEFE4BD-AEA6-4259-859F-639996AA068F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1CEFE4BD-AEA6-4259-859F-639996AA068F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1CEFE4BD-AEA6-4259-859F-639996AA068F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{08327037-BCC6-4693-AAB1-CBA7D12D164C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{08327037-BCC6-4693-AAB1-CBA7D12D164C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{08327037-BCC6-4693-AAB1-CBA7D12D164C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{08327037-BCC6-4693-AAB1-CBA7D12D164C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {1183E0EC-D2BD-48AF-9AD7-4581B2BA4442}
+		SolutionGuid = {BD51F4C2-0763-41B2-A0BB-908E035CE6B2}
 	EndGlobalSection
 EndGlobal

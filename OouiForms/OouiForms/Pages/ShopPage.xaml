@@ -1,0 +1,99 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ContentPage 
+        xmlns="http://xamarin.com/schemas/2014/forms" 
+        xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
+        x:Class="OouiForms.Pages.ShopPage"
+        Title="Bob's Aweseme Appliances">
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <Style x:Key="labelStyle" TargetType="Label">
+                <Setter Property="TextColor" Value="#a8a8a8" />
+                <Setter Property="FontSize" Value="Small" />
+            </Style>
+            <Style x:Key="fieldStyle" TargetType="Label">
+                <Setter Property="TextColor">
+                    <OnPlatform x:TypeArguments="Color">
+                        <On Platform="iOS" Value="Black" />
+                        <On Platform="Android, UWP, WinRT, WinPhone" Value="White" />
+                    </OnPlatform>
+                </Setter>
+                <Setter Property="FontSize" Value="Medium" />
+            </Style>
+            <Style x:Key="fieldView" TargetType="ContentView">
+                <Setter Property="Padding" Value="10,0,0,0" />
+            </Style>
+        </ResourceDictionary>
+    </ContentPage.Resources>
+
+    <ContentPage.Content>
+        <StackLayout Margin="20">
+            <StackLayout Orientation="Horizontal" HorizontalOptions="FillAndExpand"
+              BackgroundColor="#545454">
+                <StackLayout Padding="10,10,10,10" HorizontalOptions="Start">
+                    <Label Text="Bob's Awesome Appliances" TextColor="White" FontAttributes="Bold"
+                FontSize="Medium" />
+                    <Entry x:Name="filterProductEntry" />
+                </StackLayout>
+                <StackLayout Padding="0,0,0,10" VerticalOptions="End">
+                    <Button x:Name="filterProductBtn" Text="Filter" WidthRequest="185" BorderWidth="1" >
+                        <!-- Set iOS colors; use defaults on other platforms -->
+                        <Button.TextColor>
+                            <OnPlatform x:TypeArguments="Color">
+                                <On Platform="iOS" Value="White" />
+                            </OnPlatform>
+                        </Button.TextColor>
+                        <Button.BorderColor>
+                            <OnPlatform x:TypeArguments="Color">
+                                <On Platform="iOS" Value="White" />
+                            </OnPlatform>
+                        </Button.BorderColor>
+                    </Button>
+                </StackLayout>
+            </StackLayout>
+            <ListView
+                ItemsSource="{Binding Products}"  
+                HasUnevenRows="true"
+                BackgroundColor= "White">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <ViewCell>
+                            <Grid 
+                                Padding="10" 
+                                Margin="10"
+                                RowSpacing="10" 
+                                ColumnSpacing="10"
+                                >
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="*"/>
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <Label 
+                                    Grid.Column="1"
+                                    Text="{Binding Category}"
+                                    FontSize="24"
+									VerticalOptions="End"/>
+                                <Label 
+                                    Grid.Column="1"
+                                    Grid.Row="1"
+                                    VerticalOptions="Start"
+                                    Text="{Binding Description}"/>
+                                <Label 
+                                    Grid.Column="1"
+                                    Grid.Row="2"
+                                    VerticalOptions="Start"
+                                    Text="{Binding ProductPrice}, StringFormat='{0:C}'}" />
+                                <Button
+                                    x:Name="buyNowBtn"
+                                    Text="Buy Now"  />
+                            </Grid>
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>
