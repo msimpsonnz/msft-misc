@@ -14,7 +14,7 @@ namespace netcore_proxy_web.Controllers
         [HttpGet]
         public ActionResult<IEnumerable<string>> Get()
         {
-            return new string[] { "azure proxy 1", "value2" };
+            return new string[] { "azure proxy 1", "traffic manager" };
         }
 
         // GET api/values/5

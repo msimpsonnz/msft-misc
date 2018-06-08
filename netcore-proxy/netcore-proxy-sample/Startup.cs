@@ -34,7 +34,7 @@ namespace netcore_proxy_sample
                 app.UseDeveloperExceptionPage();
             }
 
-            app.UseWebSockets().RunProxy(new ProxyOptions() { Host = "netcoreproxyweb20180608103836.azurewebsites.net"});
-        }
+            app.UseWebSockets().RunProxy(new ProxyOptions() { Host = "mjsdemochild.trafficmanager.net"});
+            }
     }
 }

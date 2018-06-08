@@ -1,0 +1,131 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "sites_netcoreproxyweb20180608103836_name": {
+            "defaultValue": "netcoreproxyweb20180608103836",
+            "type": "String"
+        },
+        "trafficManagerProfiles_mjsdemoroot_name": {
+            "defaultValue": "mjsdemoroot",
+            "type": "String"
+        },
+        "sites_netcoreproxysample20180608114616_name": {
+            "defaultValue": "netcoreproxysample20180608114616",
+            "type": "String"
+        },
+        "trafficManagerProfiles_mjsdemochild_name": {
+            "defaultValue": "mjsdemochild",
+            "type": "String"
+        },
+        "config_web_name": {
+            "defaultValue": "web",
+            "type": "String"
+        },
+        "config_web_name_1": {
+            "defaultValue": "web",
+            "type": "String"
+        },
+        "hostNameBindings_mjsdemochild.trafficmanager.net_name": {
+            "defaultValue": "mjsdemochild.trafficmanager.net",
+            "type": "String"
+        },
+        "hostNameBindings_mjsdemoroot.trafficmanager.net_name": {
+            "defaultValue": "mjsdemoroot.trafficmanager.net",
+            "type": "String"
+        },
+        "hostNameBindings_netcoreproxyweb20180608103836.azurewebsites.net_name": {
+            "defaultValue": "netcoreproxyweb20180608103836.azurewebsites.net",
+            "type": "String"
+        },
+        "hostNameBindings_netcoreproxysample20180608114616.azurewebsites.net_name": {
+            "defaultValue": "netcoreproxysample20180608114616.azurewebsites.net",
+            "type": "String"
+        }
+    },
+    "variables": {},
+    "resources": [
+        {
+            "type": "Microsoft.Network/trafficManagerProfiles",
+            "name": "[parameters('trafficManagerProfiles_mjsdemochild_name')]",
+            "apiVersion": "2017-05-01",
+            "location": "global",
+            "tags": {},
+            "scale": null,
+            "properties": {
+                "profileStatus": "Enabled",
+                "trafficRoutingMethod": "Performance",
+                "dnsConfig": {
+                    "relativeName": "[parameters('trafficManagerProfiles_mjsdemochild_name')]",
+                    "fqdn": "[concat(parameters('trafficManagerProfiles_mjsdemochild_name'),'.trafficmanager.net')]",
+                    "ttl": 300
+                },
+                "monitorConfig": {
+                    "protocol": "HTTP",
+                    "port": 80,
+                    "path": "/",
+                    "intervalInSeconds": 30,
+                    "toleratedNumberOfFailures": 3,
+                    "timeoutInSeconds": 10
+                },
+                "endpoints": [
+                    {
+                        "name": "mjsdemoweb",
+                        "type": "Microsoft.Network/trafficManagerProfiles/azureEndpoints",
+                        "properties": {
+                            "endpointStatus": "Enabled",
+                            "targetResourceId": "[resourceId('Microsoft.Web/sites', parameters('sites_netcoreproxyweb20180608103836_name'))]",
+                            "target": "netcoreproxyweb20180608103836.azurewebsites.net",
+                            "weight": 1,
+                            "priority": 1,
+                            "endpointLocation": "Australia Southeast"
+                        }
+                    }
+                ]
+            },
+            "dependsOn": [
+            ]
+        },
+        {
+            "type": "Microsoft.Network/trafficManagerProfiles",
+            "name": "[parameters('trafficManagerProfiles_mjsdemoroot_name')]",
+            "apiVersion": "2017-05-01",
+            "location": "global",
+            "tags": {},
+            "scale": null,
+            "properties": {
+                "profileStatus": "Enabled",
+                "trafficRoutingMethod": "Performance",
+                "dnsConfig": {
+                    "relativeName": "[parameters('trafficManagerProfiles_mjsdemoroot_name')]",
+                    "fqdn": "[concat(parameters('trafficManagerProfiles_mjsdemoroot_name'),'.trafficmanager.net')]",
+                    "ttl": 300
+                },
+                "monitorConfig": {
+                    "protocol": "HTTP",
+                    "port": 80,
+                    "path": "/",
+                    "intervalInSeconds": 30,
+                    "toleratedNumberOfFailures": 3,
+                    "timeoutInSeconds": 10
+                },
+                "endpoints": [
+                    {
+                        "name": "proxy",
+                        "type": "Microsoft.Network/trafficManagerProfiles/azureEndpoints",
+                        "properties": {
+                            "endpointStatus": "Enabled",
+                            "targetResourceId": "[resourceId('Microsoft.Web/sites', parameters('sites_netcoreproxysample20180608114616_name'))]",
+                            "target": "netcoreproxysample20180608114616.azurewebsites.net",
+                            "weight": 1,
+                            "priority": 1,
+                            "endpointLocation": "Australia Southeast"
+                        }
+                    }
+                ]
+            },
+            "dependsOn": [
+            ]
+        }
+    ]
+}
