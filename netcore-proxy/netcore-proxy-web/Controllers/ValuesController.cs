@@ -14,7 +14,9 @@ namespace netcore_proxy_web.Controllers
         [HttpGet]
         public ActionResult<IEnumerable<string>> Get()
         {
-            return new string[] { "azure proxy 1", "traffic manager" };
+            var siteName = Environment.GetEnvironmentVariable("WEBSITE_NAME");
+            var siteSKU = Environment.GetEnvironmentVariable("WEBSITE_SKU");
+            return new string[] { "App Service 2", siteSKU };
         }
 
         // GET api/values/5
