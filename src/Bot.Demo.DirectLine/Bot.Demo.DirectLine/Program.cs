@@ -1,9 +1,13 @@
 ﻿using Microsoft.Extensions.Configuration;
-using Microsoft.Bot.Connector.DirectLine;
 using System;
 using System.IO;
 using System.Threading.Tasks;
 using System.Linq;
+using System.Net.Http;
+using System.Net.Http.Headers;
+using System.Text;
+using Newtonsoft.Json.Linq;
+using Newtonsoft.Json;
 
 namespace Bot.Demo.DirectLine
 {
@@ -25,50 +29,37 @@ namespace Bot.Demo.DirectLine
 
         public static async Task LikeArtist(string directLineSecret, string botId, string artlistList)
         {
-            DirectLineClient client = new DirectLineClient(directLineSecret);
+            HttpClient client = new HttpClient();
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", directLineSecret);
 
-            var conversation = await client.Conversations.StartConversationAsync();
+            var convIdRequest = await client.PostAsync("https://directline.botframework.com/v3/directline/conversations", null);
 
-            new System.Threading.Thread(async () => await ReadBotMessagesAsync(client, conversation.ConversationId, botId)).Start();
+            var convIdResult = await convIdRequest.Content.ReadAsStringAsync();
+            JObject convIdObj = JObject.Parse(convIdResult);
+            string convId = (string)convIdObj["conversationId"];
 
-            Console.WriteLine(artlistList);
-            Activity userMessage = new Activity
+
+            Message msg = new Message()
             {
-                From = new ChannelAccount("DirectLineSampleClientUser"),
-                Text = $"i like {artlistList}",
-                Type = ActivityTypes.Message
+                type = "message",
+                from = new MessageFrom() { id = "RingoDirectLineSampleUser" },
+                text = "i like spotify:artist:7n2wHs1TKAczGzO7Dd2rGr"
+
             };
+            var msgJson = JsonConvert.SerializeObject(msg);
 
-            var msg = await client.Conversations.PostActivityAsync(conversation.ConversationId, userMessage);
-            msg.Id.ToString();
+            var sendArtisit = await client.PostAsync($"https://directline.botframework.com/v3/directline/conversations/{convId}/activities", new StringContent(msgJson, Encoding.UTF8, "application/json"));
 
+            var sendArtisitResult = await sendArtisit.Content.ReadAsStringAsync();
         }
 
-        private static async Task ReadBotMessagesAsync(DirectLineClient client, string conversationId, string botId)
-        {
-            string watermark = null;
 
-            while (true)
-            {
-                var activitySet = await client.Conversations.GetActivitiesAsync(conversationId, watermark);
-                watermark = activitySet?.Watermark;
-
-                var activities = from x in activitySet.Activities
-                                 where x.From.Id == botId
-                                 select x;
-
-                var str = "";
-
-                await Task.Delay(TimeSpan.FromSeconds(1)).ConfigureAwait(false);
-            }
-        }
     }
-
 
     public class Message
     {
         public string type { get; set; }
-        public Message from { get; set; }
+        public MessageFrom from { get; set; }
         public string text { get; set; }
     }
 
@@ -76,4 +67,5 @@ namespace Bot.Demo.DirectLine
     {
         public string id { get; set; }
     }
+
 }
