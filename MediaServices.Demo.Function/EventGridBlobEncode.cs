@@ -17,14 +17,11 @@ namespace MediaServices.Demo.Function
 {
     public static class EventGridBlobEncode
     {
-        private static readonly string AadClientId = Environment.GetEnvironmentVariable("AadClientId");
-        private static readonly string AadSecret = Environment.GetEnvironmentVariable("AadSecret");
-        private static readonly string AadTenantId = Environment.GetEnvironmentVariable("AadTenantId");
         private static readonly string ArmEndpoint = Environment.GetEnvironmentVariable("ArmEndpoint");
         private static readonly string SubscriptionId = Environment.GetEnvironmentVariable("SubscriptionId");
         private static readonly string ResourceGroup = Environment.GetEnvironmentVariable("resourceGroup");
         private static readonly string AccountName = Environment.GetEnvironmentVariable("accountName");
-        private const string TransformName = "CreatedTransform";
+        private const string TransformName = "TransformAdaptiveStreaming";
         private static readonly string inputBlobSAS = Environment.GetEnvironmentVariable("inputBlobSAS");
 
         [FunctionName("EventGridBlobEncode")]
@@ -42,13 +39,12 @@ namespace MediaServices.Demo.Function
 
             IAzureMediaServicesClient client = CreateMediaServicesClientAsync(credentials);
 
-            //Transform transform = await GetOrCreateTransformAsync(TransformName, accessToken, log);
+            Transform transform = await GetOrCreateTransformAsync(client, TransformName);
 
             Asset outputAsset = await CreateOutputAssetAsync(client, outputAssetName);
 
             var eventData = JToken.Parse(eventGridEvent.Data.ToString());
                
-
             await SubmitJobAsync(eventData["url"].ToString(), outputAssetName, client, jobName, log);
         }
 
@@ -97,6 +93,35 @@ namespace MediaServices.Demo.Function
             return await client.Assets.CreateOrUpdateAsync(ResourceGroup, AccountName, outputAssetName, asset);
         }
 
+        private static async Task<Transform> GetOrCreateTransformAsync(IAzureMediaServicesClient client, string transformName)
+        {
+            // Does a Transform already exist with the desired name? Assume that an existing Transform with the desired name
+            // also uses the same recipe or Preset for processing content.
+            Transform transform = await client.Transforms.GetAsync(ResourceGroup, AccountName, transformName);
+
+            if (transform == null)
+            {
+                // You need to specify what you want it to produce as an output
+                TransformOutput[] output = new TransformOutput[]
+                {
+                    new TransformOutput
+                    {
+                        // The preset for the Transform is set to one of Media Services built-in sample presets.
+                        // You can  customize the encoding settings by changing this to use "StandardEncoderPreset" class.
+                        Preset = new BuiltInStandardEncoderPreset()
+                        {
+                            // This sample uses the built-in encoding preset for Adaptive Bitrate Streaming.
+                            PresetName = EncoderNamedPreset.AdaptiveStreaming
+                        }
+                    }
+                };
+
+                // Create the Transform with the output defined above
+                transform = await client.Transforms.CreateOrUpdateAsync(ResourceGroup, AccountName, transformName, output);
+            }
+
+            return transform;
+        }
 
         private static IAzureMediaServicesClient CreateMediaServicesClientAsync(ServiceClientCredentials credentials)
         {
