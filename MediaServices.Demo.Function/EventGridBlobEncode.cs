@@ -1,6 +1,10 @@
 // Default URL for triggering event grid function in the local environment.
 // http://localhost:7071/runtime/webhooks/EventGridExtensionConfig?functionName={functionname}
 
+//Ported Media Services functions from 
+//https://github.com/Azure-Samples/media-services-v3-dotnet-tutorials/blob/master/AMSV3Tutorials/UploadEncodeAndStreamFiles/Program.cs
+// Credit to @Juliako, @johndeu and @mconverti
+
 using Microsoft.Azure.EventGrid.Models;
 using Microsoft.Azure.Management.Media;
 using Microsoft.Azure.Management.Media.Models;
@@ -28,49 +32,70 @@ namespace MediaServices.Demo.Function
         public static async Task Run([EventGridTrigger]EventGridEvent eventGridEvent, TraceWriter log)
         {
             log.Info(eventGridEvent.Data.ToString());
+            //Build variables to ensure AMS Assests and Jobs are unique
             string uniqueness = Guid.NewGuid().ToString("N");
             string inputAssetName = $"input-{uniqueness}";
             string jobName = $"job-{uniqueness}";
             string outputAssetName = $"output-{uniqueness}";
 
-            var azureServiceTokenProvider = new AzureServiceTokenProvider();
-            string accessToken = await azureServiceTokenProvider.GetAccessTokenAsync("https://management.azure.com/");
-            ServiceClientCredentials credentials = new TokenCredentials(accessToken);
+            try
+            {
+                //Get MSI Token from Function Host
+                var azureServiceTokenProvider = new AzureServiceTokenProvider();
+                string accessToken = await azureServiceTokenProvider.GetAccessTokenAsync(ArmEndpoint);
+                ServiceClientCredentials credentials = new TokenCredentials(accessToken);
 
-            IAzureMediaServicesClient client = CreateMediaServicesClientAsync(credentials);
+                //Create Media Services Client
+                IAzureMediaServicesClient client = CreateMediaServicesClientAsync(credentials);
 
-            Transform transform = await GetOrCreateTransformAsync(client, TransformName);
+                //Ensuure Transform Exists
+                Transform transform = await GetOrCreateTransformAsync(client, TransformName);
 
-            Asset outputAsset = await CreateOutputAssetAsync(client, outputAssetName);
+                //Create output assest for the jon
+                Asset outputAsset = await CreateOutputAssetAsync(client, outputAssetName);
 
-            var eventData = JToken.Parse(eventGridEvent.Data.ToString());
-               
-            await SubmitJobAsync(eventData["url"].ToString(), outputAssetName, client, jobName, log);
+                //Parse Blob URI from Event data to pass to AMS Job
+                var eventData = JToken.Parse(eventGridEvent.Data.ToString());
+
+                //Submit AMS Job
+                await SubmitJobAsync(eventData["url"].ToString(), outputAssetName, client, jobName, log);
+
+            }
+            catch (Exception ex)
+            {
+                log.Error(ex.Message);
+                throw;
+            }
+
         }
 
         private static async Task<Job> SubmitJobAsync(string inputBlobName, string outputAssetName, IAzureMediaServicesClient client, string jobName, TraceWriter log)
         {
 
-
-            JobInputHttp jobInput =
-                new JobInputHttp(files: new[] { $"{inputBlobName}?{inputBlobSAS}" });
-            JobOutput[] jobOutputs =
+            try
             {
-                new JobOutputAsset(outputAssetName),
-            };
+                JobInputHttp jobInput = new JobInputHttp(files: new[] { $"{inputBlobName}?{inputBlobSAS}" });
+                JobOutput[] jobOutputs = { new JobOutputAsset(outputAssetName) };
 
-            Job job = await client.Jobs.CreateAsync(
-                ResourceGroup,
-                AccountName,
-                TransformName,
-                jobName,
-                new Job
-                {
-                    Input = jobInput,
-                    Outputs = jobOutputs,
-                });
+                Job job = await client.Jobs.CreateAsync(
+                    ResourceGroup,
+                    AccountName,
+                    TransformName,
+                    jobName,
+                    new Job
+                    {
+                        Input = jobInput,
+                        Outputs = jobOutputs,
+                    });
 
-            return job;
+                return job;
+            }
+            catch (Exception ex)
+            {
+                log.Error(ex.Message);
+                throw;
+            }
+
 
         }
 
