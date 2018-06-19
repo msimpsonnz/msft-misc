@@ -63,7 +63,7 @@ namespace MediaServices.Demo.Function
             }
             catch (Exception ex)
             {
-                log.Error(ex.Message);
+                log.Error($"Error with Function init: {ex.Message}");
                 throw;
             }
 
@@ -92,7 +92,7 @@ namespace MediaServices.Demo.Function
             }
             catch (Exception ex)
             {
-                log.Error(ex.Message);
+                log.Error($"Error with creating Job: {ex.Message}");
                 throw;
             }
 
