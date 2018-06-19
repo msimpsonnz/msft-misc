@@ -11,19 +11,21 @@ Walk through of using Azure CDN to improve upload speed to blob, which triggers 
 
 Ok, so I need to create Azure Media Services account and a Service Principal to use for auth.
 
-> az group create --name AMS --location centralus
-
+```
+az group create --name AMS --location centralus
+```
 ```
 az storage account create --name mjsdemostrams \  
 --kind StorageV2 \
 --sku Standard_RAGRS \
 --resource-group AMS
 ```
-
-> az ams account create --name mjsdemoams --resource-group AMS --storage-account mjsdemostrams
-
-> az ams account sp create --account-name mjsdemoams --resource-group AMS
-
+```
+az ams account create --name mjsdemoams --resource-group AMS --storage-account mjsdemostrams
+```
+```
+az ams account sp create --account-name mjsdemoams --resource-group AMS
+```
 ```
 {
   "AadClientId": "00000000-0000-0000-0000-00000000",
@@ -40,12 +42,7 @@ az storage account create --name mjsdemostrams \
 ```
 ## Azure Function to process Encoding Job
 
-I created a new [repo](https://github.com/msimpsonnz/MediaServices.Demo) that has a Function with Event Grid trigger from a blob that queues up a Media Services Encoding job.
-
-
-## Event Grid for Blob
-
-Now I need an Event Grid subscription to to trigger an Azure Functions to kick of the encoding.
+I created this repo that has a Function with Event Grid trigger from a blob that queues up a Media Services Encoding job.
 
 #### Storage Account Function
 ```
@@ -60,6 +57,8 @@ az functionapp create --resource-group AMS --consumption-plan-location centralus
 --name mjsdemoamsfunc --storage-account mjsdemoamsfuncstr  
 ```
 
+Now I know 'friends don't let friend right click publish' but it works from VS and VS Code really nice, and VS Code even pushes my local appsettings.json to the Function app, which I forget to do EVERY time, so it's super quick and helpful. I'll revisit this with a DevOps project once they support Functions in consumption plans.
+
 #### Create a EventGrid Subscription
 ```
 storageid=$(az storage account show --name mjsdemocdnstr --resource-group CDN --query id --output tsv)
@@ -72,8 +71,9 @@ az eventgrid event-subscription create \
 ```
 
 #### Create a MSI for Azure Functions
->az webapp identity assign --name mjsdemoamsfunc --resource-group AMS
 ```
+az webapp identity assign --name mjsdemoamsfunc --resource-group AMS
+
 {
   "principalId": "00000000-0000-0000-0000-00000000",
   "tenantId": "00000000-0000-0000-0000-00000000",
@@ -82,7 +82,9 @@ az eventgrid event-subscription create \
 ```
 
 #### Add MSI to as Media Services Contributor
->az role assignment create --assignee 00000000-0000-0000-0000-00000000 --role Contributor --scope /subscriptions/00000000-0000-0000-0000-00000000/resourceGroups/AMS/providers/Microsoft.Media/mediaservices/mjsdemoams
+```
+az role assignment create --assignee 00000000-0000-0000-0000-00000000 --role Contributor --scope /subscriptions/00000000-0000-0000-0000-00000000/resourceGroups/AMS/providers/Microsoft.Media/mediaservices/mjsdemoams
+```
 
 ## Uploading files via CDN
 
