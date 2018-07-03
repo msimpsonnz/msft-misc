@@ -3,9 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.27703.2026
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Demo.ServiceBus.ConsoleApp", "Demo.ServiceBus.ConsoleApp\Demo.ServiceBus.ConsoleApp.csproj", "{B94D2FF1-2BE3-43E3-82C2-494F72B7040E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Demo.ServiceBus.ConsoleApp", "Demo.ServiceBus.ConsoleApp\Demo.ServiceBus.ConsoleApp.csproj", "{B94D2FF1-2BE3-43E3-82C2-494F72B7040E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Demo.ServiceBus.Functions", "Demo.ServiceBus.Functions\Demo.ServiceBus.Functions.csproj", "{6869D4AF-EFCB-467A-94CA-DDC86A27D4AB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Demo.ServiceBus.Functions", "Demo.ServiceBus.Functions\Demo.ServiceBus.Functions.csproj", "{6869D4AF-EFCB-467A-94CA-DDC86A27D4AB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
