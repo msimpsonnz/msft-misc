@@ -8,6 +8,7 @@ appsettings.*.json
 .vs
 **/*.pubxml*
 .vscode/
+secrets.sh
 
 *.suo
 *.user
