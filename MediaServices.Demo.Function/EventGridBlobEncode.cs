@@ -27,6 +27,7 @@ namespace MediaServices.Demo.Function
         private static readonly string AccountName = Environment.GetEnvironmentVariable("accountName");
         private const string TransformName = "TransformAdaptiveStreaming";
         private static readonly string inputBlobSAS = Environment.GetEnvironmentVariable("inputBlobSAS");
+        private static readonly string testBlob = Environment.GetEnvironmentVariable("testBlob");
 
         [FunctionName("EventGridBlobEncode")]
         public static async Task Run([EventGridTrigger]EventGridEvent eventGridEvent, TraceWriter log)
