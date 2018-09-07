@@ -15,6 +15,7 @@ using Microsoft.Azure.WebJobs.Host;
 using Microsoft.Rest;
 using Newtonsoft.Json.Linq;
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace MediaServices.Demo.Function
@@ -57,9 +58,14 @@ namespace MediaServices.Demo.Function
 
                 //Parse Blob URI from Event data to pass to AMS Job
                 var eventData = JToken.Parse(eventGridEvent.Data.ToString());
+                var inputBlobName = $"{eventData["url"].ToString()}?{inputBlobSAS}";
+
+                //Get Source File
+                var meta = await VideoInfo.BlobVideoInfo(inputBlobName, log);
+
 
                 //Submit AMS Job
-                await SubmitJobAsync(eventData["url"].ToString(), outputAssetName, client, jobName, log);
+                await SubmitJobAsync(inputBlobName, outputAssetName, client, jobName, log, meta);
 
             }
             catch (Exception ex)
@@ -70,12 +76,12 @@ namespace MediaServices.Demo.Function
 
         }
 
-        private static async Task<Job> SubmitJobAsync(string inputBlobName, string outputAssetName, IAzureMediaServicesClient client, string jobName, TraceWriter log)
+        private static async Task<Job> SubmitJobAsync(string inputBlobName, string outputAssetName, IAzureMediaServicesClient client, string jobName, TraceWriter log, Dictionary<string, string> meta)
         {
 
             try
             {
-                JobInputHttp jobInput = new JobInputHttp(files: new[] { $"{inputBlobName}?{inputBlobSAS}" });
+                JobInputHttp jobInput = new JobInputHttp(files: new[] { inputBlobName });
                 JobOutput[] jobOutputs = { new JobOutputAsset(outputAssetName) };
 
 
@@ -90,7 +96,8 @@ namespace MediaServices.Demo.Function
                     TransformName,
                     jobName,
                     new Job
-                    {
+                    {   
+                        CorrelationData = meta,
                         Input = jobInput,
                         Outputs = jobOutputs,
                     });

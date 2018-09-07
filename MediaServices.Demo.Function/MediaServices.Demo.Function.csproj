@@ -5,12 +5,10 @@
     <Platforms>AnyCPU;x86;x64</Platforms>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="MediaToolkit" Version="1.1.0.1" />
-    <PackageReference Include="MetadataExtractor" Version="2.0.0" />
     <PackageReference Include="Microsoft.Azure.Management.Media" Version="1.8.0-preview" />
     <PackageReference Include="Microsoft.Azure.Services.AppAuthentication" Version="1.0.3" />
-    <PackageReference Include="Microsoft.Azure.WebJobs.Extensions.EventGrid" Version="2.0.0-beta1" />
-    <PackageReference Include="Microsoft.NET.Sdk.Functions" Version="1.0.13" />
+    <PackageReference Include="Microsoft.Azure.WebJobs.Extensions.EventGrid" Version="2.0.0-beta4" />
+    <PackageReference Include="Microsoft.NET.Sdk.Functions" Version="1.0.19" />
   </ItemGroup>
   <ItemGroup>
     <None Update="host.json">
