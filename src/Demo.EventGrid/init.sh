@@ -4,9 +4,8 @@ resourceGroup=<resourceGroup>
 endpoint=<endpoint>
 eventSubscriptionName=<eventSubscriptionName>
 containerName=<containerName>
-
-# Get storage account details
-storageid=$(az storage account show --name $storageAccountName --resource-group $resourceGroup --query id --output tsv)
+AZURE_STORAGE_ACCOUNT=<>
+AZURE_STORAGE_ACCESS_KEY=<>
 
 # Create Event Grid subscription
 ## endpoint: Azure Function
@@ -23,10 +22,6 @@ az eventgrid event-subscription create \
   --event-ttl 1 \
   --max-delivery-attempts 1
 
-# Get storage key for upload
-export AZURE_STORAGE_ACCOUNT=$storageAccountName
-export AZURE_STORAGE_ACCESS_KEY="$(az storage account keys list --account-name $storageAccountName --resource-group $resourceGroup --query "[0].value" --output tsv)"
+#cd /mnt/c/r/GitHub/misc/src/Demo.EventGrid/
 
-# Upload a test file
-touch testfile.txt
-az storage blob upload --file testfile.txt --container-name voi --name testfile.txt
+python /mnt/c/r/GitHub/misc/src/Demo.EventGrid/blob.py voi 20 1
