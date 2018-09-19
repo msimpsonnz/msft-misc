@@ -334,3 +334,4 @@ ASALocalRun/
 # MFractors (Xamarin productivity tool) working folder 
 .mfractor/
 src/AWS.Glacier.Script/archiveList.json
+src/Go.Demo/Go.Demo.exe
