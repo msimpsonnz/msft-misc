@@ -335,3 +335,4 @@ ASALocalRun/
 .mfractor/
 src/AWS.Glacier.Script/archiveList.json
 src/Go.Demo/Go.Demo.exe
+src/Go.Demo/config.json

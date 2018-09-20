@@ -9,6 +9,9 @@ import (
     "net/http"
     "os"
     "time"
+
+    "github.com/micro/go-config"
+    "github.com/micro/go-config/source/file"
     "github.com/gorilla/mux"
     "github.com/globalsign/mgo"
     "github.com/globalsign/mgo/bson"
@@ -29,13 +32,26 @@ type Address struct {
 
 var people []Person
 
+
+// MongoConfig type
+type MongoConfig struct {
+    Host        string  `json:"host"`
+    Database    string  `json:"database"`
+    Username    string  `json:"username"`
+    Password    string  `json:"password"`
+}
+
+var mongoConfig MongoConfig
+
+// MongoSetup builds the connection for Mongo
 func MongoSetup() *mgo.DialInfo {
     dialInfo := &mgo.DialInfo{
-        Addrs:    []string{""}, // Get HOST + PORT
+        //Addrs:    []string{""},
+        Addrs:  []string{mongoConfig.Host},
         Timeout:  60 * time.Second,
-        Database: "mongo",                                                                             // It can be anything
-        Username: "",                                                                             // Username
-        Password: "", // PASSWORD
+        Database: mongoConfig.Database,
+        Username: mongoConfig.Username,
+        Password: mongoConfig.Password,
         DialServer: func(addr *mgo.ServerAddr) (net.Conn, error) {
             return tls.Dial("tcp", addr.String(), &tls.Config{})
         },
@@ -99,6 +115,16 @@ func DeletePerson(w http.ResponseWriter, r *http.Request) {
 
 // main function to boot up everything
 func main() {
+    if err := config.Load(file.NewSource(
+		file.WithPath("./config.json"),
+	)); err != nil {
+		fmt.Println(err)
+		return
+    }
+    if err := config.Get("mongo").Scan(&mongoConfig); err != nil {
+		fmt.Println(err)
+		return
+    }
 	router := mux.NewRouter()
 	router.Use(commonMiddleware)
 	people = append(people, Person{ID: "1", Firstname: "John", Lastname: "Doe", Address: &Address{City: "City X", State: "State X"}})
