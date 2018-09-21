@@ -1,9 +1,0 @@
-C:\r\GitHub\fn18\src\core\fn18-core\bin\Debug\netstandard2.0\fn18-core.deps.json
-C:\r\GitHub\fn18\src\core\fn18-core\bin\Debug\netstandard2.0\fn18-core.dll
-C:\r\GitHub\fn18\src\core\fn18-core\bin\Debug\netstandard2.0\fn18-core.pdb
-C:\r\GitHub\fn18\src\core\fn18-core\obj\Debug\netstandard2.0\fn18-core.csprojAssemblyReference.cache
-C:\r\GitHub\fn18\src\core\fn18-core\obj\Debug\netstandard2.0\fn18-core.csproj.CoreCompileInputs.cache
-C:\r\GitHub\fn18\src\core\fn18-core\obj\Debug\netstandard2.0\fn18-core.AssemblyInfoInputs.cache
-C:\r\GitHub\fn18\src\core\fn18-core\obj\Debug\netstandard2.0\fn18-core.AssemblyInfo.cs
-C:\r\GitHub\fn18\src\core\fn18-core\obj\Debug\netstandard2.0\fn18-core.dll
-C:\r\GitHub\fn18\src\core\fn18-core\obj\Debug\netstandard2.0\fn18-core.pdb
