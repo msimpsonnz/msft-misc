@@ -9,6 +9,14 @@
   <ItemGroup>
     <PackageReference Include="Bogus" Version="23.0.3" />
     <PackageReference Include="Dapper" Version="1.50.5" />
+    <PackageReference Include="Microsoft.Azure.DocumentDB.Core" Version="2.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="2.1.1" />
+  </ItemGroup>
+
+    <ItemGroup>
+    <None Update="appsettings.Development.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
 </Project>
