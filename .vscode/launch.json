@@ -5,13 +5,25 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": ".NET Core Launch (console)",
+            "name": "Data Gen",
             "type": "coreclr",
             "request": "launch",
-            "preLaunchTask": "build",
+            "preLaunchTask": "build datagen",
             "program": "${workspaceFolder}/src/backend/fn18-datagen/bin/Debug/netcoreapp2.1/fn18-datagen.dll",
             "args": [],
             "cwd": "${workspaceFolder}/src/backend/fn18-datagen",
+            "console": "internalConsole",
+            "stopAtEntry": false,
+            "internalConsoleOptions": "openOnSessionStart"
+        },
+        {
+            "name": "Data Load",
+            "type": "coreclr",
+            "request": "launch",
+            "preLaunchTask": "build dataload",
+            "program": "${workspaceFolder}/src/backend/fn18-dataload/bin/Debug/netcoreapp2.1/fn18-dataload.dll",
+            "args": [],
+            "cwd": "${workspaceFolder}/src/backend/fn18-dataload",
             "console": "internalConsole",
             "stopAtEntry": false,
             "internalConsoleOptions": "openOnSessionStart"

@@ -19,7 +19,7 @@
             "type": "Microsoft.Search/searchServices",
             "location": "[resourceGroup().location]",
             "sku": {
-              "name": "free"
+              "name": "basic"
             },
             "properties": {
               "replicaCount": 1,

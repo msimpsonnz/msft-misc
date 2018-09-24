@@ -4,8 +4,18 @@
     "version": "2.0.0",
     "tasks": [
         {
-            "label": "build",
+            "label": "build datagen",
             "command": "dotnet build ${workspaceFolder}/src/backend/fn18-datagen",
+            "type": "shell",
+            "group": "build",
+            "presentation": {
+                "reveal": "silent"
+            },
+            "problemMatcher": "$msCompile"
+        },
+        {
+            "label": "build dataload",
+            "command": "dotnet build ${workspaceFolder}/src/backend/fn18-dataload",
             "type": "shell",
             "group": "build",
             "presentation": {

@@ -12,3 +12,7 @@ az group deployment create -g FN18 --template-file azuredeploy.json \
 --parameters searchName=mjsfn18
 
 ```
+
+```
+SELECT * FROM c WHERE c.Type = "comment" and c._ts >= @HighWaterMark ORDER BY c._ts
+```
