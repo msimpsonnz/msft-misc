@@ -15,7 +15,8 @@ namespace fn18_dataload
     {
         public static IConfiguration config { get; set; }
         private DocumentClient client;
-        Dictionary<int, string> urls = new Dictionary<int, string>();
+        Dictionary<int, string> posUrls = new Dictionary<int, string>();
+        Dictionary<int, string> negUrls = new Dictionary<int, string>();
 
         static void Main(string[] args)
         {
@@ -36,7 +37,7 @@ namespace fn18_dataload
             var files = Directory.GetFiles(targetDirectory, "*.*", SearchOption.AllDirectories);
             foreach (var comment in files)
             {
-                comments.Add(await GetFile(comment));
+                comments.Add(GetFile(comment));
             }
 
             System.Console.WriteLine();
@@ -58,7 +59,7 @@ namespace fn18_dataload
             StreamReader file = new System.IO.StreamReader(@"C:\temp\urls\urls_pos.txt");
             while ((line = file.ReadLine()) != null)
             {
-                urls.Add(counter + 100000, line);
+                posUrls.Add(counter, line);
                 counter++;
             }
         }
@@ -70,38 +71,49 @@ namespace fn18_dataload
             StreamReader file = new System.IO.StreamReader(@"C:\temp\urls\urls_neg.txt");
             while ((line = file.ReadLine()) != null)
             {
-                urls.Add(counter + 200000, line);
+                negUrls.Add(counter, line);
                 counter++;
             }
         }
 
 
-        public async Task<Comment> GetFile(string file)
+        public Comment GetFile(string file)
         {
-            int multiplier;
             var dir = file.Split('\\');
             if (dir[2] == "pos")
             {
-                multiplier = 100000;
-            }
-            else
-            {
-                multiplier = 200000;
-            }
-
             string fileName = Path.GetFileNameWithoutExtension(file);
             var idText = fileName.Split('_');
             int id;
             int.TryParse(idText[0], out id);
-            string text = await File.ReadAllTextAsync(file);
+            string text = File.ReadAllText(file);
             Comment comment = new Comment
             {
                 Type = "comment",
-                CommentId = id + multiplier,
-                CommentUrl = urls[id + multiplier].Replace("/usercomments", ""),
+                Sentiment = "pos",
+                CommentId = id,
+                CommentUrl = posUrls[id].Replace("/usercomments", ""),
                 Text = text
             };
             return comment;
+            }
+            else
+            {
+            string fileName = Path.GetFileNameWithoutExtension(file);
+            var idText = fileName.Split('_');
+            int id;
+            int.TryParse(idText[0], out id);
+            string text = File.ReadAllText(file);
+            Comment comment = new Comment
+            {
+                Type = "comment",
+                Sentiment = "neg",
+                CommentId = id,
+                CommentUrl = negUrls[id].Replace("/usercomments", ""),
+                Text = text
+            };
+            return comment;
+            }
 
         }
 
@@ -117,6 +129,7 @@ namespace fn18_dataload
     public class Comment
     {
         public string Type { get; set; }
+        public string Sentiment { get; set; }
         public int CommentId { get; set; }
         public string CommentUrl { get; set; }
         public string Text { get; set; }
