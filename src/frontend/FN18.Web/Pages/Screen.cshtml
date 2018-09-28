@@ -1,0 +1,10 @@
+﻿@page
+@model FN18.Web.Pages.ScreenModel
+@{
+    ViewData["Title"] = "Screen";
+    Layout = "~/Pages/Shared/_Layout.cshtml";
+}
+
+<h2>Screen</h2>
+
+@Model.ScreenResult.PII.Email[0].Detected.ToString()
