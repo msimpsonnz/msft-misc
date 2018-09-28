@@ -28,22 +28,28 @@ namespace fn18_signalr
             int price;
             string queryPrice = req.Query["Price"];
             int.TryParse(queryPrice, out price);
+            string queryFrom = req.Query["From"];
+            dynamic flight = new ExpandoObject();
+            if (queryFrom == "SEA")
+            {
+            flight.id = "852b0995-e245-4b28-f4ea-5343b4eb9525";
+            flight.from = "SEA";
+            flight.to = "YVR";
+            flight.price = price;
+            }
+            else
+            {
+            flight.id = "386eae79-8cb7-1df3-87b4-4cba67ebfadb";
+            flight.from = "AKL";
+            flight.to = "CHC";
+            flight.price = price;
+            }
 
-
-            dynamic flight1 = new ExpandoObject();
-            flight1.from = "SEA";
-            flight1.to = "YVR";
-            flight1.price = price;
-
-            dynamic flight2 = new ExpandoObject();
-            flight2.from = "SEA";
-            flight2.to = "YVR";
-            flight2.price = price;
 
             await signalRMessages.AddAsync(new SignalRMessage
             {
                 Target = "flightUpdated",
-                Arguments = new[] { flight1 }
+                Arguments = new[] { flight }
             });
 
             return (ActionResult)new OkObjectResult($"Signal R");

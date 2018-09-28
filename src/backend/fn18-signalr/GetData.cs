@@ -18,7 +18,7 @@ namespace fn18_signalr
     {
         [FunctionName("GetData")]
         public static async Task<IActionResult> Run([HttpTrigger(AuthorizationLevel.Function, "get", "post", Route = null)] HttpRequest req,
-            [CosmosDB("db", "coll", ConnectionStringSetting = "AzureWebJobsCosmosDBConnectionString", SqlQuery = "SELECT top 2 * FROM c")] IEnumerable<object> docs,
+            [CosmosDB("db", "coll", ConnectionStringSetting = "AzureWebJobsCosmosDBConnectionString", SqlQuery = "SELECT * FROM c WHERE c.type = \"flights\"")] IEnumerable<object> docs,
             ILogger log)
         {
             log.LogInformation("C# HTTP trigger function processed a request.");
