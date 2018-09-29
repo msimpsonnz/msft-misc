@@ -1,0 +1,26 @@
+﻿@page
+@model IndexModel
+@{
+    ViewData["Title"] = "Contact";
+    Layout = "~/Pages/Shared/_Layout.cshtml";
+}
+<section class="esh-catalog-hero">
+    <div class="container">
+        <img class="esh-catalog-title" src="../images/main_banner_text.png" />
+    </div>
+</section>
+
+<section class="esh-catalog-filters">
+    <div class="container">
+        <div asp-validation-summary="All"></div>
+        <form method="POST">
+            <label class="esh-contact-label" data-title="Description">
+                Name: <input asp-for="@Model.Contact.Description" />
+            </label>
+            <input type="submit" />
+        </form>
+    </div>
+</section>
+
+<h2>Contact</h2>
+
