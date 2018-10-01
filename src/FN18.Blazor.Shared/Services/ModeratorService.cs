@@ -1,9 +1,8 @@
-﻿using Microsoft.Azure.CognitiveServices.ContentModerator;
+﻿using FN18.Blazor.Shared.Entities;
+using FN18.Blazor.Shared.Interfaces;
+using Microsoft.Azure.CognitiveServices.ContentModerator;
 using Microsoft.CognitiveServices.ContentModerator;
-using Microsoft.CognitiveServices.ContentModerator.Models;
-using FN18.Core.Interfaces;
 using Microsoft.Extensions.Configuration;
-using System;
 using System.IO;
 using System.Text;
 using System.Threading.Tasks;
@@ -17,10 +16,11 @@ namespace FN18.Infrastructure.Services
         public ModeratorService(IConfiguration configuration) => _configuration = configuration;
 
 
-        public async Task GetModeratorClient(string text)
+        public async Task<ModeratorResult> TextScreen(string text)
         {
             GetContentModeratorClient(_configuration);
-            var result = await TextScreen(text);
+            var result = await GetModeratorResult(text);
+            return result;
         }
 
         public ContentModeratorClient GetContentModeratorClient(IConfiguration _configuration)
@@ -30,14 +30,14 @@ namespace FN18.Infrastructure.Services
             return contentModeratorClient;
         }
 
-        public async Task<Screen> TextScreen(string text)
+        public async Task<ModeratorResult> GetModeratorResult(string text)
         {
             try
             {
                 byte[] byteArray = Encoding.UTF8.GetBytes(text);
                 MemoryStream stream = new MemoryStream(byteArray);
                 var screenResult = await contentModeratorClient.TextModeration.ScreenTextAsync("text/plain", stream, "eng", true, true, null, true);
-                return screenResult;
+                return (ModeratorResult)screenResult;
             }
             catch (System.Exception ex)
             {

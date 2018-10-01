@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Blazor.Builder;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace FN18.Web
+namespace FN18.Blazor.Client
 {
     public class Startup
     {
