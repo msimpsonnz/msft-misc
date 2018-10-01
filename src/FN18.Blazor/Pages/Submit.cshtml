@@ -1,0 +1,40 @@
+﻿@*@page "/submit"
+@using FN18.Blazor.Entities
+@inject HttpClient Http
+@inject Microsoft.AspNetCore.Blazor.Services.IUriHelper UriHelper
+
+<h1>Customer List</h1>
+
+<p>This component demonstrates fetching data from the server.</p>
+
+<button onclick=@Navigate>Click me to navigate to another page</button>
+
+<div class="row">
+    <div class="col-md-4">
+        <form>
+            <div class="form-group">
+                <label for="Description" class="control-label">Description</label>
+                <input type="text" class="form-control" bind="@ci.Description" />
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+@functions
+{
+    private ContactItem ci = new ContactItem();
+
+    protected override Task OnPost()
+    {
+        var request = await Http.SendJsonAsync<ModeratorResult>(HttpMethod.Post, "http://localhost:7071/api/Moderator", ci);
+        Navigate();
+    }
+
+    private void Navigate()
+    {
+        UriHelper.NavigateTo("/");
+    }
+}*@

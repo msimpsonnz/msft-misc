@@ -1,4 +1,4 @@
-﻿namespace FN18.Blazor.Shared.Entities
+﻿namespace FN18.Blazor.Entities
 {
     public class ContactItem
     {
