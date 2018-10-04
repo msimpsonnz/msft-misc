@@ -1,13 +1,12 @@
 using Microsoft.AspNetCore.Blazor.Builder;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace FN18.Blazor
+namespace FN18.Blazor.Client
 {
     public class Startup
     {
         public void ConfigureServices(IServiceCollection services)
         {
-
         }
 
         public void Configure(IBlazorApplicationBuilder app)
