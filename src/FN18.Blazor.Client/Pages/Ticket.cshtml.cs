@@ -22,6 +22,8 @@ namespace FN18.Blazor.Client.Pages
         [Parameter]
         protected string action { get; set; }
 
+        public bool Error { get; set; }
+
         protected List<TicketEntity> ticketList = new List<TicketEntity>();
         protected TicketEntity ticket = new TicketEntity();
         protected string title { get; set; }
@@ -69,20 +71,24 @@ namespace FN18.Blazor.Client.Pages
             //{
             //    await Http.SendJsonAsync(HttpMethod.Post, "/api/ticket", ticket);
             //}
-            await Http.SendJsonAsync(HttpMethod.Post, "/api/ticket", ticket);
-            UriHelper.NavigateTo("/ticket/fetch");
+            var result = await Http.SendJsonAsync<TicketEntity>(HttpMethod.Post, "api/ticket", ticket);
+            if (result.Id != null)
+            {
+                Error = true;
+            }
+            StateHasChanged();
         }
 
         protected async Task DeleteTicket()
         {
             await Http.DeleteAsync("api/ticket" + Convert.ToInt32(paramTicketId));
-            UriHelper.NavigateTo("/ticket/fetch");
+            UriHelper.NavigateTo("ticket/fetch");
         }
 
         protected void Cancel()
         {
             title = "Ticket Data";
-            UriHelper.NavigateTo("/ticket/fetch");
+            UriHelper.NavigateTo("ticket/fetch");
         }
     }
 }

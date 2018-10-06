@@ -3,13 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.28010.2016
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FN18.Functions", "src\FN18.Functions\FN18.Functions.csproj", "{F57F8080-258F-4FC9-86C1-3389FD7C8F5C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FN18.Blazor.Server", "src\FN18.Blazor.Server\FN18.Blazor.Server.csproj", "{A51B845C-5554-4FEC-A3E6-235509AE1774}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FN18.Blazor.Server", "src\FN18.Blazor.Server\FN18.Blazor.Server.csproj", "{A51B845C-5554-4FEC-A3E6-235509AE1774}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FN18.Blazor.Client", "src\FN18.Blazor.Client\FN18.Blazor.Client.csproj", "{71BCFE81-6EE4-4F66-9E63-CE6D282CB692}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FN18.Blazor.Client", "src\FN18.Blazor.Client\FN18.Blazor.Client.csproj", "{71BCFE81-6EE4-4F66-9E63-CE6D282CB692}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FN18.Blazor.Shared", "src\FN18.Blazor.Shared\FN18.Blazor.Shared.csproj", "{FA559267-077B-4B21-94BA-54A6CADD6FC9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FN18.Blazor.Shared", "src\FN18.Blazor.Shared\FN18.Blazor.Shared.csproj", "{FA559267-077B-4B21-94BA-54A6CADD6FC9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -17,10 +15,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{F57F8080-258F-4FC9-86C1-3389FD7C8F5C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{F57F8080-258F-4FC9-86C1-3389FD7C8F5C}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{F57F8080-258F-4FC9-86C1-3389FD7C8F5C}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{F57F8080-258F-4FC9-86C1-3389FD7C8F5C}.Release|Any CPU.Build.0 = Release|Any CPU
 		{A51B845C-5554-4FEC-A3E6-235509AE1774}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{A51B845C-5554-4FEC-A3E6-235509AE1774}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A51B845C-5554-4FEC-A3E6-235509AE1774}.Release|Any CPU.ActiveCfg = Release|Any CPU
