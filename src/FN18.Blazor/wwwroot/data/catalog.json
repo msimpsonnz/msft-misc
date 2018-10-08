@@ -1,0 +1,29 @@
+[
+  {
+    "Id": "1",
+    "CatalogBrandId": "2",
+    "CatalogTypeId": "2",
+    "Description": ".NET Bot Black Sweatshirt",
+    "Name": ".NET Bot Black Sweatshirt",
+    "PictureUri": "/images/products/1.png",
+    "Price": "19.50"
+  },
+  {
+    "Id": "2",
+    "CatalogBrandId": "2",
+    "CatalogTypeId": "1",
+    "Description": ".NET Black & White Mug",
+    "Name": ".NET Black & White Mug",
+    "PictureUri": "/images/products/2.png",
+    "Price": "8.50"
+  },
+  {
+    "Id": "3",
+    "CatalogBrandId": "5",
+    "CatalogTypeId": "2",
+    "Description": "Prism White T-Shirt",
+    "Name": "Prism White T-Shirt",
+    "PictureUri": "/images/products/3.png",
+    "Price": "12.00"
+  }
+]
