@@ -12,14 +12,19 @@
 
         @foreach (var item in catalogItems)
         {
-            <img class="esh-catalog-thumbnail" src="@item.PictureUri" />
-            <input class="esh-catalog-button" type="submit" value="[ ADD TO BASKET ]" />
+            <div class="esh-catalog-item col-md-4">
+                <form>
+                    <img class="esh-catalog-thumbnail" src="@item.PictureUri" />
+                    <input class="esh-catalog-button" type="submit" value="[ ADD TO BASKET ]" />
 
-            <div class="esh-catalog-name">
-                <span>@item.Name</span>
-            </div>
-            <div class="esh-catalog-price">
-                <span>@item.Price.ToString()</span>
+                    <div class="esh-catalog-name">
+                        <span>@item.Name</span>
+                    </div>
+                    <div class="esh-catalog-price">
+                        <span>@item.Price.ToString()</span>
+                    </div>
+                    <a class="esh-catalog-name" href="/ticket">Write Review</a>
+                </form>
             </div>
         }
     </div>
