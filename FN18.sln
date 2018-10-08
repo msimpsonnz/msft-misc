@@ -3,11 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.28010.2016
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FN18.Functions", "src\FN18.Functions\FN18.Functions.csproj", "{91FC6B74-000F-4CEF-BFDB-60559B890B5B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FN18.Functions", "src\FN18.Functions\FN18.Functions.csproj", "{91FC6B74-000F-4CEF-BFDB-60559B890B5B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FN18.Core", "src\FN18.Core\FN18.Core.csproj", "{59628B39-9AC3-4D20-9663-FC01648570D9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FN18.Core", "src\FN18.Core\FN18.Core.csproj", "{59628B39-9AC3-4D20-9663-FC01648570D9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FN18.Blazor", "FN18.Blazor\FN18.Blazor.csproj", "{0CF4A40C-F16B-4BA2-A8DB-014A1DC711E0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FN18.Blazor", "src\FN18.Blazor\FN18.Blazor.csproj", "{494B2F66-02D5-476A-990F-5C2705742795}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -23,10 +23,10 @@ Global
 		{59628B39-9AC3-4D20-9663-FC01648570D9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{59628B39-9AC3-4D20-9663-FC01648570D9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{59628B39-9AC3-4D20-9663-FC01648570D9}.Release|Any CPU.Build.0 = Release|Any CPU
-		{0CF4A40C-F16B-4BA2-A8DB-014A1DC711E0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{0CF4A40C-F16B-4BA2-A8DB-014A1DC711E0}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{0CF4A40C-F16B-4BA2-A8DB-014A1DC711E0}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{0CF4A40C-F16B-4BA2-A8DB-014A1DC711E0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{494B2F66-02D5-476A-990F-5C2705742795}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{494B2F66-02D5-476A-990F-5C2705742795}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{494B2F66-02D5-476A-990F-5C2705742795}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{494B2F66-02D5-476A-990F-5C2705742795}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

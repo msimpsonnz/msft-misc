@@ -4,7 +4,7 @@ namespace FN18.Core
 { 
     public interface IModeratorService
     {
-        Task<ModeratorResult> GetModeratorClient(string text);
+        Task<ModeratorResult> ScoreText(string text);
 
     }
 }

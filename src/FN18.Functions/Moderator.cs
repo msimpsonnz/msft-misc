@@ -22,8 +22,10 @@ namespace FN18.Functions
         {
             log.LogInformation("C# HTTP trigger function processed a request.");
 
-            //req.Body
-            var result = await _moderatorService.GetModeratorClient(req.Body);
+            string json = await new StreamReader(req.Body).ReadToEndAsync();
+            dynamic content = JsonConvert.DeserializeObject<dynamic>(json);
+
+            var result = await _moderatorService.ScoreText(content["Description"].ToString());
 
             return (ActionResult)new OkObjectResult(result);
         }

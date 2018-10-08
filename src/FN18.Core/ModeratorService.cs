@@ -1,7 +1,6 @@
 ﻿using Microsoft.Azure.CognitiveServices.ContentModerator;
 using Microsoft.CognitiveServices.ContentModerator;
 using Microsoft.CognitiveServices.ContentModerator.Models;
-using Microsoft.Extensions.Configuration;
 using System;
 using System.IO;
 using System.Text;
@@ -11,15 +10,12 @@ namespace FN18.Core
 {
     public class ModeratorService : IModeratorService
     {
-        public IConfiguration _configuration { get; set; }
         public static ContentModeratorClient client;
-        //public ModeratorService(IConfiguration configuration) => _configuration = configuration;
-
-
-        public async Task<ModeratorResult> GetModeratorClient(string text)
+        
+        public async Task<ModeratorResult> ScoreText(string text)
         {
-            GetContentModeratorClient(_configuration);
-            MemoryStream stream = CreateStream(text);
+            GetContentModeratorClient();
+            var stream = CreateStream(text);
             var screen = await TextScreen(stream);
 
             var result = new ModeratorResult()
@@ -48,41 +44,11 @@ namespace FN18.Core
             return result;
         }
 
-        public async Task<ModeratorResult> GetModeratorClient(Stream stream)
-        {
-            //GetContentModeratorClient(_configuration);
-            //MemoryStream stream = CreateStream(text);
-            //var screen = await TextScreen(stream);
-            var result = new ModeratorResult()
-            {
-                //Id = screen.TrackingId,
-                //OriginalText = screen.OriginalText,
-                ////Email = rawResult.PII.Email[0].ToString() ?? null,
-                //Email = string.Empty,
-                //Term = screen.Terms[0].Term ?? null
-                Id = Guid.NewGuid().ToString(),
-                OriginalText = "Original Text",
-                EmailDetected = "some email",
-                EmailText = "some email",
-                Term = "some term",
-                Flagged = true
-
-            };
-            return result;
-        }
-
         private static MemoryStream CreateStream(string text)
         {
             byte[] byteArray = Encoding.UTF8.GetBytes(text);
             MemoryStream stream = new MemoryStream(byteArray);
             return stream;
-        }
-
-        public ContentModeratorClient GetContentModeratorClient(IConfiguration _configuration)
-        {
-            client = new ContentModeratorClient(new ApiKeyServiceClientCredentials(_configuration["ContentModeratorKey"]));
-            client.Endpoint = _configuration["ContentModeratorEndpoint"];
-            return client;
         }
 
         public ContentModeratorClient GetContentModeratorClient()
