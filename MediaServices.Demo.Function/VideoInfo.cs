@@ -1,12 +1,9 @@
 ﻿using Microsoft.Azure.WebJobs.Host;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Text;
-using System.Threading;
 using System.Threading.Tasks;
 
 namespace MediaServices.Demo.Function
@@ -14,7 +11,7 @@ namespace MediaServices.Demo.Function
     public class VideoInfo
     {
 
-        public static async Task<Dictionary<string, string>> BlobVideoInfo(string blobUri, TraceWriter log)
+        public static async Task<Dictionary<string, string>> BlobVideoInfo(string blobUri, ILogger log)
         {
             Dictionary<string, string> blobVideoInfo = new Dictionary<string, string>();
 
@@ -37,7 +34,7 @@ namespace MediaServices.Demo.Function
             return blobVideoInfo;
         }
 
-        public static async Task<MetaData> GetBlob(string blobUri, TraceWriter log)
+        public static async Task<MetaData> GetBlob(string blobUri, ILogger log)
         {
 
             try
@@ -58,7 +55,7 @@ namespace MediaServices.Demo.Function
 
                 process.WaitForExit();
 
-                log.Info(output);
+                log.LogInformation(output);
 
                 MetaData result = JsonConvert.DeserializeObject<MetaData>(output);
 
@@ -67,7 +64,7 @@ namespace MediaServices.Demo.Function
 
             catch (Exception ex)
             {
-                log.Error($"Error extracting metadata from Video for {blobUri}, Exception: {ex.Message}");
+                log.LogError($"Error extracting metadata from Video for {blobUri}, Exception: {ex.Message}");
                 throw;
             }
         }

@@ -12,6 +12,7 @@ using Microsoft.Azure.Services.AppAuthentication;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.EventGrid;
 using Microsoft.Azure.WebJobs.Host;
+using Microsoft.Extensions.Logging;
 using Microsoft.Rest;
 using Newtonsoft.Json.Linq;
 using System;
@@ -31,9 +32,9 @@ namespace MediaServices.Demo.Function
         private static readonly string testBlob = Environment.GetEnvironmentVariable("testBlob");
 
         [FunctionName("EventGridBlobEncode")]
-        public static async Task Run([EventGridTrigger]EventGridEvent eventGridEvent, TraceWriter log)
+        public static async Task Run([EventGridTrigger]EventGridEvent eventGridEvent, ILogger log)
         {
-            log.Info(eventGridEvent.Data.ToString());
+            log.LogInformation(eventGridEvent.Data.ToString());
             //Build variables to ensure AMS Assests and Jobs are unique
             string uniqueness = Guid.NewGuid().ToString("N");
             string inputAssetName = $"input-{uniqueness}";
@@ -70,13 +71,13 @@ namespace MediaServices.Demo.Function
             }
             catch (Exception ex)
             {
-                log.Error($"Error with Function init: {ex.Message}");
+                log.LogError($"Error with Function init: {ex.Message}");
                 throw;
             }
 
         }
 
-        private static async Task<Job> SubmitJobAsync(string inputBlobName, string outputAssetName, IAzureMediaServicesClient client, string jobName, TraceWriter log, Dictionary<string, string> meta)
+        private static async Task<Job> SubmitJobAsync(string inputBlobName, string outputAssetName, IAzureMediaServicesClient client, string jobName, ILogger log, Dictionary<string, string> meta)
         {
 
             try
@@ -106,7 +107,7 @@ namespace MediaServices.Demo.Function
             }
             catch (Exception ex)
             {
-                log.Error($"Error with creating Job: {ex.Message}");
+                log.LogError($"Error with creating Job: {ex.Message}");
                 throw;
             }
 
@@ -141,22 +142,15 @@ namespace MediaServices.Demo.Function
             if (transform == null)
             {
                 // You need to specify what you want it to produce as an output
-                TransformOutput[] output = new TransformOutput[]
+                TransformOutput[] outputs = new TransformOutput[]
                 {
-                    new TransformOutput
-                    {
-                        // The preset for the Transform is set to one of Media Services built-in sample presets.
-                        // You can  customize the encoding settings by changing this to use "StandardEncoderPreset" class.
-                        Preset = new BuiltInStandardEncoderPreset()
-                        {
-                            // This sample uses the built-in encoding preset for Adaptive Bitrate Streaming.
-                            PresetName = EncoderNamedPreset.AdaptiveStreaming
-                        }
-                    }
+                    new TransformOutput(new BuiltInStandardEncoderPreset(EncoderNamedPreset.AdaptiveStreaming)),
+                    new TransformOutput(new VideoAnalyzerPreset())
                 };
 
+
                 // Create the Transform with the output defined above
-                transform = await client.Transforms.CreateOrUpdateAsync(ResourceGroup, AccountName, transformName, output);
+                transform = await client.Transforms.CreateOrUpdateAsync(ResourceGroup, AccountName, transformName, outputs);
             }
 
             return transform;
