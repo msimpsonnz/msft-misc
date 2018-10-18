@@ -1,77 +1,7 @@
-﻿using Microsoft.Azure.WebJobs.Host;
-using Microsoft.Extensions.Logging;
-using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Threading.Tasks;
+﻿using System;
 
-namespace MediaServices.Demo.Function
+namespace MediaServices.Demo.Function.Models
 {
-    public class VideoInfo
-    {
-
-        public static async Task<Dictionary<string, string>> BlobVideoInfo(string blobUri, ILogger log)
-        {
-            Dictionary<string, string> blobVideoInfo = new Dictionary<string, string>();
-
-            MetaData meta = await GetBlob(blobUri, log);
-
-            //frame_rate = video.Framerate,
-            //audio_bitrate_in_kbps = (int)audio.Bitrate, //TODO: unsafe
-            //audio_codec = audio.Codec,
-            // audio_sample_rate = (int)audio.SamplingRate, //TODO: unsafe
-            //channels = (int)audio.Channels, //TODO: unsafe
-            // duration_in_ms = ConvertDurationToMs(asset.Duration)
-
-            blobVideoInfo.Add("frame_rate", meta.streams[1].avg_frame_rate);
-            blobVideoInfo.Add("audio_bitrate_in_kbps", meta.streams[0].bit_rate);
-            blobVideoInfo.Add("audio_codec ", meta.streams[0].codec_name);
-            blobVideoInfo.Add("audio_sample_rate", meta.streams[0].sample_rate);
-            blobVideoInfo.Add("channels", meta.streams[0].channels.ToString());
-            blobVideoInfo.Add("duration_in_ms", meta.streams[0].duration);
-
-            return blobVideoInfo;
-        }
-
-        public static async Task<MetaData> GetBlob(string blobUri, ILogger log)
-        {
-
-            try
-            {
-                Process process = new Process();
-                process.StartInfo.FileName = @".\util\ffprobe.exe";
-                process.StartInfo.Arguments = $"-v quiet -show_streams -print_format json \"{blobUri}\"";
-                process.StartInfo.UseShellExecute = false;
-                process.StartInfo.RedirectStandardOutput = true;
-                process.StartInfo.RedirectStandardError = true;
-
-                process.Start();
-
-                string output = process.StandardOutput.ReadToEnd();
-                string err = process.StandardError.ReadToEnd();
-
-
-
-                process.WaitForExit();
-
-                log.LogInformation(output);
-
-                MetaData result = JsonConvert.DeserializeObject<MetaData>(output);
-
-                return result;
-            }
-
-            catch (Exception ex)
-            {
-                log.LogError($"Error extracting metadata from Video for {blobUri}, Exception: {ex.Message}");
-                throw;
-            }
-        }
-    }
-
-
-
     public class MetaData
     {
         public Stream[] streams { get; set; }
@@ -142,7 +72,4 @@ namespace MediaServices.Demo.Function
         public string language { get; set; }
         public string handler_name { get; set; }
     }
-
-
 }
-

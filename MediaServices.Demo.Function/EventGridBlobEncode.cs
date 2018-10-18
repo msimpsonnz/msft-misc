@@ -14,6 +14,7 @@ using Microsoft.Azure.WebJobs.Extensions.EventGrid;
 using Microsoft.Azure.WebJobs.Host;
 using Microsoft.Extensions.Logging;
 using Microsoft.Rest;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
@@ -62,7 +63,7 @@ namespace MediaServices.Demo.Function
                 var inputBlobName = $"{eventData["url"].ToString()}?{inputBlobSAS}";
 
                 //Get Source File
-                var meta = await VideoInfo.BlobVideoInfo(inputBlobName, log);
+                var meta = VideoInfo.BlobVideoInfo(inputBlobName, inputBlobSAS, log);
 
 
                 //Submit AMS Job
@@ -77,7 +78,7 @@ namespace MediaServices.Demo.Function
 
         }
 
-        private static async Task<Job> SubmitJobAsync(string inputBlobName, string outputAssetName, IAzureMediaServicesClient client, string jobName, ILogger log, Dictionary<string, string> meta)
+        private static async Task<Job> SubmitJobAsync(string inputBlobName, string outputAssetName, IAzureMediaServicesClient client, string jobName, ILogger log, Dictionary<string, string> metadata)
         {
 
             try
@@ -85,7 +86,9 @@ namespace MediaServices.Demo.Function
                 JobInputHttp jobInput = new JobInputHttp(files: new[] { inputBlobName });
                 JobOutput[] jobOutputs = { new JobOutputAsset(outputAssetName) };
 
-
+                var metaString = JsonConvert.SerializeObject(metadata);
+                Dictionary<string, string> metaDic = new Dictionary<string, string>();
+                metaDic.Add("metaString", metaString);
                 // In this example, we are assuming that the job name is unique.
                 //
                 // If you already have a job with the desired name, use the Jobs.Get method
@@ -98,7 +101,7 @@ namespace MediaServices.Demo.Function
                     jobName,
                     new Job
                     {   
-                        CorrelationData = meta,
+                        CorrelationData = metaDic,
                         Input = jobInput,
                         Outputs = jobOutputs,
                     });

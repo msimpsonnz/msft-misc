@@ -7,7 +7,7 @@ namespace MediaServices.Demo.Function
     public class FFProcess
     {
         private static readonly string ffmpegLocation = Environment.GetEnvironmentVariable("ffmpegLocation");
-        public static string CreateSprite(string workingDir, string blobPath, string outputName, string correlationId, ILogger log)
+        public static string CreateSummary(string workingDir, string blobPath, string outputName, string correlationId, ILogger log)
         {
             try
             {
