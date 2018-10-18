@@ -10,10 +10,12 @@ namespace MediaServices.Demo.Function
 {
     public class VideoInfo
     {
+        private static readonly string ffprobeLocation = Environment.GetEnvironmentVariable("ffprobeLocation");
+        private static readonly string DirectoryPath = Environment.GetEnvironmentVariable("WorkingDir");
 
-        public static Dictionary<string, string> BlobVideoInfo(string blobUri, ILogger log)
+        public static Dictionary<string, string> BlobVideoInfo(string blobUri, string correlationId, ILogger log)
         {
-            MetaData meta = GetBlob(blobUri, log);
+            MetaData meta = GetBlob(blobUri, correlationId, log);
             return MapMetaData(blobUri, meta, log);
         }
         public static Dictionary<string, string> MapMetaData(string blobUri, MetaData rawMetaData, ILogger log)
@@ -50,32 +52,17 @@ namespace MediaServices.Demo.Function
             return blobVideoInfo;
         }
 
-        public static MetaData GetBlob(string blobUri, ILogger log)
+        public static MetaData GetBlob(string blobUri, string correlationId, ILogger log)
         {
-
             try
             {
-                Process process = new Process();
-                process.StartInfo.FileName = @".\util\ffprobe.exe";
-                process.StartInfo.Arguments = $"-v quiet -show_streams -print_format json \"{blobUri}\"";
-                process.StartInfo.UseShellExecute = false;
-                process.StartInfo.RedirectStandardOutput = true;
-                process.StartInfo.RedirectStandardError = true;
-
-                process.Start();
-
-                string output = process.StandardOutput.ReadToEnd();
-                string err = process.StandardError.ReadToEnd();
-
-
-
-                process.WaitForExit();
-
-                log.LogInformation(output);
+                string probeArgs = $"-v quiet -show_streams -print_format json \"{blobUri}\"";
+                var output = FFMpeg.RunFFMpeg(DirectoryPath, ffprobeLocation, probeArgs, correlationId, log);
 
                 MetaData result = JsonConvert.DeserializeObject<MetaData>(output);
 
                 return result;
+
             }
 
             catch (Exception ex)

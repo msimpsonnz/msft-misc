@@ -8,7 +8,7 @@ namespace MediaServices.Demo.Tests
         public static IConfigurationRoot GetIConfigurationRoot()
         {
             return new ConfigurationBuilder()
-                .AddJsonFile("appsettings.json")
+                .AddJsonFile("appsettings.Test.json")
                 .AddEnvironmentVariables()
                 .Build();
         }

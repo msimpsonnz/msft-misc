@@ -24,18 +24,10 @@ namespace MediaServices.Demo.Function.Helpers
         public static async Task UploadSummary(string summaryLocation, string summaryId, ILogger log)
         {
             log.LogInformation("Uploading summary");
-            CloudBlockBlob cloudBlockBlob = storageContainer.GetBlockBlobReference(summaryId);
-            await cloudBlockBlob.UploadFromFileAsync(Path.Combine(summaryLocation, summaryId));
-
-        }
-
-        public static async Task UploadBlob(string location, string summaryId, ILogger log)
-        {
-            log.LogInformation("Uploading summary");
             try
             {
                 CloudBlockBlob cloudBlockBlob = storageContainer.GetBlockBlobReference(summaryId);
-                await cloudBlockBlob.UploadFromFileAsync(location);
+                await cloudBlockBlob.UploadFromFileAsync(summaryLocation);
             }
             catch (Exception ex)
             {
@@ -44,7 +36,6 @@ namespace MediaServices.Demo.Function.Helpers
             }
 
         }
-
 
         public static async Task<List<string>> DownloadBlobs(BlobResultSegment thumbList, string workingDir, ILogger log)
         {
@@ -73,6 +64,20 @@ namespace MediaServices.Demo.Function.Helpers
                 blobContinuationToken = blobResult.ContinuationToken;
             } while (blobContinuationToken != null);
             return blobResult;
+        }
+
+        public static async Task DeleteBlobs(BlobResultSegment blobList, ILogger log)
+        {
+            //if (blobList.Results.Count() > 1)
+            //{
+                log.LogInformation("Getting list of blobs in container");
+                foreach (var blobItem in blobList.Results)
+                {
+                    CloudBlockBlob blockBlob = storageContainer.GetBlockBlobReference(((CloudBlockBlob)blobItem).Name);
+                    await blockBlob.DeleteAsync();
+                    log.LogInformation($"Deleted blob {((CloudBlockBlob)blobItem).Name}");
+                }
+            //}
         }
     }
 }

@@ -32,14 +32,21 @@ namespace MediaServices.Demo.Function
         private static readonly string testBlob = Environment.GetEnvironmentVariable("testBlob");
 
         [FunctionName("EventGridBlobEncode")]
-        public static async Task Run([EventGridTrigger]EventGridEvent eventGridEvent, ILogger log)
+        public static async Task Run([EventGridTrigger]JObject eventGridEvent, ILogger log)
         {
-            log.LogInformation(eventGridEvent.Data.ToString());
+            log.LogInformation($"EventGrid: {eventGridEvent}");
+            string correlationId = eventGridEvent["id"].ToString();
+
+            //Parse blob Uri
+            string blobUri = eventGridEvent["data"]["url"].ToString();
+            //Get the full blob name
+            var fileFull = blobUri.Substring(blobUri.LastIndexOf('/') + 1);
+            //Get the blob name without the extension
+            var fileId = fileFull.Substring(0, fileFull.LastIndexOf('.'));
+
             //Build variables to ensure AMS Assests and Jobs are unique
-            string uniqueness = Guid.NewGuid().ToString("N");
-            string inputAssetName = $"input-{uniqueness}";
-            string jobName = $"job-{uniqueness}";
-            string outputAssetName = $"output-{uniqueness}";
+            string jobName = $"job-{fileId}";
+            string outputAssetName = $"output-{fileId}";
 
             try
             {
@@ -58,11 +65,10 @@ namespace MediaServices.Demo.Function
                 Asset outputAsset = await CreateOutputAssetAsync(client, outputAssetName);
 
                 //Parse Blob URI from Event data to pass to AMS Job
-                var eventData = JToken.Parse(eventGridEvent.Data.ToString());
-                var inputBlobName = $"{eventData["url"].ToString()}?{inputBlobSAS}";
+                var inputBlobName = $"{eventGridEvent["data"]["url"].ToString()}?{inputBlobSAS}";
 
                 //Get Source File
-                var meta = VideoInfo.BlobVideoInfo(inputBlobName, log);
+                var meta = VideoInfo.BlobVideoInfo(inputBlobName, correlationId, log);
 
 
                 //Submit AMS Job

@@ -12,6 +12,7 @@ namespace MediaServices.Demo.Function
     {
         private static readonly string AMSStorageConnectionString = Environment.GetEnvironmentVariable("AMSStorageConnectionString");
         private static readonly string DirectoryPath = Environment.GetEnvironmentVariable("WorkingDir");
+        private static readonly string ffmpegLocation = Environment.GetEnvironmentVariable("ffmpegLocation");
 
         [FunctionName("VideoSummary_Runner")]
         public static async Task Run([ActivityTrigger] DurableActivityContext inputs, ILogger log)
@@ -38,8 +39,9 @@ namespace MediaServices.Demo.Function
                 //Get list of thumnails
                 localBlobs = await GetThumbnails(workingDir, log);
                 var trimBlobId = TrimBlobId(localBlobs[0]);
-                var summaryId = FFProcess.CreateSummary(workingDir, trimBlobId, outputName, eventData.correlationId, log);
-                await BlobHelper.UploadSummary(workingDir, outputName, log);
+                string summaryArgs = $"-v quiet -r 1/5 -i {trimBlobId}%06d.png -c:v libx264 -vf fps=25 -pix_fmt yuv420p {outputName}";
+                var summaryId = FFMpeg.RunFFMpeg(workingDir, ffmpegLocation, summaryArgs, eventData.correlationId, log);
+                await BlobHelper.UploadSummary(Path.Combine(workingDir, outputName), outputName, log);
 
 
             }

@@ -24,7 +24,7 @@ namespace MediaServices.Demo.Tests
             string videoFile = config.GetValue<string>("videoFile");
             string correlationId = Guid.NewGuid().ToString();
             //act
-            var testResult = VideoInfo.GetBlob(videoFile, log); 
+            var testResult = VideoInfo.GetBlob(videoFile, correlationId, log); 
             // assert
             Assert.AreEqual(rawMetaData.streams[0].avg_frame_rate, testResult.streams[0].avg_frame_rate);
             Assert.AreEqual(rawMetaData.streams[0].codec_name, testResult.streams[0].codec_name);
