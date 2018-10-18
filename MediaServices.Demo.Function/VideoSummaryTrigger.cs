@@ -1,9 +1,9 @@
-using Microsoft.Azure.EventGrid.Models;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.EventGrid;
 using Microsoft.Extensions.Logging;
 using System.Threading.Tasks;
 using MediaServices.Demo.Function.Models;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
 namespace MediaServices.Demo.Function
@@ -12,13 +12,15 @@ namespace MediaServices.Demo.Function
     {
         [FunctionName("VideoSummaryTrigger")]
         public static async Task RunOrchestrator(
-            [OrchestrationTrigger] DurableOrchestrationContext context)
+            [OrchestrationTrigger] DurableOrchestrationContext context, ILogger log)
         {
             dynamic entity = context.GetInput<object>();
             string correlationId = entity["id"];
-            string assetId = entity["id"];
+            dynamic correlationData = JsonConvert.DeserializeObject<dynamic>(entity["data"]["correlationData"]["metaString"].ToString());
+            string assetId = correlationData.outputAssetId; //["outputAssetId"];
+            log.LogInformation($"Creating Activity: CorrelationId: {correlationId}, Container: {assetId}");
             await context.CallActivityAsync("VideoSummary_Runner", (correlationId, assetId));
-
+            
         }
 
 
@@ -40,6 +42,7 @@ namespace MediaServices.Demo.Function
                 string instanceId = await starter.StartNewAsync("VideoSummaryTrigger", eventGridEvent);
 
                 log.LogInformation($"Started orchestration with ID = '{instanceId}'.");
+                log.LogInformation(eventGridEvent.ToString());
 
                 //return starter.CreateCheckStatusResponse(req, instanceId);
             }

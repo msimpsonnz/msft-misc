@@ -23,12 +23,14 @@ namespace MediaServices.Demo.Function
             string jobId = eventData.correlationId;
             //Create a Unique working directory
             string workingDir = Directory.CreateDirectory(DirectoryPath + jobId).FullName.ToString();
+            log.LogInformation($"Created directory {workingDir}");
             //Create collection for list of png files
             List<string> localBlobs = new List<string>();
             //Create a unique output name for video summary file
             string outputName = $"summary-{jobId}.mp4";
             //Create a blob client to the AMS account and asset container created by the encoding Job
-            BlobHelper.CreateStorageConnection(AMSStorageConnectionString, eventData.assetId);
+            BlobHelper.CreateStorageConnection(AMSStorageConnectionString, $"asset-{eventData.assetId}");
+            log.LogInformation($"Created Storage Connection");
             try
             {
                 //MSI could be used in future when blob AAD access is out of preview
@@ -64,6 +66,7 @@ namespace MediaServices.Demo.Function
 
         private static async Task<List<string>> GetThumbnails(string workingDir, ILogger log)
         {
+            log.LogInformation($"GetThumbnails");
             var blobList = await BlobHelper.GetBlobList(log);
             return await BlobHelper.DownloadBlobs(blobList, workingDir, log);
 

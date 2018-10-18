@@ -5,7 +5,6 @@
 //https://github.com/Azure-Samples/media-services-v3-dotnet-tutorials/blob/master/AMSV3Tutorials/UploadEncodeAndStreamFiles/Program.cs
 // Credit to @Juliako, @johndeu and @mconverti
 
-using Microsoft.Azure.EventGrid.Models;
 using Microsoft.Azure.Management.Media;
 using Microsoft.Azure.Management.Media.Models;
 using Microsoft.Azure.Services.AppAuthentication;
@@ -27,7 +26,7 @@ namespace MediaServices.Demo.Function
         private static readonly string SubscriptionId = Environment.GetEnvironmentVariable("SubscriptionId");
         private static readonly string ResourceGroup = Environment.GetEnvironmentVariable("resourceGroup");
         private static readonly string AccountName = Environment.GetEnvironmentVariable("accountName");
-        private const string TransformName = "TransformAdaptiveStreaming";
+        private static readonly string TransformName = Environment.GetEnvironmentVariable("TransformName");
         private static readonly string inputBlobSAS = Environment.GetEnvironmentVariable("inputBlobSAS");
         private static readonly string testBlob = Environment.GetEnvironmentVariable("testBlob");
 
@@ -70,6 +69,8 @@ namespace MediaServices.Demo.Function
                 //Get Source File
                 var meta = VideoInfo.BlobVideoInfo(inputBlobName, correlationId, log);
 
+                //Add outputAsset to metadata
+                meta.Add("outputAssetId", outputAsset.AssetId.ToString());
 
                 //Submit AMS Job
                 await SubmitJobAsync(inputBlobName, outputAssetName, client, jobName, log, meta);
@@ -128,16 +129,6 @@ namespace MediaServices.Demo.Function
             Asset outputAsset = await client.Assets.GetAsync(ResourceGroup, AccountName, assetName);
             Asset asset = new Asset();
             string outputAssetName = assetName;
-
-            if (outputAsset != null)
-            {
-                // Name collision! In order to get the sample to work, let's just go ahead and create a unique asset name
-                // Note that the returned Asset can have a different name than the one specified as an input parameter.
-                // You may want to update this part to throw an Exception instead, and handle name collisions differently.
-                string uniqueness = $"-{Guid.NewGuid().ToString("N")}";
-                outputAssetName += uniqueness;
-            }
-
             return await client.Assets.CreateOrUpdateAsync(ResourceGroup, AccountName, outputAssetName, asset);
         }
 
@@ -147,19 +138,19 @@ namespace MediaServices.Demo.Function
             // also uses the same recipe or Preset for processing content.
             Transform transform = await client.Transforms.GetAsync(ResourceGroup, AccountName, transformName);
 
-            if (transform == null)
-            {
-                // You need to specify what you want it to produce as an output
-                TransformOutput[] outputs = new TransformOutput[]
-                {
-                    new TransformOutput(new BuiltInStandardEncoderPreset(EncoderNamedPreset.AdaptiveStreaming)),
-                    new TransformOutput(new VideoAnalyzerPreset())
-                };
+            //if (transform == null)
+            //{
+            //    // You need to specify what you want it to produce as an output
+            //    TransformOutput[] outputs = new TransformOutput[]
+            //    {
+            //        new TransformOutput(new BuiltInStandardEncoderPreset(EncoderNamedPreset.AdaptiveStreaming)),
+            //        new TransformOutput(new VideoAnalyzerPreset())
+            //    };
 
 
-                // Create the Transform with the output defined above
-                transform = await client.Transforms.CreateOrUpdateAsync(ResourceGroup, AccountName, transformName, outputs);
-            }
+            //    // Create the Transform with the output defined above
+            //    transform = await client.Transforms.CreateOrUpdateAsync(ResourceGroup, AccountName, transformName, outputs);
+            //}
 
             return transform;
         }
