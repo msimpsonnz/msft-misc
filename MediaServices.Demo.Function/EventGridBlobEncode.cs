@@ -11,7 +11,6 @@ using Microsoft.Azure.Management.Media.Models;
 using Microsoft.Azure.Services.AppAuthentication;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.EventGrid;
-using Microsoft.Azure.WebJobs.Host;
 using Microsoft.Extensions.Logging;
 using Microsoft.Rest;
 using Newtonsoft.Json;
@@ -63,7 +62,7 @@ namespace MediaServices.Demo.Function
                 var inputBlobName = $"{eventData["url"].ToString()}?{inputBlobSAS}";
 
                 //Get Source File
-                var meta = VideoInfo.BlobVideoInfo(inputBlobName, inputBlobSAS, log);
+                var meta = VideoInfo.BlobVideoInfo(inputBlobName, log);
 
 
                 //Submit AMS Job

@@ -11,10 +11,9 @@ namespace MediaServices.Demo.Function
     public class VideoInfo
     {
 
-        public static Dictionary<string, string> BlobVideoInfo(string blobUri, string sasToken, ILogger log)
+        public static Dictionary<string, string> BlobVideoInfo(string blobUri, ILogger log)
         {
-            var sasUri = $"{blobUri}?{sasToken}";
-            MetaData meta = GetBlob(sasUri, log);
+            MetaData meta = GetBlob(blobUri, log);
             return MapMetaData(blobUri, meta, log);
         }
         public static Dictionary<string, string> MapMetaData(string blobUri, MetaData rawMetaData, ILogger log)
