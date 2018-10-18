@@ -1,6 +1,5 @@
 {
     "name": "CustomTransform",
-    "id": "/subscriptions/f8a622ad-d0c9-4235-85bb-f822a0cc75e1/resourceGroups/wipster-ams-poc/providers/Microsoft.Media/mediaservices/wippocams/transforms/WipTransformHDSD",
     "type": "Microsoft.Media/mediaservices/transforms",
     "properties": {
         "created": "2018-09-07T02:16:04.9953968Z",
