@@ -11,6 +11,7 @@ using Microsoft.ML.Runtime.Api;
 using Microsoft.ML.Transforms.TensorFlow;
 using System;
 using System.IO;
+using System.Threading.Tasks;
 
 namespace FN18.Onnx
 {
@@ -18,21 +19,21 @@ namespace FN18.Onnx
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("ML begin");
-            OnnxStatic();
-            //Tensor();
-            Console.WriteLine("Done");
-            Console.ReadLine();
+            //MainAsync().GetAwaiter().GetResult();
+            LoadModel();
         }
 
+        static async Task MainAsync()
+        {
+            //await LoadModelAsync();
+        }
 
-        public static void Tensor()
+        public static void TensorLegacy()
         {
             var modelFile = "./Assets/model.pb";
 
             var imageHeight = 227;
             var imageWidth = 227;
-            //var dataFile = GetDataPath("./Assets/images.tsv");
             var dataFile = "./Assets/images.tsv";
             var imageFolder = Path.GetDirectoryName(dataFile);
 
@@ -74,7 +75,7 @@ namespace FN18.Onnx
         }
 
 
-        public static void OnnxStatic()
+        public static void Tensor()
         {
             var modelFile = "./Assets/model.pb";
 
@@ -82,7 +83,6 @@ namespace FN18.Onnx
             {
                 var imageHeight = 227;
                 var imageWidth = 227;
-                //var dataFile = GetDataPath("./Assets/images.tsv");
                 var dataFile = "./Assets/images.tsv";
                 var imageFolder = Path.GetDirectoryName(dataFile);
 
@@ -91,12 +91,6 @@ namespace FN18.Onnx
                     name: ctx.LoadText(1)))
                     .Read(new MultiFileSource(dataFile));
 
-                Console.WriteLine(data.AsDynamic.Schema.GetColumnName(0).ToString());
-                Console.WriteLine(data.AsDynamic.Schema.GetColumnName(1).ToString());
-
-                //var pre = env
-
-                // Note that CamelCase column names are there to match the TF graph node names.
                 var pipe = data.MakeNewEstimator()
                     .Append
                     (row => (
@@ -104,16 +98,44 @@ namespace FN18.Onnx
                         Placeholder: row.imagePath.LoadAsImage(imageFolder).Resize(imageHeight, imageWidth).ExtractPixels(interleaveArgb: true)))
                     .Append(row => (row, loss: row.Placeholder.ApplyTensorFlowGraph(modelFile)));
 
-                //TestEstimatorCore(pipe.AsDynamic, data.AsDynamic);
-
                 var result = pipe.Fit(data).Transform(data).AsDynamic;
-                
-                //var pred = 
 
-                Console.ReadLine();
             }
 
         }
+
+        private static void LoadModel()
+        {
+            // Load and create the model
+            var modelFile = "./Assets/beer.onnx";
+
+            using (var env = new ConsoleEnvironment(null, true, 0, 1, null, null))
+            {
+                var imageHeight = 227;
+                var imageWidth = 227;
+                var dataFile = "./Assets/images.tsv";
+                var imageFolder = Path.GetDirectoryName(dataFile);
+
+                var data = TextLoader.CreateReader(env, ctx => (
+                    imagePath: ctx.LoadText(0),
+                    name: ctx.LoadText(1)))
+                    .Read(new MultiFileSource(dataFile));
+
+                var pipe = data.MakeNewEstimator()
+                    .Append
+                    (row => (
+                        row,
+                        Placeholder: row.imagePath.LoadAsImage(imageFolder).Resize(imageHeight, imageWidth).ExtractPixels(interleaveArgb: true)))
+                    .Append(row => (row, loss: row.Placeholder.ApplyOnnxModel(modelFile)));
+
+                var result = pipe.Fit(data).Transform(data).AsDynamic;
+                result.Schema.TryGetColumnIndex("loss", out int output);
+                System.Console.WriteLine(output);
+                System.Console.WriteLine();
+
+            }
+        }
+
 
         public class ModelData
         {

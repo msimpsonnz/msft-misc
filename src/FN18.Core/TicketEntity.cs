@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel.DataAnnotations;
 using System.Text.RegularExpressions;
 
 namespace FN18.Core
@@ -13,8 +14,12 @@ namespace FN18.Core
 
         public string Id { get; set; }
         public string Date { get; set; }
+
+        //[Required]
+        //[StringLength(100, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 6)]
         public string FullName { get; set; }
         public string Description { get; set; }
+
         public string Email
         {
             get
