@@ -138,19 +138,19 @@ namespace MediaServices.Demo.Function
             // also uses the same recipe or Preset for processing content.
             Transform transform = await client.Transforms.GetAsync(ResourceGroup, AccountName, transformName);
 
-            //if (transform == null)
-            //{
-            //    // You need to specify what you want it to produce as an output
-            //    TransformOutput[] outputs = new TransformOutput[]
-            //    {
-            //        new TransformOutput(new BuiltInStandardEncoderPreset(EncoderNamedPreset.AdaptiveStreaming)),
-            //        new TransformOutput(new VideoAnalyzerPreset())
-            //    };
+            if (transform == null)
+            {
+                // You need to specify what you want it to produce as an output
+                TransformOutput[] outputs = new TransformOutput[]
+                {
+                    new TransformOutput(new BuiltInStandardEncoderPreset(EncoderNamedPreset.AdaptiveStreaming)),
+                    new TransformOutput(new VideoAnalyzerPreset())
+                };
 
 
-            //    // Create the Transform with the output defined above
-            //    transform = await client.Transforms.CreateOrUpdateAsync(ResourceGroup, AccountName, transformName, outputs);
-            //}
+                // Create the Transform with the output defined above
+                transform = await client.Transforms.CreateOrUpdateAsync(ResourceGroup, AccountName, transformName, outputs);
+            }
 
             return transform;
         }
