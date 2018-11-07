@@ -29,6 +29,7 @@ namespace Function_Event_Repro
             catch (Exception ex)
             {
                 log.LogError(ex.Message, ex);
+                throw;
                 //return body; //new BadRequestResult();
             }
 
