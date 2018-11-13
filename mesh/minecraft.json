@@ -22,7 +22,7 @@
           "layer4": [
             {
               "name": "minecraftIngress",
-              "publicPort": "80",
+              "publicPort": "25565",
               "applicationName": "minecraftApp",
               "serviceName": "minecraftService",
               "endpointName": "minecraftListener"
