@@ -5,3 +5,12 @@ az container create --resource-group Containers --name mjsdemo-aci-minecraft --i
 ```
 az container delete --resource-group Containers --name mjsdemo-aci-minecraft
 ```
+
+
+Mesh
+``
+az group create --name Mesh --location eastus 
+``
+```
+az mesh deployment create --resource-group Mesh --template-uri https://sfmeshsamples.blob.core.windows.net/templates/helloworld/mesh_rp.linux.json --parameters "{'location': {'value': 'eastus'}}"
+``
