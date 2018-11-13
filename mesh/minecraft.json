@@ -59,6 +59,12 @@
                       "port": "25565"
                     }
                   ],
+                  "environmentVariables": [
+                    {
+                        "name": "EULA",
+                        "value": "TRUE"
+                    }
+                ],
                   "resources": {
                     "requests": {
                       "cpu": "1",

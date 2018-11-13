@@ -12,5 +12,5 @@ Mesh
 az group create --name Mesh --location eastus 
 ``
 ```
-az mesh deployment create --resource-group Mesh --template-uri https://sfmeshsamples.blob.core.windows.net/templates/helloworld/mesh_rp.linux.json --parameters "{'location': {'value': 'eastus'}}"
+az mesh deployment create --resource-group Mesh --template-uri https://raw.githubusercontent.com/msimpsonnz/openhackSF/master/mesh/minecraft.json --parameters "{'location': {'value': 'eastus'}}"
 ``
