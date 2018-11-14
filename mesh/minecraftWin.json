@@ -55,7 +55,7 @@
                   "image": "myplooploops/minecraft-server:1.0-nanoserver-1709",
                   "endpoints": [
                     {
-                      "name": "minecraftListener",
+                      "name": "minecraftListenerWin",
                       "port": "25565"
                     }
                   ],

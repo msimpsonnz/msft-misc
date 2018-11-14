@@ -17,3 +17,6 @@ az mesh deployment create --resource-group Mesh --template-uri https://raw.githu
 
 Mesh Windows
 40.87.82.108
+```
+az mesh deployment create --resource-group Mesh --template-uri https://raw.githubusercontent.com/msimpsonnz/openhackSF/master/mesh/minecraftWin.json --parameters "{'location': {'value': 'eastus'}}"
+```
