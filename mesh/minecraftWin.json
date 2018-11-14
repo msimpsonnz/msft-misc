@@ -73,7 +73,7 @@
                   }
                 }
               ],
-              "replicaCount": "1",
+              "replicaCount": "5",
               "networkRefs": [
                 {
                   "name": "[resourceId('Microsoft.ServiceFabricMesh/networks', 'minecraftNetwork')]"
