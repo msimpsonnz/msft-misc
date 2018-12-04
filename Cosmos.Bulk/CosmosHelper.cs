@@ -2,9 +2,12 @@
 using Microsoft.Azure.CosmosDB.BulkExecutor.BulkImport;
 using Microsoft.Azure.Documents;
 using Microsoft.Azure.Documents.Client;
+using Microsoft.Azure.Documents.Linq;
 using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading;
@@ -14,7 +17,37 @@ namespace Cosmos.Bulk
 {
     public class CosmosHelper
     {
+        public static async Task RunQuery(DocumentClient _client, IOptions<CosmosConfig> _cosmosConfig, string queryId, bool crossPartition = false)
+        {
+            var feedOptions = new FeedOptions {
+                EnableCrossPartitionQuery = crossPartition,
+                MaxDegreeOfParallelism = 256
+            };
+            var query = _client.CreateDocumentQuery(UriFactory.CreateDocumentCollectionUri(_cosmosConfig.Value.DatabaseName, _cosmosConfig.Value.CollectionName), feedOptions)
+                .Where(d => d.Id == queryId)
+                .AsDocumentQuery();
+            var timer = Stopwatch.StartNew();
+            var response = query.ExecuteNextAsync().Result;
+            Console.WriteLine($"Cross Partition Query Duration: {timer.Elapsed} - RU:{response.RequestCharge}");
 
+        }
+
+        public static async Task RunQuery(DocumentClient _client, IOptions<CosmosConfig> _cosmosConfig, string queryId, string[] partitionKeys)
+        {
+            var counterRU = 0.0;
+            var timer = Stopwatch.StartNew();
+            foreach (string partitionKey in partitionKeys)
+            {
+                var feedOptions = new FeedOptions { PartitionKey = new PartitionKey(partitionKey) };
+                var query = _client.CreateDocumentQuery(UriFactory.CreateDocumentCollectionUri(_cosmosConfig.Value.DatabaseName, _cosmosConfig.Value.CollectionName), feedOptions)
+                    .Where(d => d.Id == queryId)
+                    .AsDocumentQuery();
+                var response = query.ExecuteNextAsync().Result;
+                counterRU += response.RequestCharge;
+            }
+            Console.WriteLine($"Invidual Query: {timer.Elapsed} - RU:{counterRU}");
+
+        }
 
 
 

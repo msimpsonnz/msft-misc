@@ -30,7 +30,10 @@ namespace Cosmos.Bulk
         public async Task StartAsync(CancellationToken cancellationToken)
         {
             _logger.LogInformation("Starting");
-            _task = Task.Factory.StartNew(() => CosmosHelper.RunBulkImportAsync(_client, _cosmosConfig));
+            //_task = Task.Factory.StartNew(() => CosmosHelper.RunBulkImportAsync(_client, _cosmosConfig));
+            _task = Task.Factory.StartNew(() => CosmosHelper.RunQuery(_client, _cosmosConfig, "FF24BA580CA7F75Ae84d9f9e-9b0f-4f74-924d-931dd31ca6bf", true));
+            var partitionKeys = new string[] { "FF24BA580CA7F75A", "5AE7E16F4E28A961", "9AC1C242E646BFC6" };
+            _task = Task.Factory.StartNew(() => CosmosHelper.RunQuery(_client, _cosmosConfig, "FF24BA580CA7F75Ae84d9f9e-9b0f-4f74-924d-931dd31ca6bf", partitionKeys));
 
             return;
 
