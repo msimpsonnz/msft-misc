@@ -62,19 +62,13 @@ namespace Cosmos.Bulk
             return collection;
         }
 
-        static internal String GenerateRandomDocumentString(String id, String partitionKeyProperty, object parititonKeyValue)
+        static internal string GenerateRandomDocumentString(string id, string partitionKeyProperty, object parititonKeyValue, string deviceid)
         {
             return "{\n" +
                 "    \"id\": \"" + id + "\",\n" +
+                "    \"uid\": \"" + id + "\",\n" +
                 "    \"" + partitionKeyProperty + "\": \"" + parititonKeyValue + "\",\n" +
-                "    \"Name\": \"TestDoc\",\n" +
-                "    \"description\": \"1.99\",\n" +
-                "    \"f1\": \"3hrkjh3h4h4h3jk4h\",\n" +
-                "    \"f2\": \"dhfkjdhfhj4434434\",\n" +
-                "    \"f3\": \"nklfjeoirje434344\",\n" +
-                "    \"f4\": \"pjfgdgfhdgfgdhbd6\",\n" +
-                "    \"f5\": \"gyuerehvrerebrhjh\",\n" +
-                "    \"f6\": \"3434343ghghghgghj\"" +
+                "    \"type\": \"event\"" +
                 "}";
         }
     }

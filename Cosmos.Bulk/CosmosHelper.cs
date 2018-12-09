@@ -17,41 +17,55 @@ namespace Cosmos.Bulk
 {
     public class CosmosHelper
     {
-        public static async Task RunQuery(DocumentClient _client, IOptions<CosmosConfig> _cosmosConfig, string queryId, bool crossPartition = false)
+        public static async Task RunQueryByProp(DocumentClient _client, IOptions<CosmosConfig> _cosmosConfig, string queryId, bool crossPartition = false)
         {
             var feedOptions = new FeedOptions {
                 EnableCrossPartitionQuery = crossPartition,
                 MaxDegreeOfParallelism = 256
             };
-            var query = _client.CreateDocumentQuery(UriFactory.CreateDocumentCollectionUri(_cosmosConfig.Value.DatabaseName, _cosmosConfig.Value.CollectionName), feedOptions)
+            var query = _client.CreateDocumentQuery<Device>(UriFactory.CreateDocumentCollectionUri(_cosmosConfig.Value.DatabaseName, _cosmosConfig.Value.CollectionName), feedOptions)
+                .Where(d => d.uid == queryId)
+                .AsDocumentQuery();
+            var timer = Stopwatch.StartNew();
+            var response = await query.ExecuteNextAsync();
+            timer.Stop();
+            Console.WriteLine($"Cross Partition Query by Property Duration: {timer.Elapsed} - RU:{response.RequestCharge}");
+
+        }
+
+        public static async Task RunQueryById(DocumentClient _client, IOptions<CosmosConfig> _cosmosConfig, string queryId, bool crossPartition = false)
+        {
+            var feedOptions = new FeedOptions
+            {
+                EnableCrossPartitionQuery = crossPartition,
+                MaxDegreeOfParallelism = 256
+            };
+            var query = _client.CreateDocumentQuery<Device>(UriFactory.CreateDocumentCollectionUri(_cosmosConfig.Value.DatabaseName, _cosmosConfig.Value.CollectionName), feedOptions)
                 .Where(d => d.Id == queryId)
                 .AsDocumentQuery();
             var timer = Stopwatch.StartNew();
-            var response = query.ExecuteNextAsync().Result;
-            Console.WriteLine($"Cross Partition Query Duration: {timer.Elapsed} - RU:{response.RequestCharge}");
+            var response = await query.ExecuteNextAsync();
+            timer.Stop();
+            Console.WriteLine($"Cross Partition Query by Id Duration: {timer.Elapsed} - RU:{response.RequestCharge}");
 
         }
 
-        public static async Task RunQuery(DocumentClient _client, IOptions<CosmosConfig> _cosmosConfig, string queryId, string[] partitionKeys)
+        public static async Task GetPartitionKeys(DocumentClient _client, IOptions<CosmosConfig> _cosmosConfig)
         {
-            var counterRU = 0.0;
-            var timer = Stopwatch.StartNew();
-            foreach (string partitionKey in partitionKeys)
-            {
-                var feedOptions = new FeedOptions { PartitionKey = new PartitionKey(partitionKey) };
-                var query = _client.CreateDocumentQuery(UriFactory.CreateDocumentCollectionUri(_cosmosConfig.Value.DatabaseName, _cosmosConfig.Value.CollectionName), feedOptions)
-                    .Where(d => d.Id == queryId)
-                    .AsDocumentQuery();
-                var response = query.ExecuteNextAsync().Result;
-                counterRU += response.RequestCharge;
-            }
-            Console.WriteLine($"Invidual Query: {timer.Elapsed} - RU:{counterRU}");
+            // Cleanup on start if set in config.
+
+            DocumentCollection dataCollection = await SetupCosmosCollection(_client, _cosmosConfig);
+
+            // Prepare for bulk import.
+
+            // Creating documents with simple partition key here.
+            string partitionKeyProperty = dataCollection.PartitionKey.Paths[0].Replace("/", "");
 
         }
 
 
 
-        public static async Task RunBulkImportAsync(DocumentClient _client, IOptions<CosmosConfig> _cosmosConfig)
+            public static async Task RunBulkImportAsync(DocumentClient _client, IOptions<CosmosConfig> _cosmosConfig)
         {
             // Cleanup on start if set in config.
 
@@ -90,15 +104,15 @@ namespace Cosmos.Bulk
                 // Generate JSON-serialized documents to import.
 
                 List<string> documentsToImportInBatch = new List<string>();
-                long prefix = i * numberOfDocumentsPerBatch;
 
-                Console.Write(String.Format("Generating {0} documents to import for batch {1}", numberOfDocumentsPerBatch, i));
+                Console.WriteLine(string.Format("Generating {0} documents to import for batch {1}", numberOfDocumentsPerBatch, i));
                 for (int j = 0; j < numberOfDocumentsPerBatch; j++)
                 {
                     string partitionKeyValue = GetPartitionKey(BitConverter.ToInt32(Guid.NewGuid().ToByteArray(), 0));
-                    string id = partitionKeyValue + Guid.NewGuid().ToString();
+                    string deviceid = partitionKeyValue + Guid.NewGuid().ToString();
+                    string id = Guid.NewGuid().ToString();
 
-                    documentsToImportInBatch.Add(Utils.GenerateRandomDocumentString(id, partitionKeyProperty, partitionKeyValue));
+                    documentsToImportInBatch.Add(Utils.GenerateRandomDocumentString(id, partitionKeyProperty, partitionKeyValue, deviceid));
                 }
 
                 // Invoke bulk import API.
@@ -200,7 +214,7 @@ namespace Cosmos.Bulk
         private static string GetStringFromHash(byte[] hash)
         {
             StringBuilder result = new StringBuilder();
-            for (int i = 0; i < 8; i++)
+            for (int i = 0; i < 10; i++)
             {
                 result.Append(hash[i].ToString("X2"));
             }
