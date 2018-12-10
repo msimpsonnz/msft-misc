@@ -13,7 +13,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Cosmos.Bulk
+namespace NoSQL.ConsoleApp
 {
     public class CosmosHelper
     {
@@ -23,7 +23,7 @@ namespace Cosmos.Bulk
                 EnableCrossPartitionQuery = crossPartition,
                 MaxDegreeOfParallelism = 256
             };
-            var query = _client.CreateDocumentQuery<Device>(UriFactory.CreateDocumentCollectionUri(_cosmosConfig.Value.DatabaseName, _cosmosConfig.Value.CollectionName), feedOptions)
+            var query = _client.CreateDocumentQuery<CosmosDeviceModel>(UriFactory.CreateDocumentCollectionUri(_cosmosConfig.Value.DatabaseName, _cosmosConfig.Value.CollectionName), feedOptions)
                 .Where(d => d.uid == queryId)
                 .AsDocumentQuery();
             var timer = Stopwatch.StartNew();
@@ -40,7 +40,7 @@ namespace Cosmos.Bulk
                 EnableCrossPartitionQuery = crossPartition,
                 MaxDegreeOfParallelism = 256
             };
-            var query = _client.CreateDocumentQuery<Device>(UriFactory.CreateDocumentCollectionUri(_cosmosConfig.Value.DatabaseName, _cosmosConfig.Value.CollectionName), feedOptions)
+            var query = _client.CreateDocumentQuery<CosmosDeviceModel>(UriFactory.CreateDocumentCollectionUri(_cosmosConfig.Value.DatabaseName, _cosmosConfig.Value.CollectionName), feedOptions)
                 .Where(d => d.Id == queryId)
                 .AsDocumentQuery();
             var timer = Stopwatch.StartNew();
@@ -108,7 +108,7 @@ namespace Cosmos.Bulk
                 Console.WriteLine(string.Format("Generating {0} documents to import for batch {1}", numberOfDocumentsPerBatch, i));
                 for (int j = 0; j < numberOfDocumentsPerBatch; j++)
                 {
-                    string partitionKeyValue = GetPartitionKey(BitConverter.ToInt32(Guid.NewGuid().ToByteArray(), 0));
+                    string partitionKeyValue = HashHelper.GetPartitionKey(BitConverter.ToInt32(Guid.NewGuid().ToByteArray(), 0));
                     string deviceid = partitionKeyValue + Guid.NewGuid().ToString();
                     string id = Guid.NewGuid().ToString();
 
@@ -201,25 +201,6 @@ namespace Cosmos.Bulk
             Console.ReadKey();
         }
 
-        private static string GetPartitionKey(int partitionKey)
-        {
-            SHA256 sha256 = SHA256.Create();
-            int bucket = partitionKey % 256;
-            var partition = sha256.ComputeHash(BitConverter.GetBytes(bucket));
-            var hash = GetStringFromHash(partition);
-            return hash;
-
-        }
-
-        private static string GetStringFromHash(byte[] hash)
-        {
-            StringBuilder result = new StringBuilder();
-            for (int i = 0; i < 10; i++)
-            {
-                result.Append(hash[i].ToString("X2"));
-            }
-            return result.ToString();
-        }
 
         private static async Task<DocumentCollection> SetupCosmosCollection(DocumentClient _client, IOptions<CosmosConfig> _cosmosConfig)
         {

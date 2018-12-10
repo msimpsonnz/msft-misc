@@ -1,6 +1,6 @@
 ﻿using Microsoft.Azure.Documents.Client;
 
-namespace Cosmos.Bulk
+namespace NoSQL.ConsoleApp
 {
     public class CosmosConfig
     {

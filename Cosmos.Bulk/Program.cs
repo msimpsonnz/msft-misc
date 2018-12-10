@@ -4,7 +4,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 
-namespace Cosmos.Bulk
+namespace NoSQL.ConsoleApp
 {
     class Program
     {
@@ -16,12 +16,6 @@ namespace Cosmos.Bulk
               {
                   config.AddJsonFile("appsettings.json", optional: true);
                   config.AddJsonFile($"appsettings.Development.json", optional: true);
-                  //config.AddEnvironmentVariables();
-
-                  //if (args != null)
-                  //{
-                  //    config.AddCommandLine(args);
-                  //}
               })
               .ConfigureServices((hostContext, services) =>
               {

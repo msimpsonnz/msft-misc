@@ -8,21 +8,21 @@ using System.Threading.Tasks;
 
 namespace NoSQL.ConsoleApp
 {
-    public class CosmosService : IHostedService, IDisposable
+    public class DynamoService : IHostedService, IDisposable
     {
         private readonly ILogger _logger;
         private readonly IOptions<CosmosConfig> _cosmosConfig;
         private DocumentClient _client;
         private Task _task;
 
-        public CosmosService(ILogger<CosmosService> logger, IOptions<CosmosConfig> cosmosConfig)
+        public DynamoService(ILogger<CosmosService> logger, IOptions<CosmosConfig> cosmosConfig)
         {
             _logger = logger;
             _cosmosConfig = cosmosConfig;
             _client = new DocumentClient(
                     new Uri(_cosmosConfig.Value.EndpointUrl),
                     _cosmosConfig.Value.AuthorizationKey,
-                    ConnectionPolicy);
+                    );
 
         }
 
@@ -52,12 +52,5 @@ namespace NoSQL.ConsoleApp
         {
             _task?.Dispose();
         }
-
-
-        private static readonly ConnectionPolicy ConnectionPolicy = new ConnectionPolicy
-        {
-            ConnectionMode = ConnectionMode.Direct,
-            ConnectionProtocol = Protocol.Tcp
-        };
     }
 }
