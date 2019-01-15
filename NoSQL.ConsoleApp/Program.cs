@@ -21,8 +21,11 @@ namespace NoSQL.ConsoleApp
               {
                   services.AddOptions();
                   services.Configure<CosmosConfig>(hostContext.Configuration.GetSection("Cosmos"));
-
                   services.AddSingleton<IHostedService, CosmosService>();
+
+                  services.Configure<DynamoConfig>(hostContext.Configuration.GetSection("Dynamo"));
+                  services.AddSingleton<IHostedService, DynamoService>();
+
               })
               .ConfigureLogging((hostingContext, logging) => {
                   logging.AddConfiguration(hostingContext.Configuration.GetSection("Logging"));

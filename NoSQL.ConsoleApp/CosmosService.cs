@@ -15,7 +15,7 @@ namespace NoSQL.ConsoleApp
         private DocumentClient _client;
         private Task _task;
 
-        public CosmosService(ILogger<CosmosService> logger, IOptions<CosmosConfig> cosmosConfig)
+        public CosmosService(ILogger logger, IOptions<CosmosConfig> cosmosConfig)
         {
             _logger = logger;
             _cosmosConfig = cosmosConfig;
