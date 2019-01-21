@@ -76,7 +76,7 @@
                         {
                             "@odata.type": "#Microsoft.Media.PngImage",
                             "stretchMode": "AutoSize",
-                            "start": "5%",
+                            "start": "0%",
                             "step": "5%",
                             "range": "95%",
                             "layers": [

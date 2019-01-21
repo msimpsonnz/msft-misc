@@ -101,3 +101,7 @@ curl -X PUT -T ./iOS.mp4 -H "x-ms-date: $(date -u)" -H "x-ms-blob-type: BlockBlo
 *18.746 seconds
 
 So about a 30% improvement, I am sitting in New Zealand the storage account in the first command is in 'US Central' and the CDN endpoint in the second command is in 'Australia East'
+
+### FFMPEG
+
+ffmpeg -i Thumbnail-video-eddee26e-2718-4717-9593-b4-%06d.png -filter_complex vstack output.png

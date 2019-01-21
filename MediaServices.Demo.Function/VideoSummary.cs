@@ -27,7 +27,8 @@ namespace MediaServices.Demo.Function
             //Create collection for list of png files
             List<string> localBlobs = new List<string>();
             //Create a unique output name for video summary file
-            string outputName = $"summary-{jobId}.mp4";
+            //string outputName = $"summary-{jobId}.mp4";
+            string outputName = $"summary-{jobId}.jpg";
             //Create a blob client to the AMS account and asset container created by the encoding Job
             BlobHelper.CreateStorageConnection(AMSStorageConnectionString, $"asset-{eventData.assetId}");
             log.LogInformation($"Created Storage Connection");
@@ -41,7 +42,8 @@ namespace MediaServices.Demo.Function
                 //Get list of thumnails
                 localBlobs = await GetThumbnails(workingDir, log);
                 var trimBlobId = TrimBlobId(localBlobs[0]);
-                string summaryArgs = $"-v quiet -r 1/5 -i {trimBlobId}%06d.png -c:v libx264 -vf fps=25 -pix_fmt yuv420p {outputName}";
+                //string summaryArgs = $"-v quiet -r 1/5 -i {trimBlobId}%06d.png -c:v libx264 -vf fps=25 -pix_fmt yuv420p {outputName}";
+                string summaryArgs = $"-v quiet -i {trimBlobId}%06d.png -filter_complex tile=1x{localBlobs.Count} {outputName}";
                 var summaryId = FFMpeg.RunFFMpeg(workingDir, ffmpegLocation, summaryArgs, eventData.correlationId, log);
                 await BlobHelper.UploadSummary(Path.Combine(workingDir, outputName), outputName, log);
 
