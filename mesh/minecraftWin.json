@@ -26,6 +26,13 @@
               "applicationName": "minecraftAppWin",
               "serviceName": "minecraftServiceWin",
               "endpointName": "minecraftListenerWin"
+            },
+            {
+              "name": "minecraftIngressRcon",
+              "publicPort": "25575",
+              "applicationName": "minecraftAppWin",
+              "serviceName": "minecraftServiceWin",
+              "endpointName": "minecraftListenerRcon"
             }
           ]
         }
@@ -57,6 +64,10 @@
                     {
                       "name": "minecraftListenerWin",
                       "port": "25565"
+                    },
+                    {
+                      "name": "minecraftListenerRcon",
+                      "port": "25575"
                     }
                   ],
                   "environmentVariables": [
@@ -73,7 +84,7 @@
                   }
                 }
               ],
-              "replicaCount": "3",
+              "replicaCount": "1",
               "networkRefs": [
                 {
                   "name": "[resourceId('Microsoft.ServiceFabricMesh/networks', 'minecraftNetwork')]"

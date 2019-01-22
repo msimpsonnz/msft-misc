@@ -1,88 +1,99 @@
 {
-  "$schema": "http://schema.management.azure.com/schemas/2014-04-01-preview/deploymentTemplate.json",
-  "contentVersion": "1.0.0.0",
-  "parameters": {
-    "location": {
-      "type": "string",
-      "metadata": {
-        "description": "Location of the resources."
-      }
-    }
-  },
-  "resources": [
-    {
-      "apiVersion": "2018-07-01-preview",
-      "name": "minecraftNetwork",
-      "type": "Microsoft.ServiceFabricMesh/networks",
-      "location": "[parameters('location')]",
-      "dependsOn": [],
-      "properties": {
-        "addressPrefix": "10.0.0.4/22",
-        "ingressConfig": {
-          "layer4": [
-            {
-              "name": "minecraftIngress",
-              "publicPort": "25565",
-              "applicationName": "minecraftApp",
-              "serviceName": "minecraftService",
-              "endpointName": "minecraftListener"
+    "$schema": "http://schema.management.azure.com/schemas/2014-04-01-preview/deploymentTemplate.json",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "location": {
+            "type": "string",
+            "metadata": {
+                "description": "Location of the resources."
             }
-          ]
         }
-      }
     },
-    {
-      "apiVersion": "2018-07-01-preview",
-      "name": "minecraftApp",
-      "type": "Microsoft.ServiceFabricMesh/applications",
-      "location": "[parameters('location')]",
-      "dependsOn": [
-        "Microsoft.ServiceFabricMesh/networks/minecraftNetwork"
-      ],
-      "properties": {
-        "description": "Service Fabric Mesh minecraft Application!",
-        "services": [
-          {
-            "type": "Microsoft.ServiceFabricMesh/services",
+    "resources": [
+        {
+            "apiVersion": "2018-07-01-preview",
+            "name": "minecraftNetwork",
+            "type": "Microsoft.ServiceFabricMesh/networks",
             "location": "[parameters('location')]",
-            "name": "minecraftService",
+            "dependsOn": [],
             "properties": {
-              "description": "Service Fabric Mesh Minecraft Service.",
-              "osType": "linux",
-              "codePackages": [
-                {
-                  "name": "minecraftCode",
-                  "image": "openhack/minecraft-server:latest",
-                  "endpoints": [
-                    {
-                      "name": "minecraftListener",
-                      "port": "25565"
-                    }
-                  ],
-                  "environmentVariables": [
-                    {
-                        "name": "EULA",
-                        "value": "TRUE"
-                    }
-                ],
-                  "resources": {
-                    "requests": {
-                      "cpu": "1",
-                      "memoryInGB": "1"
-                    }
-                  }
+                "addressPrefix": "10.0.0.4/22",
+                "ingressConfig": {
+                    "layer4": [
+                        {
+                            "name": "minecraftIngress",
+                            "publicPort": "25565",
+                            "applicationName": "minecraftApp",
+                            "serviceName": "minecraftService",
+                            "endpointName": "minecraftListener"
+                        },
+                        {
+                            "name": "minecraftIngressRcon",
+                            "publicPort": "25575",
+                            "applicationName": "minecraftApp",
+                            "serviceName": "minecraftService",
+                            "endpointName": "minecraftListenerRcon"
+                        }
+                    ]
                 }
-              ],
-              "replicaCount": "1",
-              "networkRefs": [
-                {
-                  "name": "[resourceId('Microsoft.ServiceFabricMesh/networks', 'minecraftNetwork')]"
-                }
-              ]
             }
-          }
-        ]
-      }
-    }
-  ]
+        },
+        {
+            "apiVersion": "2018-07-01-preview",
+            "name": "minecraftApp",
+            "type": "Microsoft.ServiceFabricMesh/applications",
+            "location": "[parameters('location')]",
+            "dependsOn": [
+                "Microsoft.ServiceFabricMesh/networks/minecraftNetwork"
+            ],
+            "properties": {
+                "description": "Service Fabric Mesh minecraft Application!",
+                "services": [
+                    {
+                        "type": "Microsoft.ServiceFabricMesh/services",
+                        "location": "[parameters('location')]",
+                        "name": "minecraftService",
+                        "properties": {
+                            "description": "Service Fabric Mesh Minecraft Service.",
+                            "osType": "linux",
+                            "codePackages": [
+                                {
+                                    "name": "minecraftCode",
+                                    "image": "openhack/minecraft-server:latest",
+                                    "endpoints": [
+                                        {
+                                            "name": "minecraftListener",
+                                            "port": "25565"
+                                        },
+                                        {
+                                            "name": "minecraftListenerRcon",
+                                            "port": "25575"
+                                          }
+                                    ],
+                                    "environmentVariables": [
+                                        {
+                                            "name": "EULA",
+                                            "value": "TRUE"
+                                        }
+                                    ],
+                                    "resources": {
+                                        "requests": {
+                                            "cpu": "1",
+                                            "memoryInGB": "1"
+                                        }
+                                    }
+                                }
+                            ],
+                            "replicaCount": "1",
+                            "networkRefs": [
+                                {
+                                    "name": "[resourceId('Microsoft.ServiceFabricMesh/networks', 'minecraftNetwork')]"
+                                }
+                            ]
+                        }
+                    }
+                ]
+            }
+        }
+    ]
 }

@@ -13,10 +13,18 @@ az group create --name Mesh --location eastus
 ``
 ```
 az mesh deployment create --resource-group Mesh --template-uri https://raw.githubusercontent.com/msimpsonnz/openhackSF/master/mesh/minecraft.json --parameters "{'location': {'value': 'eastus'}}"
-``
+```
+
+```
+az mesh deployment create --resource-group Mesh --template-file minecraft.json --parameters "{'location': {'value': 'eastus'}}"
+```
 
 Mesh Windows
 40.87.82.108
 ```
 az mesh deployment create --resource-group Mesh --template-uri https://raw.githubusercontent.com/msimpsonnz/openhackSF/master/mesh/minecraftWin.json --parameters "{'location': {'value': 'eastus'}}"
+```
+
+```
+az mesh deployment create --resource-group Mesh --template-file minecraftWin.json --parameters "{'location': {'value': 'eastus'}}"
 ```
