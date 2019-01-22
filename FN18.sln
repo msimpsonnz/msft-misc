@@ -9,6 +9,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FN18.Core", "src\FN18.Core\
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FN18.Blazor", "src\FN18.Blazor\FN18.Blazor.csproj", "{494B2F66-02D5-476A-990F-5C2705742795}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FN18.Onnx", "src\FN18.Onnx\FN18.Onnx.csproj", "{D1B732CC-E952-4D12-896C-7011A4FE9082}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{494B2F66-02D5-476A-990F-5C2705742795}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{494B2F66-02D5-476A-990F-5C2705742795}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{494B2F66-02D5-476A-990F-5C2705742795}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D1B732CC-E952-4D12-896C-7011A4FE9082}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D1B732CC-E952-4D12-896C-7011A4FE9082}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D1B732CC-E952-4D12-896C-7011A4FE9082}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D1B732CC-E952-4D12-896C-7011A4FE9082}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
