@@ -2,7 +2,7 @@
 using System.Security.Cryptography;
 using System.Text;
 
-namespace NoSQL.ConsoleApp
+namespace NoSQL.Common.Helpers
 {
     public class HashHelper
     {

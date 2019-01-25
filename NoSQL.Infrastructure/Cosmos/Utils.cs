@@ -5,7 +5,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace NoSQL.ConsoleApp
+namespace NoSQL.Infrastructure
 {
 
     class Utils
@@ -14,7 +14,7 @@ namespace NoSQL.ConsoleApp
         /// Get the collection if it exists, null if it doesn't.
         /// </summary>
         /// <returns>The requested collection.</returns>
-        static internal DocumentCollection GetCollectionIfExists(DocumentClient client, string databaseName, string collectionName)
+        static public DocumentCollection GetCollectionIfExists(DocumentClient client, string databaseName, string collectionName)
         {
             if (GetDatabaseIfExists(client, databaseName) == null)
             {
@@ -62,14 +62,6 @@ namespace NoSQL.ConsoleApp
             return collection;
         }
 
-        static internal string GenerateRandomDocumentString(string id, string partitionKeyProperty, object parititonKeyValue, string deviceid)
-        {
-            return "{\n" +
-                "    \"id\": \"" + id + "\",\n" +
-                "    \"uid\": \"" + id + "\",\n" +
-                "    \"" + partitionKeyProperty + "\": \"" + parititonKeyValue + "\",\n" +
-                "    \"type\": \"event\"" +
-                "}";
-        }
+
     }
 }

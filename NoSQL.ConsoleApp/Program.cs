@@ -1,8 +1,8 @@
-﻿using System.Threading.Tasks;
-using Microsoft.Extensions.Configuration;
+﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
+using NoSQL.Infrastructure;
+using System.Threading.Tasks;
 
 namespace NoSQL.ConsoleApp
 {
@@ -14,7 +14,7 @@ namespace NoSQL.ConsoleApp
             var builder = new HostBuilder()
               .ConfigureAppConfiguration((hostingContext, config) =>
               {
-                  config.AddJsonFile("appsettings.json", optional: true);
+                  //config.AddJsonFile("appsettings.json", optional: true);
                   config.AddJsonFile($"appsettings.Development.json", optional: true);
               })
               .ConfigureServices((hostContext, services) =>
@@ -23,18 +23,17 @@ namespace NoSQL.ConsoleApp
                   services.Configure<CosmosConfig>(hostContext.Configuration.GetSection("Cosmos"));
                   services.AddSingleton<IHostedService, CosmosService>();
 
-                  services.Configure<DynamoConfig>(hostContext.Configuration.GetSection("Dynamo"));
-                  services.AddSingleton<IHostedService, DynamoService>();
-
-              })
-              .ConfigureLogging((hostingContext, logging) => {
-                  logging.AddConfiguration(hostingContext.Configuration.GetSection("Logging"));
-                  logging.AddConsole();
               });
+
+            //.ConfigureLogging((hostingContext, logging) => {
+            //    logging.AddConfiguration(hostingContext.Configuration.GetSection("Logging"));
+            //    logging.AddConsole();
+            //}
+
 
             await builder.RunConsoleAsync();
 
         }
-       
+
     }
 }

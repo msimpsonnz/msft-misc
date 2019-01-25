@@ -8,12 +8,11 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Security.Cryptography;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using NoSQL.Common.Helpers;
 
-namespace NoSQL.ConsoleApp
+namespace NoSQL.Infrastructure
 {
     public class CosmosHelper
     {
@@ -24,7 +23,7 @@ namespace NoSQL.ConsoleApp
                 MaxDegreeOfParallelism = 256
             };
             var query = _client.CreateDocumentQuery<CosmosDeviceModel>(UriFactory.CreateDocumentCollectionUri(_cosmosConfig.Value.DatabaseName, _cosmosConfig.Value.CollectionName), feedOptions)
-                .Where(d => d.uid == queryId)
+                .Where(d => d.Uid == queryId)
                 .AsDocumentQuery();
             var timer = Stopwatch.StartNew();
             var response = await query.ExecuteNextAsync();
@@ -103,17 +102,7 @@ namespace NoSQL.ConsoleApp
             {
                 // Generate JSON-serialized documents to import.
 
-                List<string> documentsToImportInBatch = new List<string>();
-
-                Console.WriteLine(string.Format("Generating {0} documents to import for batch {1}", numberOfDocumentsPerBatch, i));
-                for (int j = 0; j < numberOfDocumentsPerBatch; j++)
-                {
-                    string partitionKeyValue = HashHelper.GetPartitionKey(BitConverter.ToInt32(Guid.NewGuid().ToByteArray(), 0));
-                    string deviceid = partitionKeyValue + Guid.NewGuid().ToString();
-                    string id = Guid.NewGuid().ToString();
-
-                    documentsToImportInBatch.Add(Utils.GenerateRandomDocumentString(id, partitionKeyProperty, partitionKeyValue, deviceid));
-                }
+                List<string> documentsToImportInBatch = DocumentBatch(partitionKeyProperty, numberOfDocumentsPerBatch, i);
 
                 // Invoke bulk import API.
 
@@ -201,8 +190,24 @@ namespace NoSQL.ConsoleApp
             Console.ReadKey();
         }
 
+        public static List<string> DocumentBatch(string partitionKeyProperty, long numberOfDocumentsPerBatch, int i)
+        {
+            List<string> documentsToImportInBatch = new List<string>();
 
-        private static async Task<DocumentCollection> SetupCosmosCollection(DocumentClient _client, IOptions<CosmosConfig> _cosmosConfig)
+            Console.WriteLine(string.Format("Generating {0} documents to import for batch {1}", numberOfDocumentsPerBatch, i));
+            for (int j = 0; j < numberOfDocumentsPerBatch; j++)
+            {
+                Guid guid = Guid.NewGuid();
+                string partitionKeyValue = HashHelper.GetPartitionKey(BitConverter.ToInt32(guid.ToByteArray(), 0));
+                string id = guid.ToString();
+
+                documentsToImportInBatch.Add(DocumentHelper.GenerateRandomDocumentString(id, partitionKeyProperty, partitionKeyValue));
+            }
+
+            return documentsToImportInBatch;
+        }
+
+        public static async Task<DocumentCollection> SetupCosmosCollection(DocumentClient _client, IOptions<CosmosConfig> _cosmosConfig)
         {
             DocumentCollection dataCollection = null;
             try

@@ -1,20 +1,20 @@
 ﻿using Newtonsoft.Json;
 
-namespace NoSQL.ConsoleApp
+namespace NoSQL.Infrastructure
 {
     public class CosmosDeviceModel
     {
         [JsonProperty(PropertyName = "id")]
         public string Id { get; set; }
 
-        [JsonProperty(PropertyName = "deviceid")]
-        public string deviceid { get; set; }
+        [JsonProperty(PropertyName = "device")]
+        public string Device { get; set; }
 
         [JsonProperty(PropertyName = "uid")]
-        public string uid { get; set; }
+        public string Uid { get; set; }
 
         [JsonProperty(PropertyName = "type")]
-        public string type { get; set; }
+        public string Type { get; set; }
 
     }
 }
