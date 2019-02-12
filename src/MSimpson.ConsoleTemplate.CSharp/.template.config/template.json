@@ -1,0 +1,13 @@
+{
+    "$schema": "http://json.schemastore.org/template",
+    "author": "Matt Simpson",
+    "classifications": [ "Common", "Console" ],
+    "identity": "MSimpson.ConsoleTemplate.CSharp",
+    "name": "MSimpson Console Application",
+    "shortName": "mjsconsole",
+    "tags": {
+        "language": "C#"                       
+    },
+    "sourceName": "MSimpson.ConsoleTemplate",
+    "preferNameDirectory" : "true"
+}
