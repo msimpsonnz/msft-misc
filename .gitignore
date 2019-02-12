@@ -10,6 +10,8 @@
 *.userosscache
 *.sln.docstates
 
+src/nupkgs/MSimpson.ConsoleTemplate.CSharp/content/*
+
 # User-specific files (MonoDevelop/Xamarin Studio)
 *.userprefs
 
