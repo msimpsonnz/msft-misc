@@ -9,7 +9,7 @@ namespace NoSQL.Common.Helpers
         public static string GetPartitionKey(int partitionKey)
         {
             SHA256 sha256 = SHA256.Create();
-            int bucket = partitionKey % 256;
+            int bucket = partitionKey % 64;
             var partition = sha256.ComputeHash(BitConverter.GetBytes(bucket));
             var hash = GetStringFromHash(partition);
             return hash;

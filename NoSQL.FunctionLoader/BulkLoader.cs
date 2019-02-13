@@ -19,16 +19,29 @@ namespace NoSQL.FunctionLoader
         {
             int batchSize;
             int.TryParse(Environment.GetEnvironmentVariable("BatchSize"), out batchSize);
+
+            int firstRetryIntervalVar;
+            int.TryParse(Environment.GetEnvironmentVariable("FirstRetrySeconds"), out firstRetryIntervalVar);
+
+            int maxNumberOfAttemptsVar;
+            int.TryParse(Environment.GetEnvironmentVariable("MaxNumberOfAttempts"), out maxNumberOfAttemptsVar);
+
+            double backoffCoefficientVar;
+            double.TryParse(Environment.GetEnvironmentVariable("BackoffCoefficient"), out backoffCoefficientVar);
+
+            var retryOptions = new RetryOptions(
+                firstRetryInterval: TimeSpan.FromSeconds(firstRetryIntervalVar),
+                maxNumberOfAttempts: maxNumberOfAttemptsVar);
+            retryOptions.BackoffCoefficient = backoffCoefficientVar;
+
             var outputs = new List<bool>();
             var tasks = new Task<bool>[batchSize];
             for (int i = 0; i < batchSize; i++)
             {
-                tasks[i] = context.CallActivityAsync<bool>("BulkLoader_Batch", i);
+                tasks[i] = context.CallActivityWithRetryAsync<bool>("BulkLoader_Batch", retryOptions, i);
             }
 
             await Task.WhenAll(tasks);
-
-            // returns ["Hello Tokyo!", "Hello Seattle!", "Hello London!"]
             return true;
         }
 
@@ -46,7 +59,7 @@ namespace NoSQL.FunctionLoader
 
         [FunctionName("BulkLoader_HttpStart")]
         public static async Task<HttpResponseMessage> HttpStart(
-            [HttpTrigger(AuthorizationLevel.Anonymous, "get", "post")]HttpRequestMessage req,
+            [HttpTrigger(AuthorizationLevel.Function, "get", "post")]HttpRequestMessage req,
             [OrchestrationClient]DurableOrchestrationClient starter,
             ILogger log)
         {
@@ -57,5 +70,8 @@ namespace NoSQL.FunctionLoader
 
             return starter.CreateCheckStatusResponse(req, instanceId);
         }
+
+
+
     }
 }
