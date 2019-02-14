@@ -1,5 +1,5 @@
 using Blazor.FileReader;
-using Microsoft.AspNetCore.Blazor.Builder;
+using Microsoft.AspNetCore.Components.Builder;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Portal.Client
@@ -8,11 +8,10 @@ namespace Portal.Client
     {
         public void ConfigureServices(IServiceCollection services)
         {
-
             services.AddSingleton<IFileReaderService>(sp => new FileReaderService());
         }
 
-        public void Configure(IBlazorApplicationBuilder app)
+        public void Configure(IComponentsApplicationBuilder app)
         {
             app.AddComponent<App>("app");
         }
