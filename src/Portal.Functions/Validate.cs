@@ -15,7 +15,7 @@ using System.Linq;
 using Portal.Shared;
 using Microsoft.Azure.Documents.Client;
 
-namespace Portal.Functions.Submission
+namespace Portal.Functions
 {
     public static class Validate
     {

@@ -7,27 +7,27 @@ using System.Threading.Tasks;
 
 namespace Portal.Client
 {
-    public class SubmissionService : ISubmission
+    public class UserService : IUser
     {
         private readonly HttpClient _httpClient;
         //private readonly string baseUrl = "https://mjsdemo.azurefd.net";
         private readonly string baseUrl = "http://localhost:7071";
 
-        public SubmissionService(HttpClient httpClient)
+        public UserService(HttpClient httpClient)
         {
             _httpClient = httpClient;
         }
 
-        public Task<Submission> GetSubmission(string id)
+        public Task<PortalUser> GetUser(string id)
         {
             throw new NotImplementedException();
         }
 
-        public async Task<List<Submission>> ListSubmissions()
+        public async Task<List<PortalUser>> ListUsers()
         {
-            var url = $"{baseUrl}/api/Submissions/GetAll";
+            var url = $"{baseUrl}/api/Users/GetAll";
 
-            return await _httpClient.GetJsonAsync<List<Submission>>(url);
+            return await _httpClient.GetJsonAsync<List<PortalUser>>(url);
         }
     }
 }

@@ -1,10 +1,9 @@
-﻿@page "/fetchdata"
+﻿@page "/users"
 @using Portal.Shared
+@inject IUser UserService
 @inject HttpClient Http
 
 <h1>User List</h1>
-
-<p>This component demonstrates fetching data from the server.</p>
 
 @if (users == null)
 {
@@ -38,10 +37,11 @@ else
 }
 
 @functions {
-    PortalUser[] users;
+    List<PortalUser> users;
 
     protected override async Task OnInitAsync()
     {
-        users = await Http.GetJsonAsync<PortalUser[]>("http://localhost:7071/api/GetBlobSaS");
+        //users = await Http.GetJsonAsync<PortalUser[]>("http://localhost:7071/api/GetBlobSaS");
+        users = await UserService.ListUsers();
     }
 }

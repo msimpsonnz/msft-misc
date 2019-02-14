@@ -8,7 +8,7 @@ using Microsoft.Azure.WebJobs.Extensions.EventGrid;
 using Microsoft.Extensions.Logging;
 using System.Net.Http;
 
-namespace Portal.Functions.Submission
+namespace Portal.Functions
 {
     public static class BlobTrigger
     {

@@ -17,13 +17,15 @@ namespace Portal.Shared
         public string BlobUri { get; set; }
 
         [JsonProperty("validatescore")]
-        public string ValidateScore { get; set; }
+        public int ValidateScore { get; set; }
 
         [JsonProperty("onlinescore")]
-        public string OnlineScore { get; set; }
+        public int OnlineScore { get; set; }
 
         [JsonProperty("status")]
         public string Status { get; set; }
 
+        [JsonProperty("type")]
+        public string Type { get; set; }
     }
 }

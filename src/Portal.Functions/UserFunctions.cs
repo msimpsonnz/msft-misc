@@ -13,13 +13,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Portal.Functions.Submission
+namespace Portal.Functions
 {
-    public static class UserStatus
+    public static class UserFunctions
     {
-        [FunctionName("GetStatusById")]
-        public static async Task<IActionResult> GetStatusById(
-            [HttpTrigger(AuthorizationLevel.Function, "get", Route = null)] HttpRequest req,
+        [FunctionName("GetUserById")]
+        public static async Task<IActionResult> GetById(
+            [HttpTrigger(AuthorizationLevel.Function, "get", Route = "users/GetById")] HttpRequest req,
             [CosmosDB("%Cosmos:DatabaseName%", "%Cosmos:CollectionName%", ConnectionStringSetting = "Cosmos:ConnectionString")] DocumentClient client,
             ILogger log)
         {
@@ -37,9 +37,9 @@ namespace Portal.Functions.Submission
                 : new BadRequestObjectResult("Please pass a userid on the query string");
         }
 
-        [FunctionName("GetUsers")]
-        public static async Task<IActionResult> GetStatus(
-            [HttpTrigger(AuthorizationLevel.Function, "get", Route = "users/GetUsers")] HttpRequest req,
+        [FunctionName("GetUserAll")]
+        public static async Task<IActionResult> GetAll(
+            [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "users/GetAll")] HttpRequest req,
             [CosmosDB("%Cosmos:DatabaseName%", "%Cosmos:CollectionName%", ConnectionStringSetting = "Cosmos:ConnectionString")] DocumentClient client,
             ILogger log)
         {
@@ -47,15 +47,15 @@ namespace Portal.Functions.Submission
 
             FeedOptions queryOptions = new FeedOptions { MaxItemCount = -1, EnableCrossPartitionQuery = true };
 
-            var userQuery = client.CreateDocumentQuery<PortalUser>(
+            var query = client.CreateDocumentQuery<PortalUser>(
                     UriFactory.CreateDocumentCollectionUri(Environment.GetEnvironmentVariable("Cosmos:DatabaseName"), Environment.GetEnvironmentVariable("Cosmos:CollectionName")), queryOptions)
                     .Where(f => f.Type == "user")
                     .AsDocumentQuery();
 
             var results = new List<PortalUser>();
-            while (userQuery.HasMoreResults)
+            while (query.HasMoreResults)
             {
-                results.AddRange(await userQuery.ExecuteNextAsync<PortalUser>());
+                results.AddRange(await query.ExecuteNextAsync<PortalUser>());
             }
 
             return (ActionResult)new OkObjectResult(results);

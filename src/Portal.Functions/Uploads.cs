@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 
-namespace Portal.Functions.Submission
+namespace Portal.Functions
 {
     public static class Upload
     {
