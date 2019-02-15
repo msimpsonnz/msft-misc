@@ -1,6 +1,4 @@
-﻿using System.Linq;
-
-namespace Portal.Shared
+﻿namespace Portal.Shared
 {
 
     public class RecognitionResult
@@ -8,10 +6,6 @@ namespace Portal.Shared
         public string status { get; set; }
         public Recognitionresult recognitionResult { get; set; }
 
-        public string GetXP(RecognitionResult resultObj)
-        {
-            return resultObj.recognitionResult.lines.Where(x => x.text.EndsWith(" XP")).Select(x => x.text).FirstOrDefault();
-        }
     }
 
     public class Recognitionresult

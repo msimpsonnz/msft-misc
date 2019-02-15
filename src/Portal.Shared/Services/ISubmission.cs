@@ -10,5 +10,7 @@ namespace Portal.Shared
         //Task SaveSubmission(Submission submission);
         //Task DeleteSubmission(Submission submission);
         //Task DeleteSubmission(string id);
+
+        Task<string> GetBlobSas();
     }
 }
