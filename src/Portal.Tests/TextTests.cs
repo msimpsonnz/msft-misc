@@ -13,13 +13,26 @@ namespace Portal.Tests
         [Fact]
         public void ExtractXPFromTextResultSuccess()
         {
-            const string expectedXP = "700/1799 XP";
+            const int expectedXP = 700;
             string sample_data = File.ReadAllText($"{cwd}\\Samples\\textResult.json");
 
             RecognitionResult recognitionResultData = JsonConvert.DeserializeObject<RecognitionResult>(sample_data);
-            RecognitionResult recognitionResult = new RecognitionResult();
 
-            string result = recognitionResult.GetXP(recognitionResultData);
+            int result = ScoreValidator.ExtractScore(recognitionResultData);
+
+
+            Assert.Equal(expectedXP, result);
+        }
+
+        [Fact]
+        public void ExtractUrlFromTextResultSuccess()
+        {
+            const string expectedXP = "https://techprofile.microsoft.com/en-us/msimpsonnz";
+            string sample_data = File.ReadAllText($"{cwd}\\Samples\\textResult.json");
+
+            RecognitionResult recognitionResultData = JsonConvert.DeserializeObject<RecognitionResult>(sample_data);
+
+            string result = ScoreValidator.ExtractUrl(recognitionResultData);
 
 
             Assert.Equal(expectedXP, result);

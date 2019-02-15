@@ -25,6 +25,9 @@ namespace Portal.Shared
         [JsonProperty("status")]
         public string Status { get; set; }
 
+        [JsonProperty("techprofile")]
+        public string TechProfile { get; set; }
+
         [JsonProperty("type")]
         public string Type { get; set; }
     }
