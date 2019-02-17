@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Components;
+﻿using Microsoft.AspNetCore.Blazor;
 using Portal.Shared;
 using System;
 using System.Collections.Generic;
@@ -10,7 +10,8 @@ namespace Portal.Client
     public class SubmissionService : ISubmission
     {
         private readonly HttpClient _httpClient;
-        private readonly string baseUrl = "https://mjsdemo.azurefd.net";
+        //private readonly string baseUrl = "https://mjsdemo.azurefd.net";
+        private readonly string baseUrl = "http://localhost:7071";
 
         public SubmissionService(HttpClient httpClient)
         {

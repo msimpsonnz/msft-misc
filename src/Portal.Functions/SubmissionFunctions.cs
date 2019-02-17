@@ -62,9 +62,10 @@ namespace Portal.Functions
         }
 
         [FunctionName("GetBlobSaS")]
-        public static async Task<IActionResult> Run(
-    [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "Submissions/GetBlobSaS")] HttpRequest req,
-    ILogger log)
+        //public static async Task<IActionResult> Run(
+        public static IActionResult Run(
+            [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "Submissions/GetBlobSaS")] HttpRequest req,
+            ILogger log)
         {
             log.LogInformation("C# HTTP trigger function processed a request.");
 
