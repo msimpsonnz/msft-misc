@@ -1,0 +1,39 @@
+﻿@page "/submissions"
+@inherits Blazor.Repro.v8.Pages.SubmissionsModel
+
+<h1>Submission List</h1>
+
+@if (submissions == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Status</th>
+                <th>Online Score</th>
+                <th>Validated</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var sub in submissions)
+            {
+                <tr>
+                    <td>@sub.Id</td>
+                    <td>@sub.Status</td>
+                    <td>@sub.OnlineScore</td>
+                    <td>@sub.ValidateScore</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+
+    <div>
+        <button class="btn btn-primary" onclick="@RefreshData">Refresh</button>
+    </div>
+}
+
