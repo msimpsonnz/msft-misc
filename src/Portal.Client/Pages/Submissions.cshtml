@@ -1,5 +1,5 @@
 ﻿@page "/submissions"
-@inherits SubmissionsModel
+@inherits Portal.Client.Pages.SubmissionsModel
 
 <h1>Submission List</h1>
 
@@ -31,5 +31,33 @@ else
         </tbody>
     </table>
 
-    <input type="file" id="fileUpload" ref="fileUpload" onchange="@UploadFile" />
+    <div class="row">
+        <input type="file" id="fileUpload" ref="fileUpload" onchange="@SetFileRef" />
+
+        <button class="btn btn-primary" onclick="@UploadFile">Submit</button>
+    </div>
+
+}
+
+@if (Uploading)
+{
+    <div class="modal" role="dialog" tabindex="-1" style="display: block;">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Uploading</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close" onclick="@(() => Cancel())">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <h4>Hang on while we take a look at your submission</h4>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal" onclick="@(() => Cancel())">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-backdrop show"></div>
 }
