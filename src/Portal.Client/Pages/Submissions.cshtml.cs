@@ -39,8 +39,8 @@ namespace Portal.Client.Pages
         protected override async Task OnInitAsync()
         {
             submissions = await submissionService.ListSubmissions();
-            string signalr = "http://localhost:7071/api/SignalRInfo";
-            //string signalr = "https://mjsdemo.azurefd.net/api/SignalRInfo";
+            //string signalr = "http://localhost:7071/api/SignalRInfo";
+            string signalr = "https://mjsdemo.azurefd.net/api/SignalRInfo";
 
             var signalrInfo = await httpClient.GetJsonAsync<SignalRInfo>(signalr);
 
@@ -87,16 +87,19 @@ namespace Portal.Client.Pages
 
             }
             files = null;
-            
         }
 
 
-        private Task Handle(string msg)
+        private async Task Handle(string msg)
         {
             this._logger.LogInformation(msg);
             Uploading = false;
+            submissions = null; // this is not necessary; with this line after every click you will see
+                                // that your page is rendered once with "loading" message, and then again
+                                // automatically with your data - you don't have to call StateHasChanged
+                                // without this line application will be nicer for the user (no screen flashing)
+            submissions = await submissionService.ListSubmissions();
             StateHasChanged();
-            return Task.CompletedTask;
         }
 
         public Task Refresh()
