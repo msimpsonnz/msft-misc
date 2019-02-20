@@ -10,6 +10,7 @@ using System.Net;
 using System.Net.Http.Headers;
 using System.Text;
 using System.Diagnostics;
+using System.IO;
 
 namespace BlobUploader
 {
@@ -39,18 +40,16 @@ namespace BlobUploader
             {
                 foreach (var storageUrl in _appConfig.Value.StorageUrl)
                 {
+                    FileInfo fileInfo = new FileInfo(_appConfig.Value.File);
+                    byte[] fileContent = File.ReadAllBytes(fileInfo.FullName);
 
-
-                    string uri = $"{storageUrl}/{storageContainer}/{Guid.NewGuid()}.json{sas}";
-                    string sampleContent = "{\"name\":\"John Doe\",\"age\":33}";
-                    int contentLength = Encoding.UTF8.GetByteCount(sampleContent);
-                    string now = DateTime.Now.ToString("R", CultureInfo.InvariantCulture);
+                    string uri = $"{storageUrl}/{storageContainer}/{Guid.NewGuid()}.json{sas}";                    string now = DateTime.Now.ToString("R", CultureInfo.InvariantCulture);
 
                     var request = new HttpRequestMessage(HttpMethod.Put, uri);
 
 
-                    request.Content = new StringContent(sampleContent, Encoding.UTF8, "application/json");
-                    request.Content.Headers.ContentLength = contentLength;
+                    request.Content = new ByteArrayContent(fileContent);
+                    request.Content.Headers.ContentLength = fileContent.Length;
 
                     request.Headers.Add("x-ms-version", "2018-03-28");
                     request.Headers.Add("x-ms-date", now);
@@ -61,6 +60,7 @@ namespace BlobUploader
                     timer.Stop();
                     var response = req.StatusCode.ToString();
                     _logger.LogInformation($"Request: {storageUrl}, ResponseTime: {timer.Elapsed}");
+
                 }
                 return;
 

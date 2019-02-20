@@ -11,6 +11,7 @@ namespace BlobUploader
         public string StorageContainer { get; set; }
         public string Sas { get; set; }
         public string LocalDir { get; set; }
+        public string File { get; set; }
     }
 
 }
