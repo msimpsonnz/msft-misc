@@ -43,7 +43,8 @@ namespace BlobUploader
                     FileInfo fileInfo = new FileInfo(_appConfig.Value.File);
                     byte[] fileContent = File.ReadAllBytes(fileInfo.FullName);
 
-                    string uri = $"{storageUrl}/{storageContainer}/{Guid.NewGuid()}.json{sas}";                    string now = DateTime.Now.ToString("R", CultureInfo.InvariantCulture);
+                    string uri = $"{storageUrl}/{storageContainer}/{Guid.NewGuid()}{fileInfo.Extension}{sas}";
+                    string now = DateTime.Now.ToString("R", CultureInfo.InvariantCulture);
 
                     var request = new HttpRequestMessage(HttpMethod.Put, uri);
 
