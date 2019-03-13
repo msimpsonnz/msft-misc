@@ -13,8 +13,10 @@ using Microsoft.AspNetCore.Cryptography.KeyDerivation;
 
 namespace Function.Demo.Auth
 {
-    public static class VerifyUser
+    public class VerifyUser
     {
+        private static readonly string secret = Environment.GetEnvironmentVariable("JwtSecret");
+
         [FunctionName("VerifyUser")]
         public static async Task<IActionResult> Run(
             [HttpTrigger(AuthorizationLevel.Function, "get", "post",
@@ -30,6 +32,7 @@ namespace Function.Demo.Auth
         {
             log.LogInformation("C# HTTP trigger function processed a request.");
             bool authSuccess = false;
+            string token = String.Empty;
             log.LogInformation($"{user.ToString()}");
             string requestBody = await new StreamReader(req.Body).ReadToEndAsync();
             dynamic data = JsonConvert.DeserializeObject(requestBody);
@@ -46,10 +49,11 @@ namespace Function.Demo.Auth
             if (hashed == user.hash)
             {
                 authSuccess = true;
+                token = Token.CreateToken(secret, user.id);
             }
 
             return authSuccess == true
-                ? (ActionResult)new OkObjectResult(user)
+                ? (ActionResult)new OkObjectResult(token)
                 : new BadRequestObjectResult("Please pass a name on the query string or in the request body");
         }
     }
