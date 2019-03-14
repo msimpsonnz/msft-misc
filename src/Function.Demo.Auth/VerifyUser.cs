@@ -19,7 +19,7 @@ namespace Function.Demo.Auth
 
         [FunctionName("VerifyUser")]
         public static async Task<IActionResult> Run(
-            [HttpTrigger(AuthorizationLevel.Function, "get", "post",
+            [HttpTrigger(AuthorizationLevel.Anonymous, "post",
             Route = "user/{id}")] HttpRequest req,
             [CosmosDB(
                 databaseName: "db",

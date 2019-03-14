@@ -12,7 +12,7 @@ namespace Function.Demo.Auth
         public static string CreateToken(string secret, string userId)
         {
             var tokenHandler = new JwtSecurityTokenHandler();
-            var key = Encoding.ASCII.GetBytes(secret);
+            var key = Convert.FromBase64String(secret);
             var tokenDescriptor = new SecurityTokenDescriptor
             {
                 Subject = new ClaimsIdentity(new Claim[]

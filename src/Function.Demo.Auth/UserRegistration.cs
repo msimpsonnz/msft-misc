@@ -16,7 +16,7 @@ namespace Function.Demo.Auth
     {
         [FunctionName("UserRegistration")]
         public static async Task<IActionResult> Run(
-            [HttpTrigger(AuthorizationLevel.Function, "get", "post", Route = null)] HttpRequest req,
+            [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = null)] HttpRequest req,
             [CosmosDB(
                 databaseName: "db",
                 collectionName: "coll",
