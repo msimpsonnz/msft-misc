@@ -17,6 +17,7 @@ using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using MediaServices.Demo.Function.Helpers;
 
 namespace MediaServices.Demo.Function
 {
@@ -39,9 +40,9 @@ namespace MediaServices.Demo.Function
             //Parse blob Uri
             string blobUri = eventGridEvent["data"]["url"].ToString();
             //Get the full blob name
-            var fileFull = blobUri.Substring(blobUri.LastIndexOf('/') + 1);
+            string fileFull = FileHelper.GetFullFileName(blobUri);
             //Get the blob name without the extension
-            var fileId = fileFull.Substring(0, fileFull.LastIndexOf('.'));
+            var fileId = FileHelper.GetFileNameWithoutExt(fileFull);
 
             //Build variables to ensure AMS Assests and Jobs are unique
             string jobName = $"job-{fileId}";
