@@ -11,7 +11,7 @@ namespace MediaServices.Demo.Benchmark
         private const string BlobUri = @"https:\\somelongurlwitha\folder\filename.ext";
         // private static readonly NameParser Parser = new NameParser();
 
-        [Benchmark(Baseline = true)]
+        [Benchmark]
         public void GetFileName()
         {
            FileHelper.GetFullFileName(BlobUri);
