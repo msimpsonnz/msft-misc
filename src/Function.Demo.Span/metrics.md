@@ -1,0 +1,1 @@
+az monitor metrics list --resource /subscriptions/<subid>/resourceGroups/pbconsumptionexample/providers/Microsoft.Web/sites/pbconsumptionexample --metric FunctionExecutionUnits,FunctionExecutionCount --aggregation Total --interval PT1M

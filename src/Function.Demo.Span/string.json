@@ -1,0 +1,506 @@
+{
+  "cost": 0.0,
+  "interval": "0:01:00",
+  "namespace": "Microsoft.Web/sites",
+  "resourceregion": "australiaeast",
+  "timespan": "2019-03-18T06:56:32Z/2019-03-18T07:56:32Z",
+  "value": [
+    {
+      "id": "/subscriptions/80609453-c7de-4a24-98b5-df66ce2d8236/resourceGroups/Span/providers/Microsoft.Web/sites/mjsdemofuncstring/providers/Microsoft.Insights/metrics/FunctionExecutionUnits",
+      "name": {
+        "localizedValue": "Function Execution Units",
+        "value": "FunctionExecutionUnits"
+      },
+      "resourceGroup": "Span",
+      "timeseries": [
+        {
+          "data": [
+            {
+              "average": null,
+              "count": null,
+              "maximum": null,
+              "minimum": null,
+              "timeStamp": "2019-03-18T06:56:00+00:00",
+              "total": 0.0
+            },
+            {
+              "average": null,
+              "count": null,
+              "maximum": null,
+              "minimum": null,
+              "timeStamp": "2019-03-18T06:57:00+00:00",
+              "total": 0.0
+            },
+            {
+              "average": null,
+              "count": null,
+              "maximum": null,
+              "minimum": null,
+              "timeStamp": "2019-03-18T06:58:00+00:00",
+              "total": 0.0
+            },
+            {
+              "average": null,
+              "count": null,
+              "maximum": null,
+              "minimum": null,
+              "timeStamp": "2019-03-18T06:59:00+00:00",
+              "total": 0.0
+            },
+            {
+              "average": null,
+              "count": null,
+              "maximum": null,
+              "minimum": null,
+              "timeStamp": "2019-03-18T07:00:00+00:00",
+              "total": 0.0
+            },
+            {
+              "average": null,
+              "count": null,
+              "maximum": null,
+              "minimum": null,
+              "timeStamp": "2019-03-18T07:01:00+00:00",
+              "total": 0.0
+            },
+            {
+              "average": null,
+              "count": null,
+              "maximum": null,
+              "minimum": null,
+              "timeStamp": "2019-03-18T07:02:00+00:00",
+              "total": 0.0
+            },
+            {
+              "average": null,
+              "count": null,
+              "maximum": null,
+              "minimum": null,
+              "timeStamp": "2019-03-18T07:03:00+00:00",
+              "total": 0.0
+            },
+            {
+              "average": null,
+              "count": null,
+              "maximum": null,
+              "minimum": null,
+              "timeStamp": "2019-03-18T07:04:00+00:00",
+              "total": 0.0
+            },
+            {
+              "average": null,
+              "count": null,
+              "maximum": null,
+              "minimum": null,
+              "timeStamp": "2019-03-18T07:05:00+00:00",
+              "total": 0.0
+            },
+            {
+              "average": null,
+              "count": null,
+              "maximum": null,
+              "minimum": null,
+              "timeStamp": "2019-03-18T07:06:00+00:00",
+              "total": 0.0
+            },
+            {
+              "average": null,
+              "count": null,
+              "maximum": null,
+              "minimum": null,
+              "timeStamp": "2019-03-18T07:07:00+00:00",
+              "total": 0.0
+            },
+            {
+              "average": null,
+              "count": null,
+              "maximum": null,
+              "minimum": null,
+              "timeStamp": "2019-03-18T07:08:00+00:00",
+              "total": 0.0
+            },
+            {
+              "average": null,
+              "count": null,
+              "maximum": null,
+              "minimum": null,
+              "timeStamp": "2019-03-18T07:09:00+00:00",
+              "total": 0.0
+            },
+            {
+              "average": null,
+              "count": null,
+              "maximum": null,
+              "minimum": null,
+              "timeStamp": "2019-03-18T07:10:00+00:00",
+              "total": 0.0
+            },
+            {
+              "average": null,
+              "count": null,
+              "maximum": null,
+              "minimum": null,
+              "timeStamp": "2019-03-18T07:11:00+00:00",
+              "total": 0.0
+            },
+            {
+              "average": null,
+              "count": null,
+              "maximum": null,
+              "minimum": null,
+              "timeStamp": "2019-03-18T07:12:00+00:00",
+              "total": 0.0
+            },
+            {
+              "average": null,
+              "count": null,
+              "maximum": null,
+              "minimum": null,
+              "timeStamp": "2019-03-18T07:13:00+00:00",
+              "total": 0.0
+            },
+            {
+              "average": null,
+              "count": null,
+              "maximum": null,
+              "minimum": null,
+              "timeStamp": "2019-03-18T07:14:00+00:00",
+              "total": 0.0
+            },
+            {
+              "average": null,
+              "count": null,
+              "maximum": null,
+              "minimum": null,
+              "timeStamp": "2019-03-18T07:15:00+00:00",
+              "total": 0.0
+            },
+            {
+              "average": null,
+              "count": null,
+              "maximum": null,
+              "minimum": null,
+              "timeStamp": "2019-03-18T07:16:00+00:00",
+              "total": 0.0
+            },
+            {
+              "average": null,
+              "count": null,
+              "maximum": null,
+              "minimum": null,
+              "timeStamp": "2019-03-18T07:17:00+00:00",
+              "total": 0.0
+            },
+            {
+              "average": null,
+              "count": null,
+              "maximum": null,
+              "minimum": null,
+              "timeStamp": "2019-03-18T07:18:00+00:00",
+              "total": 0.0
+            },
+            {
+              "average": null,
+              "count": null,
+              "maximum": null,
+              "minimum": null,
+              "timeStamp": "2019-03-18T07:19:00+00:00",
+              "total": 0.0
+            },
+            {
+              "average": null,
+              "count": null,
+              "maximum": null,
+              "minimum": null,
+              "timeStamp": "2019-03-18T07:20:00+00:00",
+              "total": 0.0
+            },
+            {
+              "average": null,
+              "count": null,
+              "maximum": null,
+              "minimum": null,
+              "timeStamp": "2019-03-18T07:21:00+00:00",
+              "total": 0.0
+            },
+            {
+              "average": null,
+              "count": null,
+              "maximum": null,
+              "minimum": null,
+              "timeStamp": "2019-03-18T07:22:00+00:00",
+              "total": 0.0
+            },
+            {
+              "average": null,
+              "count": null,
+              "maximum": null,
+              "minimum": null,
+              "timeStamp": "2019-03-18T07:23:00+00:00",
+              "total": 0.0
+            },
+            {
+              "average": null,
+              "count": null,
+              "maximum": null,
+              "minimum": null,
+              "timeStamp": "2019-03-18T07:24:00+00:00",
+              "total": 0.0
+            },
+            {
+              "average": null,
+              "count": null,
+              "maximum": null,
+              "minimum": null,
+              "timeStamp": "2019-03-18T07:25:00+00:00",
+              "total": 0.0
+            },
+            {
+              "average": null,
+              "count": null,
+              "maximum": null,
+              "minimum": null,
+              "timeStamp": "2019-03-18T07:26:00+00:00",
+              "total": 0.0
+            },
+            {
+              "average": null,
+              "count": null,
+              "maximum": null,
+              "minimum": null,
+              "timeStamp": "2019-03-18T07:27:00+00:00",
+              "total": 0.0
+            },
+            {
+              "average": null,
+              "count": null,
+              "maximum": null,
+              "minimum": null,
+              "timeStamp": "2019-03-18T07:28:00+00:00",
+              "total": 0.0
+            },
+            {
+              "average": null,
+              "count": null,
+              "maximum": null,
+              "minimum": null,
+              "timeStamp": "2019-03-18T07:29:00+00:00",
+              "total": 0.0
+            },
+            {
+              "average": null,
+              "count": null,
+              "maximum": null,
+              "minimum": null,
+              "timeStamp": "2019-03-18T07:30:00+00:00",
+              "total": 0.0
+            },
+            {
+              "average": null,
+              "count": null,
+              "maximum": null,
+              "minimum": null,
+              "timeStamp": "2019-03-18T07:31:00+00:00",
+              "total": 0.0
+            },
+            {
+              "average": null,
+              "count": null,
+              "maximum": null,
+              "minimum": null,
+              "timeStamp": "2019-03-18T07:32:00+00:00",
+              "total": 0.0
+            },
+            {
+              "average": null,
+              "count": null,
+              "maximum": null,
+              "minimum": null,
+              "timeStamp": "2019-03-18T07:33:00+00:00",
+              "total": 0.0
+            },
+            {
+              "average": null,
+              "count": null,
+              "maximum": null,
+              "minimum": null,
+              "timeStamp": "2019-03-18T07:34:00+00:00",
+              "total": 0.0
+            },
+            {
+              "average": null,
+              "count": null,
+              "maximum": null,
+              "minimum": null,
+              "timeStamp": "2019-03-18T07:35:00+00:00",
+              "total": 0.0
+            },
+            {
+              "average": null,
+              "count": null,
+              "maximum": null,
+              "minimum": null,
+              "timeStamp": "2019-03-18T07:36:00+00:00",
+              "total": 0.0
+            },
+            {
+              "average": null,
+              "count": null,
+              "maximum": null,
+              "minimum": null,
+              "timeStamp": "2019-03-18T07:37:00+00:00",
+              "total": 0.0
+            },
+            {
+              "average": null,
+              "count": null,
+              "maximum": null,
+              "minimum": null,
+              "timeStamp": "2019-03-18T07:38:00+00:00",
+              "total": 0.0
+            },
+            {
+              "average": null,
+              "count": null,
+              "maximum": null,
+              "minimum": null,
+              "timeStamp": "2019-03-18T07:39:00+00:00",
+              "total": 0.0
+            },
+            {
+              "average": null,
+              "count": null,
+              "maximum": null,
+              "minimum": null,
+              "timeStamp": "2019-03-18T07:40:00+00:00",
+              "total": 1536000.0
+            },
+            {
+              "average": null,
+              "count": null,
+              "maximum": null,
+              "minimum": null,
+              "timeStamp": "2019-03-18T07:41:00+00:00",
+              "total": 0.0
+            },
+            {
+              "average": null,
+              "count": null,
+              "maximum": null,
+              "minimum": null,
+              "timeStamp": "2019-03-18T07:42:00+00:00",
+              "total": 0.0
+            },
+            {
+              "average": null,
+              "count": null,
+              "maximum": null,
+              "minimum": null,
+              "timeStamp": "2019-03-18T07:43:00+00:00",
+              "total": 0.0
+            },
+            {
+              "average": null,
+              "count": null,
+              "maximum": null,
+              "minimum": null,
+              "timeStamp": "2019-03-18T07:44:00+00:00",
+              "total": 0.0
+            },
+            {
+              "average": null,
+              "count": null,
+              "maximum": null,
+              "minimum": null,
+              "timeStamp": "2019-03-18T07:45:00+00:00",
+              "total": 0.0
+            },
+            {
+              "average": null,
+              "count": null,
+              "maximum": null,
+              "minimum": null,
+              "timeStamp": "2019-03-18T07:46:00+00:00",
+              "total": 0.0
+            },
+            {
+              "average": null,
+              "count": null,
+              "maximum": null,
+              "minimum": null,
+              "timeStamp": "2019-03-18T07:47:00+00:00",
+              "total": 0.0
+            },
+            {
+              "average": null,
+              "count": null,
+              "maximum": null,
+              "minimum": null,
+              "timeStamp": "2019-03-18T07:48:00+00:00",
+              "total": 0.0
+            },
+            {
+              "average": null,
+              "count": null,
+              "maximum": null,
+              "minimum": null,
+              "timeStamp": "2019-03-18T07:49:00+00:00",
+              "total": 0.0
+            },
+            {
+              "average": null,
+              "count": null,
+              "maximum": null,
+              "minimum": null,
+              "timeStamp": "2019-03-18T07:50:00+00:00",
+              "total": 0.0
+            },
+            {
+              "average": null,
+              "count": null,
+              "maximum": null,
+              "minimum": null,
+              "timeStamp": "2019-03-18T07:51:00+00:00",
+              "total": 0.0
+            },
+            {
+              "average": null,
+              "count": null,
+              "maximum": null,
+              "minimum": null,
+              "timeStamp": "2019-03-18T07:52:00+00:00",
+              "total": 0.0
+            },
+            {
+              "average": null,
+              "count": null,
+              "maximum": null,
+              "minimum": null,
+              "timeStamp": "2019-03-18T07:53:00+00:00",
+              "total": 2626176.0
+            },
+            {
+              "average": null,
+              "count": null,
+              "maximum": null,
+              "minimum": null,
+              "timeStamp": "2019-03-18T07:54:00+00:00",
+              "total": 0.0
+            },
+            {
+              "average": null,
+              "count": null,
+              "maximum": null,
+              "minimum": null,
+              "timeStamp": "2019-03-18T07:55:00+00:00",
+              "total": 0.0
+            }
+          ],
+          "metadatavalues": []
+        }
+      ],
+      "type": "Microsoft.Insights/metrics",
+      "unit": "Count"
+    }
+  ]
+}
