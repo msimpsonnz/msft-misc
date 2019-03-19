@@ -4,17 +4,23 @@ using Microsoft.Azure.WebJobs.Extensions.EventGrid;
 using Microsoft.Azure.WebJobs.Host;
 using Microsoft.Extensions.Logging;
 using Function.Demo.Span.Common;
+using System;
 
 namespace Function.Demo.Span.FuncSpan
 {
     public static class BlobList
     {
         [FunctionName("EventGridSpan")]
-        public static void EventGridSpan([EventGridTrigger]EventGridEvent eventGridEvent, ILogger log)
+        public static void EventGridSpan(
+            [EventGridTrigger]EventGridEvent eventGridEvent,
+            [CosmosDB(
+            databaseName: "db",
+            collectionName: "coll",
+            ConnectionStringSetting = "CosmosDBConnection")] out Event document,
+            ILogger log)
         {
-            log.LogInformation(eventGridEvent.Data.ToString());
-            var blobName = FileHelper.GetBlobNameWithSpan(eventGridEvent);
-            log.LogInformation(blobName.ToString());
+            FileHelper fileHelper = new FileHelper();
+            document = fileHelper.CreateEventWithSpan(eventGridEvent);
         }
     }
 }
