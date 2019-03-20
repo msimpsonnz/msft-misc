@@ -43,7 +43,7 @@ namespace Function.Demo.Auth
             numBytesRequested: 256 / 8));
 
             dynamic output = new {
-                user = data.username,
+                id = data.id,
                 salt = Convert.ToBase64String(salt),
                 hash = hashed
             };
