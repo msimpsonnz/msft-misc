@@ -6,7 +6,8 @@ using System.Threading.Tasks;
 using Common;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using Bogus;
+//using Bogus;
+using McMaster.Extensions.CommandLineUtils;
 
 namespace Run
 {
@@ -16,32 +17,49 @@ namespace Run
 
         static async Task Main(string[] args)
         {
-            // string collectionJson = File.ReadAllText($"{cwd}\\postman_collection.json");
-            // dynamic collection = JsonConvert.DeserializeObject<dynamic>(collectionJson);
-            string fakeUsersJson;
+            using (CommandLineApplication<Program> app = new CommandLineApplication<Program>())
+            {
+                app.Conventions.UseDefaultConventions();
+                app.ThrowOnUnexpectedArgument = false;
+                app.Execute(args);
+            }
+        }
+
+        [Option(Description = "MakeNewUsers")]
+        public bool MakeNewUsers { get; set; } = false;
+        public async Task OnExecute()
+        {
             List<User> users = new List<User>();
 
             try
             {
-                fakeUsersJson = File.ReadAllText($"{cwd}\\fakeusers.json");
+                if (MakeNewUsers)
+                {
+                    //GetSampleUsers(10000, true);
+                }
+                var fakeUsersJson = File.ReadAllText($"{cwd}\\fakeusers.json");
                 users = JsonConvert.DeserializeObject<List<User>>(fakeUsersJson);
             }
-            catch (System.Exception)
+            catch (Exception e)
             {
-                users = GetSampleUsers(10, true);
+                Console.WriteLine(e.Message);
+                throw;
             }
 
-            //List<HttpRequestMessage> registerUsers = new List<HttpRequestMessage>();
+            if (MakeNewUsers)
+            {
+                List<HttpRequestMessage> registerUsers = new List<HttpRequestMessage>();
 
-            //string regUrl = "https://mjsdemofuncauth.azurewebsites.net/api/UserRegistration";
+                string regUrl = "https://mjsdemofuncauth.azurewebsites.net/api/UserRegistration";
 
-            //foreach (var p in users)
-            //{
-            //    var body = JsonConvert.SerializeObject(p);
-            //    registerUsers.Add(HttpHelper.MakeRequest(regUrl, HttpMethod.Post, body));
-            //}
+                foreach (var p in users)
+                {
+                    var body = JsonConvert.SerializeObject(p);
+                    registerUsers.Add(HttpHelper.MakeRequest(regUrl, HttpMethod.Post, body));
+                }
 
-            //await HttpHelper.SendRequest(registerUsers);
+                await HttpHelper.SendRequest(registerUsers);
+            }
 
             List<UserRequest> tokenRequests = new List<UserRequest>();
 
@@ -52,13 +70,13 @@ namespace Run
                 UserRequest tokenRequest = new UserRequest();
                 tokenRequest.User = u;
                 var body = JsonConvert.SerializeObject(u);
-                tokenRequest.TokenReq = HttpHelper.MakeRequest(tokenUrl+u.Id, HttpMethod.Post, body);
+                tokenRequest.TokenReq = HttpHelper.MakeRequest(tokenUrl + u.Id, HttpMethod.Post, body);
                 tokenRequests.Add(tokenRequest);
             }
 
             string dataUrl = "https://mjsdemofuncauth.azurewebsites.net/api/data/";
 
-                
+
             foreach (var req in tokenRequests)
             {
                 var body = JsonConvert.SerializeObject(req.User);
@@ -77,31 +95,33 @@ namespace Run
             public HttpRequestMessage DataReq { get; set; }
         }
 
-        public static List<User> GetSampleUsers(int numberOfFakes, bool save = false)
-        {
-            var userFaker = new Faker<User>()
-                .RuleFor(u => u.Id, f => f.Random.Guid().ToString())
-                .RuleFor(u => u.FirstName, (f, u) => f.Name.FirstName())
-                .RuleFor(u => u.LastName, (f, u) => f.Name.LastName())
-                .RuleFor(u => u.EmailAddress, (f, u) => f.Internet.Email(u.FirstName, u.LastName))
-                .RuleFor(u => u.Password, f => f.Internet.Password());
+        // public static List<User> GetSampleUsers(int numberOfFakes, bool save = false)
+        // {
+        //     var userFaker = new Faker<User>()
+        //         .RuleFor(u => u.Id, f => f.Random.Guid().ToString())
+        //         .RuleFor(u => u.FirstName, (f, u) => f.Name.FirstName())
+        //         .RuleFor(u => u.LastName, (f, u) => f.Name.LastName())
+        //         .RuleFor(u => u.EmailAddress, (f, u) => f.Internet.Email(u.FirstName, u.LastName))
+        //         .RuleFor(u => u.Password, f => f.Internet.Password());
 
-            var users = userFaker.Generate(numberOfFakes);
+        //     var users = userFaker.Generate(numberOfFakes);
 
-            if (save)
-            {
-                var output = JsonConvert.SerializeObject(users, Formatting.Indented);
-                var path = $"{cwd}\\fakeusers.json";
-                using (var file = new StreamWriter(path))
-                {
-                    file.Write(output);
-                    file.Close();
-                    file.Dispose();
-                }
-            }
+        //     if (save)
+        //     {
+        //         var exitingfakeUsersJson = File.ReadAllText($"{cwd}\\fakeusers.json");
+        //         users.AddRange(JsonConvert.DeserializeObject<List<User>>(exitingfakeUsersJson));
+        //         var output = JsonConvert.SerializeObject(users, Formatting.Indented);
+        //         var path = $"{cwd}\\fakeusers.json";
+        //         using (var file = new StreamWriter(path))
+        //         {
+        //             file.Write(output);
+        //             file.Close();
+        //             file.Dispose();
+        //         }
+        //     }
 
-            return users;
-        }
+        //     return users;
+        // }
 
     }
 }

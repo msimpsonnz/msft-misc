@@ -11,7 +11,8 @@
 </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Bogus" Version="26.0.1" />
+    <!-- <PackageReference Include="Bogus" Version="26.0.1" /> -->
+    <PackageReference Include="McMaster.Extensions.CommandLineUtils" Version="2.3.3" />
     <PackageReference Include="Newtonsoft.Json" Version="11.0.2" />
   </ItemGroup>
 
@@ -21,5 +22,9 @@
     </Content>
     
 </ItemGroup>
+
+      <ItemGroup>
+        <Content Include="C:\r\FxTest\src\orch\fakeusers.json" Link="fakeusers.json" />
+      </ItemGroup>
 
 </Project>

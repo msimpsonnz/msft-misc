@@ -32,6 +32,7 @@ namespace Function.Demo.Auth
             [AccessToken] ClaimsPrincipal principal)
         {
             log.LogInformation($"Request received for {principal.Identity.Name}.");
+            
             return new OkObjectResult(user.hash);
         }
     }

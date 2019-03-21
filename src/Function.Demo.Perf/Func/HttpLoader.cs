@@ -9,6 +9,7 @@ using Newtonsoft.Json.Linq;
 using Common;
 using System.IO;
 using Newtonsoft.Json;
+using System.Linq;
 
 namespace Func
 {
@@ -22,21 +23,29 @@ namespace Func
 
             var outputs = new List<string>();
 
-            //// Replace "hello" with the name of your Durable Activity Function.
-            //outputs.Add(await context.CallActivityAsync<string>("HttpLoader_Hello", "Tokyo"));
-            //outputs.Add(await context.CallActivityAsync<string>("HttpLoader_Hello", "Seattle"));
-            //outputs.Add(await context.CallActivityAsync<string>("HttpLoader_Hello", "London"));
+            var batches = await context.CallActivityAsync<List<List<User>>>("HttpLoader_BatchReq", input);
 
-            //// returns ["Hello Tokyo!", "Hello Seattle!", "Hello London!"]
-            //return outputs;
-            var tasks = new Task<bool>[input.Count];
-            foreach (User u in input)
+            var parallelTasks = new List<Task<string>>();
+
+            foreach (var batch in batches)
             {
-                outputs.Add(await context.CallActivityAsync<string>("HttpLoader_Load", u));
+                foreach (var user in batch)
+                {
+                        Task<string> task = context.CallActivityAsync<string>("HttpLoader_Load", user);
+                        parallelTasks.Add(task);
+                }
+
             }
 
-            //await Task.WhenAll(tasks);
-            return outputs;
+            IEnumerable<string> results = await Task.WhenAll(parallelTasks);
+            return results.ToList();
+        }
+
+
+        [FunctionName("HttpLoader_BatchReq")]
+        public static async Task<IEnumerable<IEnumerable<User>>> BatchReq([ActivityTrigger] IEnumerable<User> users, ILogger log)
+        {
+            return BatchHelper.Batch(users, 100);
 
 
         }
