@@ -6,8 +6,7 @@ using System.Threading.Tasks;
 using Common;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-//using Bogus;
-using McMaster.Extensions.CommandLineUtils;
+using Bogus;
 
 namespace Run
 {
@@ -17,25 +16,16 @@ namespace Run
 
         static async Task Main(string[] args)
         {
-            using (CommandLineApplication<Program> app = new CommandLineApplication<Program>())
-            {
-                app.Conventions.UseDefaultConventions();
-                app.ThrowOnUnexpectedArgument = false;
-                app.Execute(args);
-            }
-        }
-
-        [Option(Description = "MakeNewUsers")]
-        public bool MakeNewUsers { get; set; } = false;
-        public async Task OnExecute()
-        {
+            string userArgs = args[0] ?? "false";
+            bool MakeNewUsers;
+            bool.TryParse(userArgs, out MakeNewUsers);
             List<User> users = new List<User>();
 
             try
             {
                 if (MakeNewUsers)
                 {
-                    //GetSampleUsers(10000, true);
+                    GetSampleUsers(10000, true);
                 }
                 var fakeUsersJson = File.ReadAllText($"{cwd}\\fakeusers.json");
                 users = JsonConvert.DeserializeObject<List<User>>(fakeUsersJson);
@@ -95,33 +85,33 @@ namespace Run
             public HttpRequestMessage DataReq { get; set; }
         }
 
-        // public static List<User> GetSampleUsers(int numberOfFakes, bool save = false)
-        // {
-        //     var userFaker = new Faker<User>()
-        //         .RuleFor(u => u.Id, f => f.Random.Guid().ToString())
-        //         .RuleFor(u => u.FirstName, (f, u) => f.Name.FirstName())
-        //         .RuleFor(u => u.LastName, (f, u) => f.Name.LastName())
-        //         .RuleFor(u => u.EmailAddress, (f, u) => f.Internet.Email(u.FirstName, u.LastName))
-        //         .RuleFor(u => u.Password, f => f.Internet.Password());
+        public static List<User> GetSampleUsers(int numberOfFakes, bool save = false)
+        {
+            var userFaker = new Faker<User>()
+                .RuleFor(u => u.Id, f => f.Random.Guid().ToString())
+                .RuleFor(u => u.FirstName, (f, u) => f.Name.FirstName())
+                .RuleFor(u => u.LastName, (f, u) => f.Name.LastName())
+                .RuleFor(u => u.EmailAddress, (f, u) => f.Internet.Email(u.FirstName, u.LastName))
+                .RuleFor(u => u.Password, f => f.Internet.Password());
 
-        //     var users = userFaker.Generate(numberOfFakes);
+            var users = userFaker.Generate(numberOfFakes);
 
-        //     if (save)
-        //     {
-        //         var exitingfakeUsersJson = File.ReadAllText($"{cwd}\\fakeusers.json");
-        //         users.AddRange(JsonConvert.DeserializeObject<List<User>>(exitingfakeUsersJson));
-        //         var output = JsonConvert.SerializeObject(users, Formatting.Indented);
-        //         var path = $"{cwd}\\fakeusers.json";
-        //         using (var file = new StreamWriter(path))
-        //         {
-        //             file.Write(output);
-        //             file.Close();
-        //             file.Dispose();
-        //         }
-        //     }
+            if (save)
+            {
+                var exitingfakeUsersJson = File.ReadAllText($"{cwd}\\fakeusers.json");
+                users.AddRange(JsonConvert.DeserializeObject<List<User>>(exitingfakeUsersJson));
+                var output = JsonConvert.SerializeObject(users, Formatting.Indented);
+                var path = $"{cwd}\\fakeusers.json";
+                using (var file = new StreamWriter(path))
+                {
+                    file.Write(output);
+                    file.Close();
+                    file.Dispose();
+                }
+            }
 
-        //     return users;
-        // }
+            return users;
+        }
 
     }
 }
