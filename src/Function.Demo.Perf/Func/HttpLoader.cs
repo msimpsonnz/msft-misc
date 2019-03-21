@@ -10,6 +10,7 @@ using Common;
 using System.IO;
 using Newtonsoft.Json;
 using System.Linq;
+using System;
 
 namespace Func
 {
@@ -45,7 +46,7 @@ namespace Func
         [FunctionName("HttpLoader_BatchReq")]
         public static async Task<IEnumerable<IEnumerable<User>>> BatchReq([ActivityTrigger] IEnumerable<User> users, ILogger log)
         {
-            return BatchHelper.Batch(users, 100);
+            return BatchHelper.Batch(users, int.Parse(Environment.GetEnvironmentVariable("BatchSize")));
 
 
         }
@@ -53,8 +54,8 @@ namespace Func
         [FunctionName("HttpLoader_Load")]
         public static async Task<string> WebTest([ActivityTrigger] User user, ILogger log)
         {
-            string tokenUrl = "https://mjsdemofuncauth.azurewebsites.net/api/user/";
-            string dataUrl = "https://mjsdemofuncauth.azurewebsites.net/api/data/";
+            string tokenUrl = Environment.GetEnvironmentVariable("TokenUrl");
+            string dataUrl = Environment.GetEnvironmentVariable("DataUrl");
             var body = JsonConvert.SerializeObject(user);
             var req = HttpHelper.MakeRequest(tokenUrl+user.Id, HttpMethod.Post, body);
             var res = await HttpHelper.AuthRequest(req, dataUrl, user, body);

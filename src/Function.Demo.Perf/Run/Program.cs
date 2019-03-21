@@ -40,7 +40,7 @@ namespace Run
             {
                 List<HttpRequestMessage> registerUsers = new List<HttpRequestMessage>();
 
-                string regUrl = "https://mjsdemofuncauth.azurewebsites.net/api/UserRegistration";
+                string regUrl = args[1] ?? "regUrl needs to go here";
 
                 foreach (var p in users)
                 {
@@ -53,7 +53,7 @@ namespace Run
 
             List<UserRequest> tokenRequests = new List<UserRequest>();
 
-            string tokenUrl = "https://mjsdemofuncauth.azurewebsites.net/api/user/";
+            string tokenUrl = args[2] ?? "tokenUrl needs to go here";
 
             foreach (var u in users)
             {
@@ -64,7 +64,7 @@ namespace Run
                 tokenRequests.Add(tokenRequest);
             }
 
-            string dataUrl = "https://mjsdemofuncauth.azurewebsites.net/api/data/";
+            string dataUrl = args[2] ?? "dataUrl needs to go here";
 
 
             foreach (var req in tokenRequests)
