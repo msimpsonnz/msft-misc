@@ -1,0 +1,92 @@
+[
+  {
+    "Id": "1",
+    "CatalogBrandId": "2",
+    "CatalogTypeId": "2",
+    "Description": ".NET Bot Black Sweatshirt",
+    "Name": ".NET Bot Black Sweatshirt",
+    "PictureUri": "/images/products/1.png",
+    "Price": "19.50"
+  },
+  {
+    "Id": "2",
+    "CatalogBrandId": "2",
+    "CatalogTypeId": "1",
+    "Description": ".NET Black & White Mug",
+    "Name": ".NET Black & White Mug",
+    "PictureUri": "/images/products/2.png",
+    "Price": "8.50"
+  },
+  {
+    "Id": "3",
+    "CatalogBrandId": "5",
+    "CatalogTypeId": "2",
+    "Description": "Prism White T-Shirt",
+    "Name": "Prism White T-Shirt",
+    "PictureUri": "/images/products/3.png",
+    "Price": "12.00"
+  },
+  {
+    "Id": "4",
+    "CatalogBrandId": "2",
+    "CatalogTypeId": "2",
+    "Description": ".NET Foundation Sweatshirt",
+    "Name": ".NET Foundation Sweatshirt",
+    "PictureUri": "/images/products/4.png",
+    "Price": "12.00"
+  },
+  {
+    "Id": "5",
+    "CatalogBrandId": "5",
+    "CatalogTypeId": "3",
+    "Description": "Roslyn Red Sheet",
+    "Name": "Roslyn Red Sheet",
+    "PictureUri": "/images/products/5.png",
+    "Price": "8.50"
+  },
+  {
+    "Id": "6",
+    "CatalogBrandId": "2",
+    "CatalogTypeId": "2",
+    "Description": ".NET Blue Sweatshirt",
+    "Name": ".NET Blue Sweatshirt",
+    "PictureUri": "/images/products/6.png",
+    "Price": "12.00"
+  },
+  {
+    "Id": "7",
+    "CatalogBrandId": "5",
+    "CatalogTypeId": "2",
+    "Description": "Roslyn Red T-Shirt",
+    "Name": "Roslyn Red T-Shirt",
+    "PictureUri": "/images/products/7.png",
+    "Price": "12.00"
+  },
+  {
+    "Id": "8",
+    "CatalogBrandId": "5",
+    "CatalogTypeId": "2",
+    "Description": "Kudu Purple Sweatshirt",
+    "Name": "Kudu Purple Sweatshirt",
+    "PictureUri": "/images/products/8.png",
+    "Price": "8.50"
+  },
+  {
+    "Id": "9",
+    "CatalogBrandId": "5",
+    "CatalogTypeId": "1",
+    "Description": "Cup<T> White Mug",
+    "Name": "Cup<T> White Mug",
+    "PictureUri": "/images/products/9.png",
+    "Price": "12.00"
+  },
+  {
+    "Id": "10",
+    "CatalogBrandId": "2",
+    "CatalogTypeId": "3",
+    "Description": ".NET Foundation Sheet",
+    "Name": ".NET Foundation Sheet",
+    "PictureUri": "/images/products/10.png",
+    "Price": "12.00"
+  }
+]

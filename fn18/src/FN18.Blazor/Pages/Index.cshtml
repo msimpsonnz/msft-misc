@@ -1,0 +1,31 @@
+﻿@page "/"
+@inherits IndexModel
+
+<section class="esh-catalog-hero">
+    <div class="container">
+        <img class="esh-catalog-title" src="../images/main_banner_text.png" />
+    </div>
+</section>
+
+<div class="container">
+    <div class="esh-catalog-items row">
+
+        @foreach (var item in catalogItems)
+        {
+            <div class="esh-catalog-item col-md-4">
+                <form>
+                    <img class="esh-catalog-thumbnail" src="@item.PictureUri" />
+                    <input class="esh-catalog-button" type="submit" value="[ ADD TO BASKET ]" />
+
+                    <div class="esh-catalog-name">
+                        <span>@item.Name</span>
+                    </div>
+                    <div class="esh-catalog-price">
+                        <span>@item.Price.ToString()</span>
+                    </div>
+                    <a class="esh-catalog-name" href="/ticket">Write Review</a>
+                </form>
+            </div>
+        }
+    </div>
+</div>

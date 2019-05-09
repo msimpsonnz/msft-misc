@@ -1,0 +1,19 @@
+@inherits BlazorLayoutComponent
+
+@*<div class="sidebar">
+    <NavMenu />
+</div>*@
+
+<div class="container">
+    <article class="row">
+        <section class="col-lg-6 col-md-6 col-xs-12">
+            <a asp-page="/Index" class="navbar-brand">
+                <img src="../images/brand.png" alt="eShop On Web" />
+            </a>
+        </section>
+    </article>
+
+    <div class="content px-4">
+        @Body
+    </div>
+</div>

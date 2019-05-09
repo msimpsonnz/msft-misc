@@ -1,0 +1,32 @@
+{
+    "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {  
+            "searchName": {
+              "type": "string",
+              "minLength": 2,
+              "maxLength": 60
+            }
+
+
+    },
+    "variables": {  },
+    "functions": [  ],
+    "resources": [
+        {
+            "apiVersion": "2015-08-19",
+            "name": "[concat('search', uniqueString(subscription().subscriptionId))]",
+            "type": "Microsoft.Search/searchServices",
+            "location": "[resourceGroup().location]",
+            "sku": {
+              "name": "basic"
+            },
+            "properties": {
+              "replicaCount": 1,
+              "partitionCount": 1,
+              "hostingMode": "default"
+            }
+          }
+      ],
+    "outputs": {  }
+}
