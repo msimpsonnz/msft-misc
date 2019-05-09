@@ -1,0 +1,218 @@
+﻿{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "mjsdemoARM1Name": {
+            "type": "string"
+        },
+        "mjsdemoARM1Type": {
+            "type": "string",
+            "defaultValue": "Standard_LRS",
+            "allowedValues": [
+                "Standard_LRS",
+                "Standard_GRS",
+                "Standard_ZRS"
+            ]
+        },
+        "mjsdemoARM1Location": {
+            "type": "string",
+            "defaultValue": "West US",
+            "allowedValues": [
+                "East US",
+                "West US",
+                "West Europe",
+                "East Asia",
+              "South East Asia",
+              "Australia East"
+            ]
+        },
+        "vnMjsDemoARM1Location": {
+            "type": "string",
+            "defaultValue": "West US",
+            "allowedValues": [
+                "East US",
+                "West US",
+                "West Europe",
+                "East Asia",
+              "South East Asia",
+              "Australia East"
+            ]
+        },
+        "mjsDemoARM1Name2": {
+            "type": "string"
+        },
+        "mjsDemoARM1AdminUserName": {
+            "type": "string"
+        },
+        "mjsDemoARM1AdminPassword": {
+            "type": "securestring"
+        },
+        "mjsDemoARM1UbuntuOSVersion": {
+            "type": "string",
+            "defaultValue": "14.04.2-LTS",
+            "allowedValues": [
+                "12.04.5-LTS",
+                "14.04.2-LTS",
+                "15.04"
+            ]
+        },
+        "mjsDemoPubDnsName": {
+            "type": "string"
+        }
+    },
+    "variables": {
+        "vnMjsDemoARM1Prefix": "10.0.0.0/16",
+        "vnMjsDemoARM1Subnet1Name": "Subnet-1",
+        "vnMjsDemoARM1Subnet1Prefix": "10.0.0.0/24",
+        "vnMjsDemoARM1Subnet2Name": "Subnet-2",
+        "vnMjsDemoARM1Subnet2Prefix": "10.0.1.0/24",
+        "mjsDemoARM1ImagePublisher": "Canonical",
+        "mjsDemoARM1ImageOffer": "UbuntuServer",
+        "mjsDemoARM1OSDiskName": "mjsDemoARM1OSDisk",
+        "mjsDemoARM1VmSize": "Standard_D1",
+        "mjsDemoARM1VnetID": "[resourceId('Microsoft.Network/virtualNetworks', 'vnMjsDemoARM1')]",
+        "mjsDemoARM1SubnetRef": "[concat(variables('mjsDemoARM1VnetID'), '/subnets/', variables('vnMjsDemoARM1Subnet1Name'))]",
+        "mjsDemoARM1StorageAccountContainerName": "vhds",
+        "mjsDemoARM1NicName": "[concat(parameters('mjsDemoARM1Name2'), 'NetworkInterface')]",
+        "mjsDemoPubName": "mjsDemoPub"
+    },
+    "resources": [
+        {
+            "name": "[parameters('mjsdemoARM1Name')]",
+            "type": "Microsoft.Storage/storageAccounts",
+            "location": "[parameters('mjsdemoARM1Location')]",
+            "apiVersion": "2015-05-01-preview",
+            "dependsOn": [ ],
+            "tags": {
+                "displayName": "mjsdemoARM1"
+            },
+            "properties": {
+                "accountType": "[parameters('mjsdemoARM1Type')]"
+            }
+        },
+        {
+            "name": "vnMjsDemoARM1",
+            "type": "Microsoft.Network/virtualNetworks",
+            "location": "[parameters('vnMjsDemoARM1Location')]",
+            "apiVersion": "2015-05-01-preview",
+            "dependsOn": [ ],
+            "tags": {
+                "displayName": "vnMjsDemoARM1"
+            },
+            "properties": {
+                "addressSpace": {
+                    "addressPrefixes": [
+                        "[variables('vnMjsDemoARM1Prefix')]"
+                    ]
+                },
+                "subnets": [
+                    {
+                        "name": "[variables('vnMjsDemoARM1Subnet1Name')]",
+                        "properties": {
+                            "addressPrefix": "[variables('vnMjsDemoARM1Subnet1Prefix')]"
+                        }
+                    },
+                    {
+                        "name": "[variables('vnMjsDemoARM1Subnet2Name')]",
+                        "properties": {
+                            "addressPrefix": "[variables('vnMjsDemoARM1Subnet2Prefix')]"
+                        }
+                    }
+                ]
+            }
+        },
+        {
+            "name": "[variables('mjsDemoARM1NicName')]",
+            "type": "Microsoft.Network/networkInterfaces",
+            "location": "[parameters('vnMjsDemoARM1Location')]",
+            "apiVersion": "2015-06-15",
+            "dependsOn": [
+                "[concat('Microsoft.Network/virtualNetworks/', 'vnMjsDemoARM1')]",
+                "[concat('Microsoft.Network/publicIPAddresses/', variables('mjsDemoPubName'))]"
+            ],
+            "tags": {
+                "displayName": "mjsDemoARM1Nic"
+            },
+            "properties": {
+                "ipConfigurations": [
+                    {
+                        "name": "ipconfig1",
+                        "properties": {
+                            "privateIPAllocationMethod": "Dynamic",
+                            "subnet": {
+                                "id": "[variables('mjsDemoARM1SubnetRef')]"
+                            },
+                            "publicIPAddress": {
+                                "id": "[resourceId('Microsoft.Network/publicIPAddresses', variables('mjsDemoPubName'))]"
+                            }
+                        }
+                    }
+                ]
+            }
+        },
+        {
+            "name": "[parameters('mjsDemoARM1Name2')]",
+            "type": "Microsoft.Compute/virtualMachines",
+            "location": "[parameters('vnMjsDemoARM1Location')]",
+            "apiVersion": "2015-06-15",
+            "dependsOn": [
+                "[concat('Microsoft.Storage/storageAccounts/', parameters('mjsdemoARM1Name'))]",
+                "[concat('Microsoft.Network/networkInterfaces/', variables('mjsDemoARM1NicName'))]"
+            ],
+            "tags": {
+                "displayName": "mjsDemoARM1"
+            },
+            "properties": {
+                "hardwareProfile": {
+                    "vmSize": "[variables('mjsDemoARM1VmSize')]"
+                },
+                "osProfile": {
+                    "computerName": "[parameters('mjsDemoARM1Name2')]",
+                    "adminUsername": "[parameters('mjsDemoARM1AdminUsername')]",
+                    "adminPassword": "[parameters('mjsDemoARM1AdminPassword')]"
+                },
+                "storageProfile": {
+                    "imageReference": {
+                        "publisher": "[variables('mjsDemoARM1ImagePublisher')]",
+                        "offer": "[variables('mjsDemoARM1ImageOffer')]",
+                        "sku": "[parameters('mjsDemoARM1UbuntuOSVersion')]",
+                        "version": "latest"
+                    },
+                    "osDisk": {
+                        "name": "mjsDemoARM1OSDisk",
+                        "vhd": {
+                            "uri": "[concat('http://', parameters('mjsdemoARM1Name'), '.blob.core.windows.net/', variables('mjsDemoARM1StorageAccountContainerName'), '/', variables('mjsDemoARM1OSDiskName'), '.vhd')]"
+                        },
+                        "caching": "ReadWrite",
+                        "createOption": "FromImage"
+                    }
+                },
+                "networkProfile": {
+                    "networkInterfaces": [
+                        {
+                            "id": "[resourceId('Microsoft.Network/networkInterfaces', variables('mjsDemoARM1NicName'))]"
+                        }
+                    ]
+                }
+            }
+        },
+        {
+            "name": "[variables('mjsDemoPubName')]",
+            "type": "Microsoft.Network/publicIPAddresses",
+            "location": "[parameters('vnMjsDemoARM1Location')]",
+            "apiVersion": "2015-05-01-preview",
+            "dependsOn": [ ],
+            "tags": {
+                "displayName": "mjsDemoPub"
+            },
+            "properties": {
+                "publicIPAllocationMethod": "Dynamic",
+                "dnsSettings": {
+                    "domainNameLabel": "[parameters('mjsDemoPubDnsName')]"
+                }
+            }
+        }
+    ],
+    "outputs": {
+    }
+}
