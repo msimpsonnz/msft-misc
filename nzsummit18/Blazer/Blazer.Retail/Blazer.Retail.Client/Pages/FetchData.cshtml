@@ -1,0 +1,45 @@
+﻿@using Blazor.Retail.Shared
+@page "/fetchdata"
+@inject HttpClient Http
+
+<h1>Bob's Awesome Appliances!</h1>
+
+@if (products == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <div>
+    @foreach (var product in products)
+    {
+        <div class="mb-4 d-flex align-items-center">
+            <ul class="list-group">
+                <li>Catageory: @product.Category</li>
+                <li>Segment: @product.Segment</li>
+                <li>Description: @product.Description</li>
+                <li>Price: @product.ProductPrice</li>
+                <button class="btn" onclick=@(Buy(product))>Buy Now!!</button>
+            </ul>
+        </div>
+    }
+        </div>
+}
+
+    @functions {
+        Product[] products;
+
+        protected override async Task OnInitAsync()
+        {
+            products = await Http.GetJsonAsync<Product[]>("/api/Shop/GetAllProducts");
+        }
+
+        private string Buy(Product product)
+        {
+
+            Console.WriteLine(product.ProductId.ToString());
+            return product.ProductId.ToString();
+        }
+
+    }
+   
