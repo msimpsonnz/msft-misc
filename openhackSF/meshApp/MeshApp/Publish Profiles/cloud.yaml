@@ -1,0 +1,18 @@
+## Visual Studio SFApp Publish Profile ##
+vsSFAppPublishProfile:
+  schemaVersion: 1.0.0-preview1
+resourceGroupName: MeshApp
+subscription:
+  id: 80609453-c7de-4a24-98b5-df66ce2d8236
+  name: Microsoft Azure Internal Consumption
+  tenant: &o0
+    id: 72f988bf-86f1-41af-91ab-2d7cd011db47
+    uniqueId: ec26eb6b-a32d-4386-8040-bded9e898a3d
+location:
+  name: westus
+  displayName: West US
+containerRegistry:
+  serverName: mjsdemoreg.azurecr.io
+  userName: mjsdemoreg
+  resourceId: /subscriptions/80609453-c7de-4a24-98b5-df66ce2d8236/resourceGroups/Containers/providers/Microsoft.ContainerRegistry/registries/mjsdemoreg
+  tenant: *o0

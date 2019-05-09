@@ -1,0 +1,99 @@
+{
+  "$schema": "http://schema.management.azure.com/schemas/2014-04-01-preview/deploymentTemplate.json",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "location": {
+      "type": "string",
+      "metadata": {
+        "description": "Location of the resources."
+      }
+    }
+  },
+  "resources": [
+    {
+      "apiVersion": "2018-07-01-preview",
+      "name": "minecraftNetwork",
+      "type": "Microsoft.ServiceFabricMesh/networks",
+      "location": "[parameters('location')]",
+      "dependsOn": [],
+      "properties": {
+        "addressPrefix": "10.0.0.4/22",
+        "ingressConfig": {
+          "layer4": [
+            {
+              "name": "minecraftIngressWin",
+              "publicPort": "25565",
+              "applicationName": "minecraftAppWin",
+              "serviceName": "minecraftServiceWin",
+              "endpointName": "minecraftListenerWin"
+            },
+            {
+              "name": "minecraftIngressRcon",
+              "publicPort": "25575",
+              "applicationName": "minecraftAppWin",
+              "serviceName": "minecraftServiceWin",
+              "endpointName": "minecraftListenerRcon"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "apiVersion": "2018-07-01-preview",
+      "name": "minecraftAppWin",
+      "type": "Microsoft.ServiceFabricMesh/applications",
+      "location": "[parameters('location')]",
+      "dependsOn": [
+        "Microsoft.ServiceFabricMesh/networks/minecraftNetwork"
+      ],
+      "properties": {
+        "description": "Service Fabric Mesh minecraft Application!",
+        "services": [
+          {
+            "type": "Microsoft.ServiceFabricMesh/services",
+            "location": "[parameters('location')]",
+            "name": "minecraftServiceWin",
+            "properties": {
+              "description": "Service Fabric Mesh Minecraft Service.",
+              "osType": "windows",
+              "codePackages": [
+                {
+                  "name": "minecraftCodeWin",
+                  "image": "myplooploops/minecraft-server:1.0-nanoserver-1709",
+                  "endpoints": [
+                    {
+                      "name": "minecraftListenerWin",
+                      "port": "25565"
+                    },
+                    {
+                      "name": "minecraftListenerRcon",
+                      "port": "25575"
+                    }
+                  ],
+                  "environmentVariables": [
+                    {
+                        "name": "EULA",
+                        "value": "TRUE"
+                    }
+                ],
+                  "resources": {
+                    "requests": {
+                      "cpu": "1",
+                      "memoryInGB": "2"
+                    }
+                  }
+                }
+              ],
+              "replicaCount": "1",
+              "networkRefs": [
+                {
+                  "name": "[resourceId('Microsoft.ServiceFabricMesh/networks', 'minecraftNetwork')]"
+                }
+              ]
+            }
+          }
+        ]
+      }
+    }
+  ]
+}
