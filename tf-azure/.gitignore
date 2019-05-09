@@ -1,0 +1,12 @@
+k8s_rendered.json
+terraform.tfvars
+backend.tf
+
+# Compiled files
+*.tfstate
+*.tfstate.backup
+
+# Module directory
+.terraform/
+_output
+translations
